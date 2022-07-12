@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+<head>
+    {% block title %}home{% endblock %}
+</head>
+
+<body>
+    {% block content %}
+        <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+        <h1>Welcome to ₿ World!</h1>
+        <h2>Enter your name to login.</h2>
+
+        <form method="post" action="#">
+            <p>Name: </p>
+            <p><input type="text" name="nm"/> </p>
+            <p><input type="submit" value="submit"/> </p>
+        </form>
+
+    {% endblock %}
+
+</body>

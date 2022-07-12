@@ -8,13 +8,11 @@
     {% block content %}
         <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 
-        <center> <h1>Hello ₿ World!</h1>
-            <br>
-            <p>Current block height: {{ height }}</p>
-            <p>Bitcoin price: ${{ price }}</p>
-            <p>1$ will buy you {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i> </p>
-        </center>
-
+        <h1>Hello ₿ World!</h1>
+        <br>
+        <p>Current block height: {{ height }}</p>
+        <p>Bitcoin price: ${{ price }}</p>
+        <p>1$ per {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i> </p>
 
     {% endblock %}
 

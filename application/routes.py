@@ -1,5 +1,5 @@
 from application import app
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 import requests
 import json
 
@@ -16,3 +16,7 @@ def index():
     sats = round(100_000_000 / float(current_price))
 
     return render_template("index.html", height=height, price=current_price, sats=sats)
+
+@app.route("/login/", methods=["POST", "GET"])
+def login():
+    return render_template("login.html")
