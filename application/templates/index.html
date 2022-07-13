@@ -10,13 +10,22 @@
 
         {% if user is defined %}
             <h1>Welcome to {{user}}'s home page!</h1>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                {% endif %}
+            {% endwith %}
         {% else %}
             <h1>Hello ₿ World!</h1>
         {% endif %}
-        <br>
-        <p>Current block height: {{ height }}</p>
-        <p>Bitcoin price: ${{ price }}</p>
-        <p>1$ per {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i> </p>
+            <br>
+            <p>Current block height: {{ height }}</p>
+            <p>Bitcoin price: ${{ price }}</p>
+            <p>1$ per {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i> </p>
 
     {% endblock %}
 

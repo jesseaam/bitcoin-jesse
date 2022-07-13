@@ -19,7 +19,9 @@ def index():
 
     if "user" in session:
         user = session["user"]
-        return render_template("index.html", height=height, price=current_price, sats=sats, user=user)
+        message = f"You were successfully logged in {user}!"
+        flash(message)
+        return render_template("index.html", height=height, price=current_price, sats=sats, user=user, message=message)
     return render_template("index.html", height=height, price=current_price, sats=sats)
 
 @app.route("/login/", methods=["POST", "GET"])
