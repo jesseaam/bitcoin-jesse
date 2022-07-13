@@ -8,7 +8,11 @@
     {% block content %}
         <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 
-        <h1>Hello ₿ World!</h1>
+        {% if user is defined %}
+            <h1>Welcome to {{user}}'s home page!</h1>
+        {% else %}
+            <h1>Hello ₿ World!</h1>
+        {% endif %}
         <br>
         <p>Current block height: {{ height }}</p>
         <p>Bitcoin price: ${{ price }}</p>

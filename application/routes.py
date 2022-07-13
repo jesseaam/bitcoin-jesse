@@ -1,8 +1,10 @@
 from application import app
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, session, flash, redirect
 import requests
 import json
 
+# add an api
+# add blueprints
 
 @app.route("/")
 def index():
@@ -15,8 +17,15 @@ def index():
     # how many sats can you buy with a dollar?
     sats = round(100_000_000 / float(current_price))
 
+    if "user" in session:
+        user = session["user"]
+        return render_template("index.html", height=height, price=current_price, sats=sats, user=user)
     return render_template("index.html", height=height, price=current_price, sats=sats)
 
 @app.route("/login/", methods=["POST", "GET"])
 def login():
+    if request.method == "POST":
+        user = request.form.get("nm")
+        session["user"] = user
+        return redirect(url_for("index"))
     return render_template("login.html")
