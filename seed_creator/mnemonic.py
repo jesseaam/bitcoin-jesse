@@ -72,50 +72,29 @@ bytes_val = someint.to_bytes(2, 'big')
 print(bytes_val)
 
 import hashlib
-ndx = 2047
+#ndx = 2047
 #b = bin(ndx)[2:].zfill(11) * 11 # 121 (but don't I need 128?)
-b = "1" * 128
+b = "10000000000" * 11
+print(int("10000000000", 2))
+half_ent = "0000001"
+b += half_ent # 0000
 b = int(b, 2)
-print(b)
-b = bin(b)[2:]
-b = str.encode(b)
-print(type(b))
+b = b.to_bytes(16, byteorder="big")
 print(b)
 #b = int(b, 2)
 #print(b)
 #b += b"1111110" # 0011
-import hashlib
-b= b"11010011011001000000001001011110010100111110110001010011011011100110101001111000110100101101100010111010001000111110110011110010"
-b = int(b,2)
-b = b.to_bytes(16, byteorder="big")
-print(b)
 
-#print(int.from_bytes(b, byteorder="big")) # 34543907297354305677935668372024396842070930183597263554502250889132945546939400758834177995286153980528963059269404998138355681066299664714311859220918557233375006971836897170740426511611994556287062998635942284992428954646198749773418597711766802435310490288410700446107510003864729799752676314319948951856
-h = hashlib.sha256(b).hexdigest() #4ff5ac52aa16dbe3db447ea12d090c5bb6f1325aaaca5ee059b248a89f673972
+h = hashlib.sha256(b).hexdigest() #5ac6a5945f16500911219129984ba8b387a06f24fe383ce4e81a73294065461b
 # should be https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
 print(h)
-h = "4ff5ac52aa16dbe3db447ea12d090c5bb6f1325aaaca5ee059b248a89f673972"
-#h = "ab29b49e48726959285d8fe8e19f78b7e5bdb2c3184d99cb0890e69acc71bcc7"
-h = bin(int(h, 16))[2:].zfill(256)[: 128 // 32]
-print(h) # should be 11111110101 for wrong
-print(int("11111000101",2)) # should be 2037 for wrong
-b = bin(2017)[2:].zfill(11)
-print(b)
-h = hex(2037) # 0x7f5
-print(h)
-print(int(h, 2))
+cs = bin(int(h, 16))[2:].zfill(256)[: 128 // 32]
+cs = half_ent + cs
+print(cs)
+print(int(cs,2)) # should be 2037 for wrong
 
-print(h)
-b=bin(ndx)
-print(b)
-b = ndx.to_bytes(length=3, byteorder="big") # hash changes if you change length
-h = hashlib.sha256(b).hexdigest() #59d0f26fbb62cb4ae0b4a24a4ae55d1069caaee62f85e02f8a0f6c907dd8f40b
-print(int(h, 16)) # convert hex int (decimal)
-print(b)
-print(h)
-print(bin(int.from_bytes(b , byteorder="big"))[2:])
 
-#h = hashlib.sha256(data).hexdigest()
+
 
 # adapted from https://tinyurl.com/trmn172
 #def to_mnemonic(self, data: bytes) -> str:
