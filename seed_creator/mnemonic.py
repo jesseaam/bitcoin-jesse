@@ -124,3 +124,4 @@ print(to_mnemonic(data=h))
 # I am not getting the appropriate checksum when hashing though. See my comment on this Stack Exchange question:
 # https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
 # once I figure that out, I should be able to code everything up.
+# * on second thought, I should probably just keep a copy in memory of each of the possible first-7 bits upon instantiation of the class. 
