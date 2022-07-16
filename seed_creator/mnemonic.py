@@ -18,42 +18,50 @@ from typing import List #, AnyStr, TypeVar, Union
 # search for those address on the block-chain
 
 
+word = "arrow" # word to repeat in mnemonic code
+ms = 24 # mnemonic sentence size
+edic = {12: 128, 15:160, 18:192, 21:224, 24:256} # number of bits of entropy given the number of mnemonic code words (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+cs_size =  edic[ms] // 32 # checksum
+fe = (edic[ms] - (ms - 1)*11)  # number of bits of entropy the last word will encode for)
+def free_bits(free_bit_size: int) -> list:
+    free = "0" * free_bit_size
+    free_list = [free]
+    flip = 1
+    while flip < 2**free_bit_size:
+        free = bin(int(free,2) + 1)[2:].zfill(free_bit_size)
+        free_list.append(free)
+        flip += 1
+    return free_list
+
+freeb = free_bits(fe)
+freeb = freeb[0] # just hardcode the possible free bits to 1111111
+print(freeb)
+
+
 # note that this path will need to be modified slightly once it is called from within Flask framework.
 d = os.path.join(os.path.dirname(__file__), "wordlist_english.txt")
 with open(d, "r", encoding="utf-8") as f:
-    wordlist = [w.strip() for w in f.readlines()]
+    wordlist = [w.strip() for w in f.readlines()] # ['abandon', 'ability', ..., "zoo"]
 
-#print(wordlist[0:5]) # ['abandon', 'ability', 'able', 'about', 'above']
-
-ndx = wordlist.index("ability")
+ndx = wordlist.index(word)
 ndx = bin(ndx)[2:].zfill(11)
-print(ndx)
+b = ndx * (ms - 1) # entropy in binary
+b += freeb # add the extra entropy that the last word encodes for
+ent = int(b, 2)
+ent = ent.to_bytes(edic[ms]//8, byteorder="big") # convert to bytes
+print(ent)
 
+h = hashlib.sha256(ent).hexdigest() #https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
+print(h)
+cs = bin(int(h, 16))[2:].zfill(256)[: cs_size]
+print(cs)
+last_word = freeb + cs
+last_word = int(last_word, 2)
+last_word = wordlist[last_word]
 
-print(base58.b58encode(b'hello world'))
-#print(base58.b58decode(b'StV1DL6CwTryKyV'))
-#print(base58.b58encode_check(b'hello world'))
-
-# specify how much entropy (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
-ent = 128 # other possible: 160, 192, 224, or 256 
-cs = ent // 32 # checksum
-ms = (ent + cs) // 11 # mnemonic sentence
-print(ms)
-
-#random_bits = (n_mnemonic * 11) - x*4
-#Return a random byte string containing nbytes number of bytes. If nbytes is None or not supplied, a reasonable default is used.
-rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
-rdm = int.from_bytes(rdm, byteorder="big")
-print(rdm)
-rdm = bin(rdm)[2:]
-print(len(rdm))
-print(rdm)
-rdm = int(rdm, 2)
-print(rdm)
-print(type(rdm))
-h = hashlib.sha256(rdm).hexdigest()
-print(h) #44e4ad7bdbb032de088145cefa771babc1c11acacf1dad063f97416bed72c355
-print(type(h)) # <class 'str'>
+sentence = (word + " ") * (ms-1)
+sentence += last_word
+print(sentence)
 
 
 #def to_bytes(wordlist: List(str), wrd: str) -> bytes:
@@ -132,3 +140,15 @@ print(to_mnemonic(data=h))
 # https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
 # once I figure that out, I should be able to code everything up.
 # * on second thought, I should probably just keep a copy in memory of each of the possible first-7 bits upon instantiation of the class. 
+
+
+#print(base58.b58encode(b'hello world'))
+#print(base58.b58decode(b'StV1DL6CwTryKyV'))
+#print(base58.b58encode_check(b'hello world'))
+
+
+#random_bits = (n_mnemonic * 11) - x*4
+#Return a random byte string containing nbytes number of bytes. If nbytes is None or not supplied, a reasonable default is used.
+#rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
+#rdm = int.from_bytes(rdm, byteorder="big")
+#print(rdm)
