@@ -17,9 +17,14 @@ from typing import List #, AnyStr, TypeVar, Union
 # generate the 1st 10 priv,pub, and pub-addresses
 # search for those address on the block-chain
 
+# note that this path will need to be modified slightly once it is called from within Flask framework.
+d = os.path.join(os.path.dirname(__file__), "wordlist_english.txt")
+with open(d, "r", encoding="utf-8") as f:
+    wordlist = [w.strip() for w in f.readlines()] # ['abandon', 'ability', ..., "zoo"]
+
 
 word = "arrow" # word to repeat in mnemonic code
-ms = 24 # mnemonic sentence size
+ms = 12 # mnemonic sentence size
 edic = {12: 128, 15:160, 18:192, 21:224, 24:256} # number of bits of entropy given the number of mnemonic code words (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 cs_size =  edic[ms] // 32 # checksum
 fe = (edic[ms] - (ms - 1)*11)  # number of bits of entropy the last word will encode for)
@@ -34,80 +39,90 @@ def free_bits(free_bit_size: int) -> list:
     return free_list
 
 freeb = free_bits(fe)
-freeb = freeb[0] # just hardcode the possible free bits to 1111111
-print(freeb)
+freeb = freeb[0] # just hardcode the possible free bits for now
 
-
-# note that this path will need to be modified slightly once it is called from within Flask framework.
-d = os.path.join(os.path.dirname(__file__), "wordlist_english.txt")
-with open(d, "r", encoding="utf-8") as f:
-    wordlist = [w.strip() for w in f.readlines()] # ['abandon', 'ability', ..., "zoo"]
-
-ndx = wordlist.index(word)
-ndx = bin(ndx)[2:].zfill(11)
-b = ndx * (ms - 1) # entropy in binary
-b += freeb # add the extra entropy that the last word encodes for
-ent = int(b, 2)
-ent = ent.to_bytes(edic[ms]//8, byteorder="big") # convert to bytes
-print(ent)
-
-h = hashlib.sha256(ent).hexdigest() #https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
-print(h)
-cs = bin(int(h, 16))[2:].zfill(256)[: cs_size]
-print(cs)
-last_word = freeb + cs
-last_word = int(last_word, 2)
-last_word = wordlist[last_word]
-
-sentence = (word + " ") * (ms-1)
-sentence += last_word
-print(sentence)
-
-
-#def to_bytes(wordlist: List(str), wrd: str) -> bytes:
-def to_bytes(wordlist: list(), wrd: str) -> bytes:
+def to_mnemonic(repeat_word: str, mnemonic_size: int, wordlist: list) -> list:
     """
-    Take as input one word from the mnemonic wordlist. Repeat that word 11 times (hard-coded for now) and convert to bytes.
+    Given a word to repeat in the mnemonic sentence and the number of words in the entire mneminc sentence, return what the last word (and entire mnemonic sentence) should be to make the checksum valid.
     """
-    ndx = wordlist.index(wrd)
-    b = 
-    #ndx = bin(ndx)
-    ndx = bytes(ndx)
-    ndx = int.from_bytes(ndx, byteorder="big")
-    print(ndx)
-    #ndx = bin(int.from_bytes(ndx, byteorder="big"))[2:]
-    return ndx
+    edic = {12: 128, 15:160, 18:192, 21:224, 24:256} # number of bits of entropy given the number of mnemonic code words (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+    cs_size =  edic[mnemonic_size] // 32 # checksum
+    fe = (edic[ms] - (ms - 1)*11)  # number of bits of entropy the last word will encode for)
+    freeb = free_bits(fe) #just select one for now
 
-to_bytes(wordlist=wordlist, wrd="zoo")
+    ndx = wordlist.index(word)
+    ndx = bin(ndx)[2:].zfill(11)
+    b = ndx * (ms - 1) # entropy in binary
 
-someint = 5
-bytes_val = someint.to_bytes(2, 'big')
+    possible_mnemonics = []
+    for i in freeb:
+        ent = b + i # add the extra entropy that the last word encodes for
+        ent = int(ent, 2)
+        ent = ent.to_bytes(edic[ms]//8, byteorder="big") # convert to bytes
+        h = hashlib.sha256(ent).hexdigest() #https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
+        cs = bin(int(h, 16))[2:].zfill(256)[: cs_size]
+        last_word = i + cs
+        seed = b + last_word
+        last_word = int(last_word, 2)
+        last_word = wordlist[last_word]
+        sentence = ""
+        sentence = (word + " ") * (ms-1)
+        sentence += last_word
+        possible_mnemonics.append(sentence)
+    return possible_mnemonics
 
-# printing integer in byte representation
-print(bytes_val)
+all = to_mnemonic(word, 12, wordlist)
+print(all[0])
 
+
+seed = "0000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000000000000000111"
+seed = int(seed, 2)
+print(seed)
+
+seed.to_bytes(byteorder="big") # convert to bytes
+
+
+def normalize_string(txt: AnyStr) -> str:
+    if isinstance(txt, bytes):
+        utxt = txt.decode("utf8")
+    elif isinstance(txt, str):
+        utxt = txt
+    else:
+        raise TypeError("String value expected")
+
+    return unicodedata.normalize("NFKD", utxt)
+
+
+
+#https://docs.python.org/3/library/unicodedata.html
+# Return the normal form form for the Unicode string unistr. Valid values for form are ‘NFC’, ‘NFKC’, ‘NFD’, and ‘NFKD’.
+# Two seemingly matching characters that don’t match.
+#The answer  is Unicode normalization
 import hashlib
-#ndx = 2047
-#b = bin(ndx)[2:].zfill(11) * 11 # 121 (but don't I need 128?)
-b = "10000000000" * 11
-print(int("10000000000", 2))
-half_ent = "0000001"
-b += half_ent # 0000
-b = int(b, 2)
-b = b.to_bytes(16, byteorder="big")
-print(b)
-#b = int(b, 2)
-#print(b)
-#b += b"1111110" # 0011
+import unicodedata
+import base58
+import hmac
+foo = unicodedata.normalize("NFKD", "hello")
+mnemonic_bytes = foo.encode("utf-8")
+passphrase_bytes = "mnemonic".encode("utf-8")
 
-h = hashlib.sha256(b).hexdigest() #5ac6a5945f16500911219129984ba8b387a06f24fe383ce4e81a73294065461b
-# should be https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
-print(h)
-cs = bin(int(h, 16))[2:].zfill(256)[: 128 // 32]
-cs = half_ent + cs
-print(cs)
-print(int(cs,2)) # should be 2037 for wrong
+stretched = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
+stretched = stretched[:64]
+seed = hmac.new(b"Bitcoin seed", stretched, digestmod=hashlib.sha512).digest()
 
+xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet
+xprv += b"\x00" * 9  # Depth, parent fingerprint, and child number
+xprv += seed[32:]  # Chain code
+xprv += b"\x00" + seed[:32]  # Master key
+# Double hash using SHA256
+hashed_xprv = hashlib.sha256(xprv).digest()
+hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+
+# Append 4 bytes of checksum
+xprv += hashed_xprv[:4]
+print(xprv)
+
+print(base58.b58encode(xprv))
 
 
 
