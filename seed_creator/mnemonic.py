@@ -65,15 +65,17 @@ class Mnemonic():
         seed = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
         return seed
 
+# https://github.com/darosior/python-bip32
     # https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#master-key-generation
     def master_prv(self, bip39seed: bytes) -> bytes:
         seed = hmac.new(b"Bitcoin seed", bip39seed, digestmod=hashlib.sha512).digest()
-        prv = seed[0:32]
+        prv = bip39seed[0:32]
         return prv
 
-    def master_chain(self, seed: bytes) -> bytes:
-        cc = seed[32:]
+    def master_chain(self, bip39seed: bytes) -> bytes:
+        cc = bip39seed[32:]
         return cc
+
 
     def to_public(self, privkey: bytes) -> bytes:
         prv = PrivateKey(privkey=privkey, raw=True)
@@ -82,30 +84,34 @@ class Mnemonic():
 
         return pub, pubc
 
-    def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
-        xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
-        xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
-        xprv += cc
-        xprv += b"\x00" + prv  # add \x00 so prv will be same length as pub
-        ## Double hash using SHA256
-        hashed_xprv = hashlib.sha256(xprv).digest()
-        hashed_xprv = hashlib.sha256(hashed_xprv).digest()
-        ## Append 4 bytes of checksum
-        xprv += hashed_xprv[:4]
-        return base58.b58encode(xprv)
+    def to_address(self, pubkey: bytes) -> bytes:
+        sha = hashlib.sha256()
+        rip = hashlib.new('ripemd160')
+        sha.update(pubkey)
+        rip.update( sha.digest() )
+        addr = b'\x00' +  rip.digest()
+        cs = hashlib.sha256(hashlib.sha256(addr).digest()).digest()[:4]
+        addr += cs
+        addr = base58.b58encode(addr)
+        return addr
+
+    #def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
+    #    xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
+    #    xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
+    #    xprv += cc
+    #    xprv += b"\x00" + prv  # add \x00 so prv will be same length as pub
+    #    ## Double hash using SHA256
+    #    hashed_xprv = hashlib.sha256(xprv).digest()
+    #    hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+    #    ## Append 4 bytes of checksum
+    #    xprv += hashed_xprv[:4]
+    #    return base58.b58encode(xprv)
 
 
 
 
 
 
-#seed = "0000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000000000000000111"
-#seed = int(seed, 2)
-#print(seed)
-#
-#seed.to_bytes(byteorder="big") # convert to bytes
-
-#from secp256k1 import PrivateKey, PublicKey # https://pypi.org/project/secp256k1/
 #
 ## https://learnmeabitcoin.com/technical/mnemonic
 #mnemonic = "scrap marriage fitness violin squirrel donate end employ purse cargo earth soup"
@@ -118,16 +124,8 @@ class Mnemonic():
 #seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
 #
 ## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#test-vectors
-#seed = int("fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542", 16).to_bytes(length=64, byteorder="big")
-#print(type(seed))
-#master_prv = seed[0:32]
-#print(master_prv.hex())
-#master_pub = PrivateKey(privkey=master_prv, raw=True).pubkey.serialize(compressed=True) #master_pub = G * master_prv
 #
-#master_cc = seed[32:]
-##print(master_prv)
-##print(master_cc)
-#
+
 ###############################################################################################################
 ## BIP32 root key
 #
@@ -198,3 +196,4 @@ class Mnemonic():
 ##rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
 ##rdm = int.from_bytes(rdm, byteorder="big")
 ##print(rdm)
+
