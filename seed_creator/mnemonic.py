@@ -18,8 +18,9 @@ from typing import List #, AnyStr, TypeVar, Union
 # search for those address on the block-chain
 
 # note that this path will need to be modified slightly once it is called from within Flask framework.
-d = os.path.join(os.path.dirname(__file__), "wordlist_english.txt")
-with open(d, "r", encoding="utf-8") as f:
+#d = os.path.join(os.path.dirname(__file__), "wordlist_english.txt")
+#with open(d, "r", encoding="utf-8") as f:
+with open("wordlist_english.txt", "r", encoding="utf-8") as f:
     wordlist = [w.strip() for w in f.readlines()] # ['abandon', 'ability', ..., "zoo"]
 
 
@@ -102,59 +103,53 @@ import hashlib
 import unicodedata
 import base58
 import hmac
-foo = unicodedata.normalize("NFKD", "hello")
+
+# https://learnmeabitcoin.com/technical/mnemonic
+mnemonic = "scrap marriage fitness violin squirrel donate end employ purse cargo earth soup"
+foo = unicodedata.normalize("NFKD", mnemonic)
 mnemonic_bytes = foo.encode("utf-8")
+
 passphrase_bytes = "mnemonic".encode("utf-8")
 
-stretched = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
-stretched = stretched[:64]
-seed = hmac.new(b"Bitcoin seed", stretched, digestmod=hashlib.sha512).digest()
-
-xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet
-xprv += b"\x00" * 9  # Depth, parent fingerprint, and child number
-xprv += seed[32:]  # Chain code
-xprv += b"\x00" + seed[:32]  # Master key
+seed = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
+seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
+print(seed)
+master_prv = seed[0:32]
+#master_pub = G * master_prv
+master_cc = seed[32:]
+print(master_prv)
+print(master_cc)
+xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
+xpub = b"\x04\x88\xb2\x1e"  # Version for private mainnet (4bytes)
+xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
+xpub += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
+xprv += master_cc
+xpub += master_cc
+xprv += b"\x00" + master_prv  # add \x00 so prv will be same length as pub
+#xpub += master_pub 
 # Double hash using SHA256
 hashed_xprv = hashlib.sha256(xprv).digest()
 hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+#hashed_xpub = hashlib.sha256(xpub).digest()
+#hashed_xpub = hashlib.sha256(hashed_xpub).digest()
 
 # Append 4 bytes of checksum
 xprv += hashed_xprv[:4]
-print(xprv)
-
+xpub += hashed_xpub[:4]
 print(base58.b58encode(xprv))
+#print(base58.b58encode(xpub))
+
+#seed = '67f93560761e20617de26e0cb84f7234aaf373ed2e66295c3d7397e6d7ebe882ea396d5d293808b0defd7edd2babd4c091ad942e6a9351e6d075a29d4df872af'
+#seed = int(seed, 16).to_bytes(64, byteorder="big")
+#print(seed)
+# Compute HMAC-SHA512 of seed
+#seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).hexdigest()
 
 
 
-# adapted from https://tinyurl.com/trmn172
-#def to_mnemonic(self, data: bytes) -> str:
-def to_mnemonic(data: bytes) -> str:
-        if len(data) not in [16, 20, 24, 28, 32]:
-            raise ValueError(
-                f"Data length should be one of the following: [16, 20, 24, 28, 32], but it is not {len(data)}."
-            )
-        h = hashlib.sha256(data).hexdigest()
-        b = (
-            bin(int.from_bytes(data, byteorder="big"))[2:].zfill(len(data) * 8)
-            + bin(int(h, 16))[2:].zfill(256)[: len(data) * 8 // 32]
-        )
-        result = []
-        for i in range(len(b) // 11):
-            idx = int(b[i * 11 : (i + 1) * 11], 2)
-            #result.append(self.wordlist[idx])
-            result.append(wordlist[idx])
-        #return self.delimiter.join(result)
-        return " ".join(result)
-
-print(to_mnemonic(data=h))
 
 
-# note that I will go through a for-loop for that first 7 bits of entropy encoded in the final mnemonic word.
-# For each of these iterations, I will find the correponding final mnemonic word. I need to figure out why
-# I am not getting the appropriate checksum when hashing though. See my comment on this Stack Exchange question:
-# https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
-# once I figure that out, I should be able to code everything up.
-# * on second thought, I should probably just keep a copy in memory of each of the possible first-7 bits upon instantiation of the class. 
+
 
 
 #print(base58.b58encode(b'hello world'))
@@ -162,8 +157,6 @@ print(to_mnemonic(data=h))
 #print(base58.b58encode_check(b'hello world'))
 
 
-#random_bits = (n_mnemonic * 11) - x*4
-#Return a random byte string containing nbytes number of bytes. If nbytes is None or not supplied, a reasonable default is used.
 #rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
 #rdm = int.from_bytes(rdm, byteorder="big")
 #print(rdm)
