@@ -107,7 +107,8 @@ passphrase_bytes = "mnemonic".encode("utf-8")
 seed = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
 seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
 
-seed = int("b8412034956c622deecae16505158e25dc99514535fea1fb6ef0c5f2f707535c1be6f18b550efe5734e91bb7b651079d6b7808e2bc12be3dcb56a5817bc4f9da", 16).to_bytes(length=64, byteorder="big")
+# https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#test-vectors
+seed = int("fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542", 16).to_bytes(length=64, byteorder="big")
 print(type(seed))
 master_prv = seed[0:32]
 print(master_prv.hex())
@@ -121,24 +122,24 @@ master_cc = seed[32:]
 # BIP32 root key
 
 xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
-#xpub = b"\x04\x88\xb2\x1e"  # Version for private mainnet (4bytes)
+xpub = b"\x04\x88\xb2\x1e"  # Version for private mainnet (4bytes)
 xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
-#xpub += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
+xpub += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
 xprv += master_cc
-#xpub += master_cc
+xpub += master_cc
 xprv += b"\x00" + master_prv  # add \x00 so prv will be same length as pub
-#xpub += master_pub 
+xpub += master_pub 
 # Double hash using SHA256
 hashed_xprv = hashlib.sha256(xprv).digest()
 hashed_xprv = hashlib.sha256(hashed_xprv).digest()
-#hashed_xpub = hashlib.sha256(xpub).digest()
-#hashed_xpub = hashlib.sha256(hashed_xpub).digest()
+hashed_xpub = hashlib.sha256(xpub).digest()
+hashed_xpub = hashlib.sha256(hashed_xpub).digest()
 
 # Append 4 bytes of checksum
 xprv += hashed_xprv[:4]
-#xpub += hashed_xpub[:4]
+xpub += hashed_xpub[:4]
 print(base58.b58encode(xprv))
-#print(base58.b58encode(xpub))
+print(base58.b58encode(xpub))
 
 
 
