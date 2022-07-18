@@ -41,13 +41,21 @@ def logout():
 @app.route("/<repeat_word>")
 def create_repeat_mnemonic(repeat_word):
     mn = Mnemonic()
-    mn = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=12)
-    mn = mn[1]
-    #mn = " ".join(mn)
-    return mn
+    mn_single = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=12)[0]
+    seed = mn.to_bip39seed(mn_single)
+    master_prvkey = mn.master_prv(seed)
+    master_cc = mn.master_chain(seed)
+    root_xprv = mn.to_xprv(master_prvkey, master_cc).decode("utf-8")
+    pub, pubc = mn.to_public(master_prvkey)
 
-    #print(type(mn))
-    #return type(mn)
-    #return mn
+    message = f"<p><b>Mnemonic</b>: {mn_single}</p>"
+    message += f"<p><b>BIP39 Seed</b>: {seed.hex()}</p>"
+    message += f"<p><b>Master Private Key</b>: {master_prvkey.hex()}</p>"
+    message += f"<p><b>Master Public Key</b>: {pub.hex()}</p>"
+    message += f"<p><b>Master Public Key compressed</b>: {pubc.hex()}</p>"
+    message += f"<p><b>Master Chain Code</b>: {master_cc.hex()}</p>"
+    message += f"<p><b>BIP32 Root Key</b>: {root_xprv}</p>"
+
+    return message
 
 
