@@ -5,7 +5,7 @@ import itertools
 import os
 import secrets
 import unicodedata
-#from typing import List , AnyStr, TypeVar, Union
+from secp256k1 import PrivateKey, PublicKey # https://pypi.org/project/secp256k1/
 
 
 class Mnemonic():
@@ -58,42 +58,53 @@ class Mnemonic():
             possible_mnemonics.append(sentence)
         return possible_mnemonics
 
+    def to_bip39seed(self, mnemonic:str, passphrase="mnemonic") -> bytes:
+        norm = unicodedata.normalize("NFKD", mnemonic)
+        mnemonic_bytes = norm.encode("utf-8")
+        passphrase_bytes = passphrase.encode("utf-8")
+        seed = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
+        return seed
+
+    # https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#master-key-generation
+    def master_prv(self, bip39seed: bytes) -> bytes:
+        seed = hmac.new(b"Bitcoin seed", bip39seed, digestmod=hashlib.sha512).digest()
+        prv = seed[0:32]
+        return prv
+
+    def master_chain(self, seed: bytes) -> bytes:
+        cc = seed[32:]
+        return cc
+
+    def to_public(self, privkey: bytes) -> bytes:
+        prv = PrivateKey(privkey=privkey, raw=True)
+        pub = prv.pubkey.serialize(compressed=False) # prv * G
+        pubc = prv.pubkey.serialize(compressed=True) # prv * G  # just the x-coord prefixed with 02 or 03 - if y-coord is even or odd (think finite fields). also see explaination here: https://bitcoin.stackexchange.com/questions/41662/on-public-keys-compression-why-an-even-or-odd-y-coordinate-corresponds-to-the-p
+
+        return pub, pubc
+
+    def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
+        xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
+        xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
+        xprv += cc
+        xprv += b"\x00" + prv  # add \x00 so prv will be same length as pub
+        ## Double hash using SHA256
+        hashed_xprv = hashlib.sha256(xprv).digest()
+        hashed_xprv = hashlib.sha256(hashed_xprv).digest()
+        ## Append 4 bytes of checksum
+        xprv += hashed_xprv[:4]
+        return base58.b58encode(xprv)
 
 
-#a = Mnemonic()
-#print(a.wordlist)
-#print(a.to_mnemonic(repeat_word="arrow", mnemonic_size=12))
-#
-#
-#
-#
+
+
+
+
 #seed = "0000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000011001010000110010100001100101000000000000000111"
 #seed = int(seed, 2)
 #print(seed)
 #
 #seed.to_bytes(byteorder="big") # convert to bytes
-#
-#
-#def normalize_string(txt: AnyStr) -> str:
-#    if isinstance(txt, bytes):
-#        utxt = txt.decode("utf8")
-#    elif isinstance(txt, str):
-#        utxt = txt
-#    else:
-#        raise TypeError("String value expected")
-#
-#    return unicodedata.normalize("NFKD", utxt)
-#
-#
-#
-##https://docs.python.org/3/library/unicodedata.html
-## Return the normal form form for the Unicode string unistr. Valid values for form are ‘NFC’, ‘NFKC’, ‘NFD’, and ‘NFKD’.
-## Two seemingly matching characters that don’t match.
-##The answer  is Unicode normalization
-#import hashlib
-#import unicodedata
-#import base58
-#import hmac
+
 #from secp256k1 import PrivateKey, PublicKey # https://pypi.org/project/secp256k1/
 #
 ## https://learnmeabitcoin.com/technical/mnemonic
