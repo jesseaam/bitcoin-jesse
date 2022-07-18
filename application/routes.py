@@ -3,6 +3,8 @@ from flask import Flask, render_template, url_for, request, session, flash, redi
 import requests
 import json
 from seed_creator.mnemonic import Mnemonic
+from bip32 import BIP32 # https://github.com/darosior/python-bip32
+
 
 # add an api
 # add blueprints
@@ -45,7 +47,11 @@ def create_repeat_mnemonic(repeat_word):
     seed = mn.to_bip39seed(mn_single)
     master_prvkey = mn.master_prv(seed)
     master_cc = mn.master_chain(seed)
-    root_xprv = mn.to_xprv(master_prvkey, master_cc).decode("utf-8")
+
+
+    bip32 = BIP32.from_seed(seed)
+    root_xprv = bip32.get_xpriv_from_path("m")
+    root_xpub = bip32.get_xpub_from_path("m")
     pub, pubc = mn.to_public(master_prvkey)
 
     message = f"<p><b>Mnemonic</b>: {mn_single}</p>"
@@ -55,6 +61,20 @@ def create_repeat_mnemonic(repeat_word):
     message += f"<p><b>Master Public Key compressed</b>: {pubc.hex()}</p>"
     message += f"<p><b>Master Chain Code</b>: {master_cc.hex()}</p>"
     message += f"<p><b>BIP32 Root Key</b>: {root_xprv}</p>"
+
+    # BIP 44: m / purpose' / coin_type' / account' / change / address_index
+    bip44_prv = bip32.get_xpriv_from_path("m/44'/0'/0'/0")
+    bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
+    message += f"<p><b>Extended Private Key(m/44'/0'/0'/0)</b>: {bip44_prv}</p>"
+    message += f"<p><b>Extended Public Key(m/44'/0'/0'/0)</b>: {bip44_pub}</p>"
+
+    pubkey = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0")
+    message += f"<p><b>Public Key(m/44'/0'/0'/0/0)</b>: {pubkey.hex()}</p>"
+    addr = mn.to_address(pubkey).decode("ascii")
+    message += f"<p><b>Address(m/44'/0'/0'/0/0)</b>: {addr}</p>"
+    pubkey = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1")
+    addr = mn.to_address(pubkey).decode("ascii")
+    message += f"<p><b>Address(m/44'/0'/0'/0/1)</b>: {addr}</p>"
 
     return message
 
