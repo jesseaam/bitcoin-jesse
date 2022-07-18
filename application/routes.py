@@ -2,6 +2,7 @@ from application import app
 from flask import Flask, render_template, url_for, request, session, flash, redirect
 import requests
 import json
+from seed_creator.mnemonic import Mnemonic
 
 # add an api
 # add blueprints
@@ -36,3 +37,17 @@ def login():
 def logout():
     session.pop("user", None)
     return redirect(url_for('index'))
+
+@app.route("/<repeat_word>")
+def create_repeat_mnemonic(repeat_word):
+    mn = Mnemonic()
+    mn = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=12)
+    mn = mn[1]
+    #mn = " ".join(mn)
+    return mn
+
+    #print(type(mn))
+    #return type(mn)
+    #return mn
+
+
