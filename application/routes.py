@@ -80,6 +80,10 @@ def create_repeat_mnemonic(repeat_word):
     addr = mn.to_address(pubkey).decode("ascii")
     message += f"<p><b>Address(m/44'/0'/0'/0/1)</b>: {addr}</p>"
 
+    #return message
     return render_template("mnemonic.html", mn_single=mn_single, mn_all=mn_all, tot=tot)
 
 
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
