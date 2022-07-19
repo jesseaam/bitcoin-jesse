@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+<head>
+    {% block title %}mnemonic{% endblock %}
+
+</head>
+
+<body>
+    {% block content %}
+
+        {% set list1 = mn_single.split(" ") %}
+        <h1 style="color:green">Mnemonic sentence that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1>
+        <h2> {{mn_single}} </h2>
+
+        <br>
+        <details>
+            <summary>{{tot -1}} other mnemonic words that work.</summary>
+
+            <p style="background-color: orange;">
+                Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
+
+            <marquee behavior="scroll" direction="left"
+           onmouseover="this.setAttribute('scrollamount', 3, 0);"
+           onmouseout="this.setAttribute('scrollamount', 15, 0);">{{mn_all}}</marquee>
+        </details>
+
+
+
+    {% endblock %}
+
+</body>
