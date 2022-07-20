@@ -81,7 +81,6 @@ def create_repeat_mnemonic(repeat_word):
     message += f"<p><b>Address(m/44'/0'/0'/0/1)</b>: {addr1}</p>"
 
 
-    #return message
     return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, message=message, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey=pubkey.hex(), addr0=addr0, addr1=addr1)
 
 
@@ -93,3 +92,9 @@ def resources():
 @app.route("/whitepaper")
 def whitepaper():
     return redirect("https://bitcoin.org/bitcoin.pdf")
+
+
+@app.route("/test")
+def testpage():
+    codewords = Mnemonic().wordlist
+    return render_template("test_enter_word.html", codewords=codewords)
