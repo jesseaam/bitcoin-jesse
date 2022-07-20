@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}test{% endblock %}
+
+{% block content %}
+
+    <h1 align="center">Hello ₿ World!</h1>
+
+    <br><br>
+
+    <p>Choose a mnemonic code word from the following selection.</p>
+    <select name="Select-Repeat" size="1" id="mn">
+        <option value="">- Please select a mnemonic codeword -</option>
+        {% for word in codewords %}
+            <option value"{{word}}">{{word}}</option>
+        {% endfor %}
+    </select>
+
+    <br> <br>
+
+    <p>Next choose how many bits of entropy to include in the mnemonic.</p>
+    <select name="Select-Size" size="1" id="size">
+        <option value="">- Please select a size -</option>
+        <option value="12"> 12 words (128 bits of entropy) </option>
+        <option value="15"> 15 words (160 bits of entropy) </option>
+        <option value="18"> 18 words (192 bits of entropy) </option>
+        <option value="21"> 21 words (224 bits of entropy) </option>
+        <option value="24"> 24 words (256 bits of entropy) </option>
+    </select>
+
+{% endblock %}
+
+{% block footer %}
+    <span style="color:red">WARNING</span><br>
+    This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the perferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
+{% endblock %}
