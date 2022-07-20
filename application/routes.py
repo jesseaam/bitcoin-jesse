@@ -82,3 +82,8 @@ def whitepaper():
 def testpage():
     codewords = Mnemonic().wordlist
     return render_template("test_enter_word.html", codewords=codewords)
+
+
+@app.route("/verify-transaction")
+def verify_transaction():
+    return render_template("verify_transaction.html")
