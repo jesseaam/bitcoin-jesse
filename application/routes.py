@@ -88,3 +88,7 @@ def create_repeat_mnemonic(repeat_word):
 @app.route("/resources")
 def resources():
     return render_template("resources.html")
+
+@app.route("/whitepaper")
+def whitepaper():
+    return redirect("https://bitcoin.org/bitcoin.pdf")
