@@ -196,4 +196,3 @@ class Mnemonic():
 ##rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
 ##rdm = int.from_bytes(rdm, byteorder="big")
 ##print(rdm)
-
