@@ -27,6 +27,7 @@ def index():
         return render_template("index.html", height=height, price=current_price, sats=sats, user=user, message=message)
     return render_template("index.html", height=height, price=current_price, sats=sats)
 
+
 @app.route("/login/", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
@@ -35,10 +36,12 @@ def login():
         return redirect(url_for("index"))
     return render_template("login.html")
 
+
 @app.route("/logout")
 def logout():
     session.pop("user", None)
     return redirect(url_for('index'))
+
 
 @app.route("/<repeat_word>")
 def create_repeat_mnemonic(repeat_word):
@@ -51,37 +54,18 @@ def create_repeat_mnemonic(repeat_word):
     seed = mn.to_bip39seed(mn_single)
     master_prvkey = mn.master_prv(seed)
     master_cc = mn.master_chain(seed)
-
-
     bip32 = BIP32.from_seed(seed)
     root_xprv = bip32.get_xpriv_from_path("m")
     root_xpub = bip32.get_xpub_from_path("m")
     pub, pubc = mn.to_public(master_prvkey)
 
-    message = f"<p><b>Mnemonic</b>: {mn_single}</p>"
-    message += f"<p><b>BIP39 Seed</b>: {seed.hex()}</p>"
-    message += f"<p><b>Master Private Key</b>: {master_prvkey.hex()}</p>"
-    message += f"<p><b>Master Public Key</b>: {pub.hex()}</p>"
-    message += f"<p><b>Master Public Key compressed</b>: {pubc.hex()}</p>"
-    message += f"<p><b>Master Chain Code</b>: {master_cc.hex()}</p>"
-    message += f"<p><b>BIP32 Root Key</b>: {root_xprv}</p>"
-
     # BIP 44: m / purpose' / coin_type' / account' / change / address_index
     bip44_prv = bip32.get_xpriv_from_path("m/44'/0'/0'/0")
     bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
-    message += f"<p><b>Extended Private Key(m/44'/0'/0'/0)</b>: {bip44_prv}</p>"
-    message += f"<p><b>Extended Public Key(m/44'/0'/0'/0)</b>: {bip44_pub}</p>"
+    pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
+    pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
 
-    pubkey = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0")
-    message += f"<p><b>Public Key(m/44'/0'/0'/0/0)</b>: {pubkey.hex()}</p>"
-    addr0 = mn.to_address(pubkey).decode("ascii")
-    message += f"<p><b>Address(m/44'/0'/0'/0/0)</b>: {addr0}</p>"
-    pubkey = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1")
-    addr1 = mn.to_address(pubkey).decode("ascii")
-    message += f"<p><b>Address(m/44'/0'/0'/0/1)</b>: {addr1}</p>"
-
-
-    return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, message=message, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey=pubkey.hex(), addr0=addr0, addr1=addr1)
+    return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey0=pubkey0.hex(), pubkey1=pubkey1.hex(), addr0=addr0, addr1=addr1)
 
 
 @app.route("/resources")
