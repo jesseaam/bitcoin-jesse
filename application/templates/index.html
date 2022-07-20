@@ -3,6 +3,11 @@
 <head>
     {% block title %}home{% endblock %}
 
+    <style>
+        h1 {text-align: center;}
+        h2 {text-align: center;}
+        p {text-align: center;}
+    </style>
 </head>
 
 <body>
@@ -21,10 +26,10 @@
                 {% endif %}
             {% endwith %}
         {% else %}
-            <h1>Hello ₿ World!</h1>
+            <h1 align="center">Hello ₿ World!</h1>
         {% endif %}
             <br>
-            <div style="background-color: orange;">
+            <div style="background-color: orange;" align="center">
                 <p>Current block height: {{ height }}</p>
                 <p>Bitcoin price: ${{ price }}</p>
                 <p>1$ per {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i> </p>
