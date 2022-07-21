@@ -10,9 +10,7 @@
 
     <p>Choose a mnemonic code word from the following selection.</p>
 
-    <!--
-    -->
-    <form method="POST" action=" {{ url_for('test2') }} ">
+    <form method="POST" action=" {{ url_for('create_repeat_mnemonic') }} ">
         <select name="Select-Repeat" size="1" id="mn">
             <option value="">- Please select a mnemonic codeword -</option>
             {% for word in codewords %}

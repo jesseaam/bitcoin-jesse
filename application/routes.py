@@ -44,13 +44,14 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/<repeat_word>", methods=["POST", "GET"])
-def create_repeat_mnemonic(repeat_word, mnemonic_size=12):
+#@app.route("/<repeat_word>", methods=["POST", "GET"])
+@app.route("/repeat", methods=["POST", "GET"])
+def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     mn = Mnemonic()
 
-    #if request.method == "POST":
-    #    repeat_word = request.form.get("Select-Repeat")
-    #    mnemonic_size = request.form.get("Select-Size")
+    if request.method == "POST":
+        repeat_word = str(request.form.get("Select-Repeat"))
+        mnemonic_size = int(request.form.get("Select-Size"))
 
 
     mn_all = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
@@ -97,7 +98,8 @@ def verify_transaction():
 
 
 @app.route("/test2" , methods=["GET", "POST"])
-def test2():
+def test2(name="jesse"):
+    print(name)
     repeat_word = str(request.form.get("Select-Repeat"))
     mn_size = str(request.form.get("Select-Size"))
     message = f"<h2>{repeat_word}:{mn_size}<h2>"
