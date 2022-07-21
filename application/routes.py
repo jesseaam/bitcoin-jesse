@@ -1,3 +1,4 @@
+from timeit import repeat
 from application import app
 from flask import Flask, render_template, url_for, request, session, flash, redirect
 import requests
@@ -43,10 +44,16 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/<repeat_word>")
-def create_repeat_mnemonic(repeat_word):
+@app.route("/<repeat_word>", methods=["POST", "GET"])
+def create_repeat_mnemonic(repeat_word, mnemonic_size=12):
     mn = Mnemonic()
-    mn_all = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=12)
+
+    #if request.method == "POST":
+    #    repeat_word = request.form.get("Select-Repeat")
+    #    mnemonic_size = request.form.get("Select-Size")
+
+
+    mn_all = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
     tot = len(mn_all)
     mn_single = mn_all[0]
     mn_all = [x.split()[-1] for x in mn_all] # just pull last word
@@ -87,3 +94,11 @@ def testpage():
 @app.route("/verify-transaction")
 def verify_transaction():
     return render_template("verify_transaction.html")
+
+
+@app.route("/test2" , methods=["GET", "POST"])
+def test2():
+    repeat_word = str(request.form.get("Select-Repeat"))
+    mn_size = str(request.form.get("Select-Size"))
+    message = f"<h2>{repeat_word}:{mn_size}<h2>"
+    return message # just to see what select is
