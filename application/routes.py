@@ -73,7 +73,25 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
     pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
 
-    return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey0=pubkey0.hex(), pubkey1=pubkey1.hex(), addr0=addr0, addr1=addr1)
+
+    results = {"BIP39 Seed": seed.hex(),
+               "BIP32 Root Key:": root_xprv,
+               "Master Private Key": master_prvkey.hex(),
+               "Master Chain Code": master_cc.hex(),
+               "Master Public Key": pub.hex(),
+               "Master Public Key Compressed": pubc.hex(),
+               "Public Keys": {"m/44'/0'/0'/0/0": pubkey0.hex() ,
+                               "m/44'/0'/0'/0/1": pubkey1.hex()},
+               "Addresses":   {"m/44'/0'/0'/0/0": addr0,
+                               "m/44'/0'/0'/0/1": addr1}
+               }
+
+    print(results)
+    results = json.dumps(results, indent=2)
+    print(type(results))
+
+    return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
+    #return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey0=pubkey0.hex(), pubkey1=pubkey1.hex(), addr0=addr0, addr1=addr1, results=results)
 
 
 @app.route("/resources")
@@ -104,3 +122,8 @@ def test2(name="jesse"):
     mn_size = str(request.form.get("Select-Size"))
     message = f"<h2>{repeat_word}:{mn_size}<h2>"
     return message # just to see what select is
+
+
+@app.route("/verify-signature")
+def verify_signature():
+    return render_template("verify_signature.html")
