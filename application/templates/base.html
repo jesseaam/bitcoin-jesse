@@ -6,7 +6,6 @@
 
     <style>
         footer {
-          position:absolute; 
           bottom:0; 
           width:100%; 
           height:100px; 
@@ -35,18 +34,19 @@
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href=" {{ url_for('resources') }}">Resources</a>
+                <a class="nav-link active" aria-current="page" href=" {{ url_for('whitepaper') }}">White Paper</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href=" {{ url_for('whitepaper') }}">White Paper</a>
+                <a class="nav-link active" aria-current="page" href=" {{ url_for('resources') }}">Resources</a>
               </li>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown link
+                  Playground
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href=" {{ url_for('testpage') }}">Test</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('random') }} ">Psuedo-Random Mnemonic</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('repeat_seed') }}">Repeat Mnemonic</a></li>
                   <li><a class="dropdown-item" href=" {{ url_for('verify_transaction') }} ">Verify Transaction</a></li>
                   <li><a class="dropdown-item" href=" {{ url_for('verify_signature') }} ">Verify Signature</a></li>
                 </ul>
