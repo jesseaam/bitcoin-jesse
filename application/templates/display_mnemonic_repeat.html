@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}mnemonic{% endblock %}
+
+
+{% block content %}
+
+    {% set list1 = mn_single.split(" ") %}
+    <div align="center">
+        <h1 style="color:green">Mnemonic phrase that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1>
+        <h2 style="background-color: lightgreen"> {{mn_single}} </h2>
+    </div>
+
+    <br>
+
+    <pre>
+        <code>
+{{results}}
+        </code>
+    </pre>
+
+    <br>
+    <details>
+        <summary>{{tot -1}} other mnemonic words that work.</summary>
+
+        <p style="background-color: orange;">
+            Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
+
+        <marquee behavior="scroll" direction="left"
+        onmouseover="this.setAttribute('scrollamount', 3, 0);"
+        onmouseout="this.setAttribute('scrollamount', 15, 0);">{{mn_all}}</marquee>
+    </details>
+
+    <br> <br> <br> <br>
+{% endblock %}
+
+<br> <br>
+
+{% block footer %}
+    <footer>
+        <span style="color:red">WARNING</span><br>
+        This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
+    </footer>
+{% endblock %}
