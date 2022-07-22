@@ -90,8 +90,16 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     results = json.dumps(results, indent=2)
     print(type(results))
 
-    return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
-    #return render_template("mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, bip39seed=seed.hex(), mprv=master_prvkey.hex(), mpub=pub.hex(), mpubc=pubc.hex(), mcc=master_cc.hex(), bip32root=root_xprv, xprv=bip44_prv, xpub=bip44_pub, pubkey0=pubkey0.hex(), pubkey1=pubkey1.hex(), addr0=addr0, addr1=addr1, results=results)
+    return render_template("display_mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
+
+
+@app.route("/random", methods=["POST", "GET"])
+def random():
+    if request.method == "POST":
+        return "<p>Here is where the random mnemonic will be.</p>"
+
+
+    return render_template("random.html")
 
 
 @app.route("/resources")
@@ -104,24 +112,15 @@ def whitepaper():
     return redirect("https://bitcoin.org/bitcoin.pdf")
 
 
-@app.route("/test")
-def testpage():
+@app.route("/repeat-seed")
+def repeat_seed():
     codewords = Mnemonic().wordlist
-    return render_template("test_enter_word.html", codewords=codewords)
+    return render_template("repeat_seed.html", codewords=codewords)
 
 
 @app.route("/verify-transaction")
 def verify_transaction():
     return render_template("verify_transaction.html")
-
-
-@app.route("/test2" , methods=["GET", "POST"])
-def test2(name="jesse"):
-    print(name)
-    repeat_word = str(request.form.get("Select-Repeat"))
-    mn_size = str(request.form.get("Select-Size"))
-    message = f"<h2>{repeat_word}:{mn_size}<h2>"
-    return message # just to see what select is
 
 
 @app.route("/verify-signature")
