@@ -1,6 +1,6 @@
 from timeit import repeat
 from application import app
-from flask import Flask, render_template, url_for, request, session, flash, redirect
+from flask import Flask, jsonify, render_template, url_for, request, session, flash, redirect
 import requests
 import json
 from seed_creator.mnemonic import Mnemonic
@@ -96,7 +96,12 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
 @app.route("/random", methods=["POST", "GET"])
 def random():
     if request.method == "POST":
-        return "<p>Here is where the random mnemonic will be.</p>"
+        a = Mnemonic()
+        ms = request.form.get("Select-Size")
+        mn = a.generate_random(mnemonic_size= 12)
+
+        return jsonify(mn)
+        #return "<p>Here is where the random mnemonic will be.</p>"
 
 
     return render_template("random.html")
