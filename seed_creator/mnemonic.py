@@ -28,9 +28,30 @@ class Mnemonic():
         return free_list
 
 
+    def generate_random(self, mnemonic_size: int) -> str:
+
+        edic = {12: 128, 15:160, 18:192, 21:224, 24:256} # number of bits of entropy given the number of mnemonic code words (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+        ent = edic[mnemonic_size]
+        rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
+        cs_size =  edic[mnemonic_size] // 32 # checksum
+        h = hashlib.sha256(rdm).hexdigest() #https://bitcoin.stackexchange.com/questions/69957/bip39-manual-phrase-calculations-how-are-multiple-checksums-valid
+        cs = bin(int(h, 16))[2:].zfill(256)[: cs_size]
+        rdm = int.from_bytes(rdm, byteorder="big")
+        rdm = f"{rdm:b}".zfill(ent) # convert int to binary string
+        combined = rdm + cs
+
+        out_mnemonic = []
+        for i in range(mnemonic_size):
+            ndx = combined[i*11:(i+1)*11]
+            ndx = int(ndx, 2)
+            out_mnemonic.append(self.wordlist[ndx])
+
+        return " ".join(out_mnemonic)
+
+
     def to_mnemonic(self, repeat_word: str, mnemonic_size: int) -> list:
         """
-        Given a word to repeat in the mnemonic sentence and the number of words in the entire mneminc sentence, return what the last word (and entire mnemonic sentence) should be to make the checksum valid.
+        Given a word to repeat in the mnemonic sentence and the number of words in the entire mneminc sentence, return what the last word (and entire mnemonic sentence) should be to generate the checksum valid.
         """
         edic = {12: 128, 15:160, 18:192, 21:224, 24:256} # number of bits of entropy given the number of mnemonic code words (see https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
         cs_size =  edic[mnemonic_size] // 32 # checksum
@@ -94,6 +115,14 @@ class Mnemonic():
         addr += cs
         addr = base58.b58encode(addr)
         return addr
+
+
+
+a = Mnemonic()
+print(a.generate_random(mnemonic_size= 12))
+
+
+
 
     #def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
     #    xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
@@ -193,6 +222,3 @@ class Mnemonic():
 ##print(base58.b58encode_check(b'hello world'))
 #
 #
-##rdm = secrets.token_bytes(nbytes=(ent // 8)) # ent is in bits
-##rdm = int.from_bytes(rdm, byteorder="big")
-##print(rdm)
