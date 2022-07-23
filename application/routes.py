@@ -97,8 +97,8 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
 def random():
     if request.method == "POST":
         a = Mnemonic()
-        ms = request.form.get("Select-Size")
-        mn = a.generate_random(mnemonic_size= 12)
+        ms = int(request.form.get("Select-Size"))
+        mn = a.generate_random(mnemonic_size=ms)
 
         return jsonify(mn)
         #return "<p>Here is where the random mnemonic will be.</p>"
