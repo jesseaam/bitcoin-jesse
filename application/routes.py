@@ -47,14 +47,17 @@ def logout():
 #@app.route("/<repeat_word>", methods=["POST", "GET"])
 @app.route("/repeat", methods=["POST", "GET"])
 def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
+
+    if request.method == "GET":
+        return redirect(url_for("repeat_seed"))
+
     mn = Mnemonic()
 
     if request.method == "POST":
         repeat_word = str(request.form.get("Select-Repeat"))
         mnemonic_size = int(request.form.get("Select-Size"))
 
-
-    mn_all = mn.to_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
+    mn_all = mn.repeat_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
     tot = len(mn_all)
     mn_single = mn_all[0]
     mn_all = [x.split()[-1] for x in mn_all] # just pull last word
