@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}mnemonic{% endblock %}
+
+
+{% block content %}
+
+    <div align="center">
+        <h1 style="color:green">Psuedorandom Mnemonic phrase:</h1>
+        <h2 style="background-color: lightgreen"> {{phrase}} </h2>
+    </div>
+
+    <br>
+
+    <pre>
+        <code>
+{{results}}
+        </code>
+    </pre>
+
+    <br>
+
+{% endblock %}
+
+<br> <br>
+
+{% block footer %}
+    <footer style="position: absolute;">
+        <span style="color:red">WARNING</span><br>
+        This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
+    </footer>
+{% endblock %}

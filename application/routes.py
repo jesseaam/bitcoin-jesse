@@ -99,15 +99,45 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
 @app.route("/random", methods=["POST", "GET"])
 def random():
     if request.method == "POST":
-        a = Mnemonic()
+        mn = Mnemonic()
         ms = int(request.form.get("Select-Size"))
-        mn = a.generate_random(mnemonic_size=ms)
+        phrase = mn.generate_random(mnemonic_size=ms)
+        seed = mn.to_bip39seed(phrase)
 
-        return jsonify(mn)
+        master_prvkey = mn.master_prv(seed)
+        master_cc = mn.master_chain(seed)
+        bip32 = BIP32.from_seed(seed)
+        root_xprv = bip32.get_xpriv_from_path("m")
+        root_xpub = bip32.get_xpub_from_path("m")
+        pub, pubc = mn.to_public(master_prvkey)
+
+        # BIP 44: m / purpose' / coin_type' / account' / change / address_index
+        bip44_prv = bip32.get_xpriv_from_path("m/44'/0'/0'/0")
+        bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
+        pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
+        pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
+
+
+        results = {"Mnemonic": phrase,
+                   "BIP39 Seed": seed.hex(),
+                   "BIP32 Root Key:": root_xprv,
+                   "Master Private Key": master_prvkey.hex(),
+                   "Master Chain Code": master_cc.hex(),
+                   "Master Public Key": pub.hex(),
+                   "Master Public Key Compressed": pubc.hex(),
+                   "Public Keys": {"m/44'/0'/0'/0/0": pubkey0.hex() ,
+                                   "m/44'/0'/0'/0/1": pubkey1.hex()},
+                   "Addresses":   {"m/44'/0'/0'/0/0": addr0,
+                                   "m/44'/0'/0'/0/1": addr1}
+                   }
+
+        results = json.dumps(results, indent=2)
+        return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
         #return "<p>Here is where the random mnemonic will be.</p>"
 
 
-    return render_template("random.html")
+    else:
+        return render_template("random.html")
 
 
 @app.route("/resources")
