@@ -49,7 +49,7 @@ class Mnemonic():
         return " ".join(out_mnemonic)
 
 
-    def to_mnemonic(self, repeat_word: str, mnemonic_size: int) -> list:
+    def repeat_mnemonic(self, repeat_word: str, mnemonic_size: int) -> list:
         """
         Given a word to repeat in the mnemonic sentence and the number of words in the entire mneminc sentence, return what the last word (and entire mnemonic sentence) should be to generate the checksum valid.
         """
@@ -116,14 +116,6 @@ class Mnemonic():
         addr = base58.b58encode(addr)
         return addr
 
-
-
-a = Mnemonic()
-print(a.generate_random(mnemonic_size= 12))
-
-
-
-
     #def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
     #    xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
     #    xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
@@ -135,90 +127,3 @@ print(a.generate_random(mnemonic_size= 12))
     #    ## Append 4 bytes of checksum
     #    xprv += hashed_xprv[:4]
     #    return base58.b58encode(xprv)
-
-
-
-
-
-
-#
-## https://learnmeabitcoin.com/technical/mnemonic
-#mnemonic = "scrap marriage fitness violin squirrel donate end employ purse cargo earth soup"
-#foo = unicodedata.normalize("NFKD", mnemonic)
-#mnemonic_bytes = foo.encode("utf-8")
-#
-#passphrase_bytes = "mnemonic".encode("utf-8")
-#
-#seed = hashlib.pbkdf2_hmac("sha512", mnemonic_bytes, passphrase_bytes, 2048)
-#seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).digest()
-#
-## https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#test-vectors
-#
-
-###############################################################################################################
-## BIP32 root key
-#
-#xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
-#xpub = b"\x04\x88\xb2\x1e"  # Version for private mainnet (4bytes)
-#xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
-#xpub += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
-#xprv += master_cc
-#xpub += master_cc
-#xprv += b"\x00" + master_prv  # add \x00 so prv will be same length as pub
-#xpub += master_pub 
-## Double hash using SHA256
-#hashed_xprv = hashlib.sha256(xprv).digest()
-#hashed_xprv = hashlib.sha256(hashed_xprv).digest()
-#hashed_xpub = hashlib.sha256(xpub).digest()
-#hashed_xpub = hashlib.sha256(hashed_xpub).digest()
-#
-## Append 4 bytes of checksum
-#xprv += hashed_xprv[:4]
-#xpub += hashed_xpub[:4]
-#print(base58.b58encode(xprv))
-#print(base58.b58encode(xpub))
-#
-#
-#
-#
-##def pubkey_to_address(pubkey: bytes) -> str:
-##    if 'ripemd160' not in hashlib.algorithms_available:
-##        raise RuntimeError('missing ripemd160 hash algorithm')
-##
-##    sha = hashlib.sha256(pubkey).digest()
-##    ripe = hashlib.new('ripemd160', sha).digest()
-#
-#
-##print(base58.b58encode(xpub))
-#
-##seed = '67f93560761e20617de26e0cb84f7234aaf373ed2e66295c3d7397e6d7ebe882ea396d5d293808b0defd7edd2babd4c091ad942e6a9351e6d075a29d4df872af'
-##seed = int(seed, 16).to_bytes(64, byteorder="big")
-##print(seed)
-## Compute HMAC-SHA512 of seed
-##seed = hmac.new(b"Bitcoin seed", seed, digestmod=hashlib.sha512).hexdigest()
-#
-#
-#
-#
-#
-#from secp256k1 import PrivateKey, PublicKey # https://pypi.org/project/secp256k1/
-#master = '463223aac10fb13f291a1bc76bc26003d98da661cb76df61e750c139826dea8b'
-#master = int(master, 16).to_bytes(length=32, byteorder="big")
-#print(master)
-##master_prv =  b'\x15|\xd6\x00U\xc6O\xb5h\x9e\xa4\x0e\xd8\xca\x00N1i\xdd\xea\xddX#2\x1d\xbdDhI\x1a\x07\xaa'
-#master_prv = master
-#prv = PrivateKey(privkey=master_prv, raw=True)
-#print(prv)
-#pub = prv.pubkey.serialize(compressed=False).hex() # prv * G
-#pub_c = prv.pubkey.serialize(compressed=True).hex() # just the x-coord prefixed with 02 or 03 - if y-coord is even or odd (think finite fields)
-## https://bitcoin.stackexchange.com/questions/41662/on-public-keys-compression-why-an-even-or-odd-y-coordinate-corresponds-to-the-p
-#print(pub, pub_c)
-#pub = prv.pubkey()
-#
-#
-#
-##print(base58.b58encode(b'hello world'))
-##print(base58.b58decode(b'StV1DL6CwTryKyV'))
-##print(base58.b58encode_check(b'hello world'))
-#
-#
