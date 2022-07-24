@@ -8,7 +8,7 @@
 
 <pre>
     <code>
-        # python3
+        # Python
         import hashlib
         from ecdsa import VerifyingKey, SECP256k1
 
@@ -44,7 +44,9 @@
     </code>
 </pre>
 
-# Note about why R is 33 bytes and S is 32. Initial bytes 0x00 are generally not allowed in R and S. They will both have 32 bytes except if the leading byte > 0x7F. If this is the case, then 0x00 is prepended on that number. The reason is that DER encoding is a subset of Basic Encoding Rules (BER http://luca.ntop.org/Teaching/Appunti/asn1.html) and BER says that if the first byte > 0x7F then it is a negative number. openSSL knows that signatures are not negative (think finite field here) so instead of just ignoring this rule and viewing it as a positive number, and thus breaking the encoding rules, we just prepend 0x00 so that all is well. This explanation was inspired by Peter Wuille (on this post https://bitcoin.stackexchange.com/questions/12554/why-the-signature-is-always-65-13232-bytes-long).
+<h2>Explanation</h2>
+
+So why is R 33 bytes and S is 32? Initial bytes 0x00 are generally not allowed in R and S. They will both have 32 bytes except if the leading byte > 0x7F. If this is the case, then 0x00 is prepended on that number. The reason is that DER encoding is a subset of Basic Encoding Rules (BER http://luca.ntop.org/Teaching/Appunti/asn1.html) and BER says that if the first byte > 0x7F then it is a negative number. openSSL knows that signatures are not negative (think finite field here) so instead of just ignoring this rule and viewing it as a positive number, and thus breaking the encoding rules, we just prepend 0x00 so that all is well. This explanation was inspired by Peter Wuille (on this post https://bitcoin.stackexchange.com/questions/12554/why-the-signature-is-always-65-13232-bytes-long).
 
 #Where initial 0x00 bytes for R and S are not allowed, except when their first byte would otherwise be above 0x7F (in which case a single 0x00 in front is required). Also note that inside transaction signatures, an extra hashtype byte follows the actual signature data.
 # also note that in a transaction the signature will have the sighash appended. Here it is not.
