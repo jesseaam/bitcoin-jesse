@@ -164,3 +164,7 @@ def verify_transaction():
 @app.route("/verify-signature")
 def verify_signature():
     return render_template("verify_signature.html")
+
+@app.route("/trans")
+def transaction_structure():
+    return render_template("transaction_structure.html")

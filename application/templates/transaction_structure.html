@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}transaction struction{% endblock %}
+
+{% block content %}
+
+<div style="width: 1000px">
+    <h1>Let's take a look at a real Bitcoin Transaction that was included in Block 376400</h1>
+
+    <p><a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</a></p>
+
+    <details>
+        <summary>Python code: retrieve tx</summary>
+        <pre>
+
+        <code>
+    # Python
+    import requests
+    import json
+
+    tx = requests.get("https://blockstream.info/api/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3")
+    tx = json.loads(tx.text)
+    print(json.dumps(tx, index=2))
+        </code>
+    </pre>
+
+
+    <pre>
+        <code>
+    {
+        "txid": "c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3",
+        "version": 1,
+        "locktime": 0,
+        "vin": [
+        {
+            "txid": "fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779",
+            "vout": 1,
+            "prevout": {
+            "scriptpubkey": "76a914824d8a679134215d6d21d25bde3cc63f89ec92eb88ac",
+            "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 824d8a679134215d6d21d25bde3cc63f89ec92eb OP_EQUALVERIFY OP_CHECKSIG",
+            "scriptpubkey_type": "p2pkh",
+            "scriptpubkey_address": "1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC",
+            "value": 2257563
+            },
+            "scriptsig": "47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
+            "scriptsig_asm": "OP_PUSHBYTES_71 304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a901 OP_PUSHBYTES_33 039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
+            "is_coinbase": false,
+            "sequence": 4294967295
+        }
+        ],
+        "vout": [
+        {
+            "scriptpubkey": "76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac",
+            "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 db4d1141d0048b1ed15839d0b7a4c488cd368b0e OP_EQUALVERIFY OP_CHECKSIG",
+            "scriptpubkey_type": "p2pkh",
+            "scriptpubkey_address": "1LzZJkQfz9ahY2SfetBHLcwyWmQRE9CwfU",
+            "value": 2207563
+        }
+        ],
+        "size": 191,
+        "weight": 764,
+        "fee": 50000,
+        "status": {
+        "confirmed": true,
+        "block_height": 376400,
+        "block_hash": "00000000000000000e96f7af493af0cb164e2989f5907b9e9f2c15f79e330afd",
+        "block_time": 1443369999
+        }
+    }
+        </code>
+    </pre>
+    </details>
+
+<hr>
+
+<br>
+
+
+<p>Transaction <code>c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</code> uses as input the output from transaction <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779</a>. Specifically, the 2nd output (zero-based indexing). This output was sent to address <a href="https://blockstream.info/address/1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC">1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC</a>. If you navigate to the URL provided for this address, notice how you can track the chain of events associated with this address (every transaction it was involved in).</p>
+
+
+<pr>There are many ways to convey the information in a transaction. Above we show the transaction in JSON format, which is fairly easy for humans to decipher. Good block explorers will make digesting the information even easier. Computers need a different form of presentation though. Transactions are broadcast to the Bitcoin network in a serialized format. The serialized format of the transaction above is:<br></pr>
+
+    <code>01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000</code>
+</div>
+
+<br><br>
+
+<div style="width: 1000px">
+    <p>Don't let this long string of characters scare you—it's literally a string guys. No teeth. It's also known as a serialized transaction. We are going to break it down piece by piece into its constituent components. Once that's done you will see just how simple it really is.</p> 
+
+    <p>Firstly, the main thing you need to remember is that a transaction is just a list of input and output. Every raw transaction The input are just a package of bitcoin that you want to send (and that you own), along with the unlocking script to prove you own them. The output are just the package of bitcoin going somewhere else with a lock placed on them. With that in mind lets, split that long string apart.</p>
+
+    <code>
+    <p><a style="color: blue;">01000000</a><a style="color:green">01</a><a style="color:purple">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a><a style="color:grey">01000000</a><a style="color:brown">6a</a><a style="color:darkkhaki">47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</a><a style="color:red">ffffffff</a><a style="color:lightblue">01</a><a style="color:lightseagreen">4baf210000000000</a><a style="color:magenta">19</a><a style="color:olivedrab">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a><a style="color: black">00000000</a></p>
+    </code>
+
+    <ol>
+        <li><a style="color: blue;">010000000</a>: Which version of transaction data structure we are using. Version 1, shown in 4 bytes, Little Endian.</li>
+        <li><a style="color:green">01</a>: The number of inputs.</li>
+        <li><a href="https://blockstream.info/tx/fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779" style="color: purple">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a>: txid of input (in reverse byte order. so txid=fc9e4f...) </li>
+        <li><a style="color: grey">01000000</a>: The index of the output you are referencing.</li>
+        <li><a style="color: brown">6a</a>: The length of script to follow (0x6a= 106 bytes).</li>
+        <li><a style="color:darkkhaki"><code>47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</code></a>: Unlocking script.</li>
+        <li><a style="color:red">ffffffff</a>: Sequence. Can be used for <a href="https://bitcoincore.org/en/faq/optin_rbf/">Opt-in RBF.</a></li>
+        <li><a style="color:lightblue">01</a>: Number of outputs.</li>
+        <li><a style="color:lightseagreen">4baf210000000000</a>: Value of output in Sats (lil-end).</li>
+        <li><a style="color: magenta">19</a>: Size of the locking script that directly follows. (0x19=25bytes)</li>
+        <li><a style="color: olivedrab">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a>: Locking script (aka ScriptPubKey) </li>
+            <details>
+                <summary><a style="color:olivedrab">This one is really cool!</a></summary>
+
+                <p>Put explanation here. See the hex encodes for each opcode. For example,</p> 
+                <ul>
+                <li>76=OP_DUP</li>
+                <li>a9=OP_HASH160</li>
+                <li>14=bytes to push</li>
+                <li>db4d1141d0048b1ed15839d0b7a4c488cd368b0e= data to push</li>
+                <li>88=OP_EQUALVERIFY</li>
+                <li>ac = OP_CHECKSIG</li>
+
+                </ul><br>
+
+                <p>https://en.bitcoin.it/wiki/Script</p>
+                another Example:<br>
+
+                <pre>
+                    <code>
+                76       A9             14
+                OP_DUP OP_HASH160    Bytes to push
+                
+                89 AB CD EF AB BA AB BA AB BA AB BA AB BA AB BA AB BA AB BA   88         AC
+                                      Data to push                     OP_EQUALVERIFY OP_CHECKSIG
+
+                    </code>
+                </pre>
+
+
+                http://royalforkblog.github.io/2014/11/20/txn-demo/
+
+                <br><br>
+            </details>
+        <li><a style="color:black">00000000</a>: time lock (block height or time at which you can spend the BTC. If 0 then no timelock)</li>
+    </ol>
+
+
+<br><br>
+
+<pre>
+    <code>
+import hashlib
+
+serial = "01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000"
+
+serial = bytes.fromhex(serial)
+hash1 = hashlib.sha256(serial).digest()
+hash2 = hashlib.sha256(hash1).hexdigest()
+print(hash2) # e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1
+    </code>
+</pre>
+
+<br>
+<p>Wait, but e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1 doesn't equal the transaction ID we start with: c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3. When in doubt, try Little-Endian!</p>
+
+<br>
+
+<details>
+    <summary>big-end to lil-end</summary>
+    <pre>
+        <code>
+big_end = "e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1"
+lil_end = "".join(reversed([big_end[i:i+2] for i in range(0, len(big_end), 2)]))
+print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
+        </code>
+    </pre>
+</details>
+
+</div>
+
+<br> <br> <br> <br>
+
+{% endblock %}
