@@ -165,6 +165,6 @@ def verify_transaction():
 def verify_signature():
     return render_template("verify_signature.html")
 
-@app.route("/trans")
-def transaction_structure():
+@app.route("/raw-tx")
+def raw_tx():
     return render_template("transaction_structure.html")
