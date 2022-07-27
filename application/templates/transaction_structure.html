@@ -6,6 +6,16 @@
         code {
             color: green;
         }
+
+        section {
+            margin: 20px 40px;
+            width: 1000px;
+        }
+
+        header {
+            margin: 20px 40px
+        }
+
     </style>
 
 {% endblock %}
@@ -16,11 +26,11 @@
         <h1>Raw Transactions</h1>
     </header>
 
-<section style="width: 1000px">
+<section>
 
     <p>A raw transaction (tx) is also known as a serialized tx. These are what allow you to send bitcoin and transact on the network. Once you learn the basic components of a raw tx, you will be able to send bitcoin even without a signing device. For example, you could construct a raw tx by hand and send it in an email or telegram and anybody that eventually receives it could transmit the tx for you. Raw Txs are really cool, and that's what we are going to breakdown today.
         
-    <p> Let's take a look at a real Bitcoin tx that was included in Block 376400 <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</a>. Expand the collapsed section below to view the python code to retrieve the tx information from an API. We display the tx in JSON format also to make viewing the individual components of the tx easier to see.</p><br>
+    <p> Let's take a look at a real Bitcoin tx that was included in Block 376400: <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</a>. Expand the collapsed section below to view the python code to retrieve the tx information from an API. We display the tx in JSON format also to make viewing the individual components of the tx easier to see.</p><br>
 
 
     <details>
@@ -205,6 +215,8 @@ print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e
         </code>
     </pre>
 </details>
+
+<hr>
 
 
     <br><br>
