@@ -9,10 +9,8 @@ from seed_creator.mnemonic import Mnemonic
 from bip32 import BIP32 # https://github.com/darosior/python-bip32
 import datetime
 
-
 # add an api
 # add blueprints
-
 
 
 @app.route("/")
@@ -52,20 +50,19 @@ def logout():
 #@app.route("/<repeat_word>", methods=["POST", "GET"])
 @app.route("/repeat", methods=["POST", "GET"])
 def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
-
     if request.method == "GET":
         return redirect(url_for("repeat_seed"))
-
-    mn = Mnemonic()
 
     if request.method == "POST":
         repeat_word = str(request.form.get("Select-Repeat"))
         mnemonic_size = int(request.form.get("Select-Size"))
 
+    mn = Mnemonic()
     mn_all = mn.repeat_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
     tot = len(mn_all)
     mn_single = mn_all[0]
     mn_all = [x.split()[-1] for x in mn_all] # just pull last word
+    mn_all = mn_all[1:] # all other possible mns (remove the 1 we're showcasing)
     mn_all = " ".join(mn_all)
     seed = mn.to_bip39seed(mn_single)
     master_prvkey = mn.master_prv(seed)
@@ -80,7 +77,6 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
     pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
     pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
-
 
     results = {"BIP39 Seed": seed.hex(),
                "BIP32 Root Key:": root_xprv,
@@ -104,8 +100,6 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     db_entry = Mnemonic_db(mnemonic=mn_single, addr0=addr0, datetime=now, funded=funded, summary=summary)
     db.session.add(db_entry)
     db.session.commit()
-
-
     return render_template("display_mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
 
 
@@ -132,7 +126,6 @@ def random(ms=12):
         pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
         pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
 
-
         results = {"Mnemonic": phrase,
                    "BIP39 Seed": seed.hex(),
                    "BIP32 Root Key:": root_xprv,
@@ -156,11 +149,7 @@ def random(ms=12):
         db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0,funded=funded,summary=summary,datetime=now)
         db.session.add(db_entry)
         db.session.commit()
-
-
         return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
-
-
     else:
         return render_template("random.html")
 
@@ -190,6 +179,7 @@ def verify_transaction():
 def verify_signature():
     return render_template("verify_signature.html")
 
+
 @app.route("/raw-tx")
 def raw_tx():
     return render_template("transaction_structure.html")
@@ -203,7 +193,6 @@ def db_test():
     return "<h1>hi</h1>"
 
 
-
 @app.route("/view-db")
 def view_db():
     all_mn = Mnemonic_db.query.all()
@@ -215,3 +204,12 @@ def delete_all():
     Mnemonic_db.query.delete()
     db.session.commit()
     return redirect(url_for("view_db"))
+
+
+#@app.route("/check-all")
+#def check_all():
+#    mn = Mnemonic()
+#    wlist = mn.wordlist[:100]
+#    for word in wlist:
+#        create_repeat_mnemonic(repeat_word=word, mnemonic_size=12)
+#    return redirect(url_for("view_db"))
