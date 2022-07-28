@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}view db{% endblock %}
+
+        tr {
+            border-bottom: 1px solid #ddd;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(150, 212, 212, 0.4);
+        }
+
+{% block morehead %} 
+    <style>
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            width: 1400px;
+        }
+
+        section {
+            margin: 20px 40px;
+            width: 1000px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <header>
+            <h1>All generated Mnemonics</h1>
+        </header>
+
+        <p>This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.</p><br>
+
+        <form action="{{ url_for('delete_all')}}">
+            <button style="color:red" type="submit">Clear Table</button>
+        </form>
+
+    </section>
+
+    <section>    
+        <table>
+            <tr>
+                <th>Mnemonic</th>
+                <th>Address: m/44'/0'/0'/0/0</th>
+                <th>Funded</th>
+                <th>Summary</th>
+                <th>Datetime</th>
+            </tr>
+
+            {% for i in db %}
+                <tr>
+                    <td>{{i.mnemonic}}</td> 
+                    <td>{{i.addr0}}</td> 
+                    {% if i.funded > 0 %}
+                        <td style="background-color:lightgreen">{{i.funded}}</td> 
+                    {% else %}
+                        <td >{{i.funded}}</td> 
+                    {% endif %}
+                    <td>{{i.summary}}</td> 
+                    <td>{{i.datetime}}</td> 
+                </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+
+{% endblock %}

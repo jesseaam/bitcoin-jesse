@@ -5,7 +5,10 @@ import itertools
 import os
 import secrets
 import unicodedata
+import requests
+import json
 from secp256k1 import PrivateKey, PublicKey # https://pypi.org/project/secp256k1/
+
 
 
 class Mnemonic():
@@ -115,6 +118,14 @@ class Mnemonic():
         addr += cs
         addr = base58.b58encode(addr)
         return addr
+
+    def summarize_addr(self, addr:str):
+        stats = requests.get(f"https://blockstream.info/api/address/{addr}").text
+        stats = json.loads(stats)
+        funded = stats["chain_stats"]["funded_txo_sum"]
+        spent = stats["chain_stats"]["spent_txo_sum"]
+        summary = int(funded) - int(spent)
+        return (funded, summary)
 
     #def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
     #    xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)

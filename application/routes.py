@@ -1,14 +1,19 @@
 from timeit import repeat
-from application import app
+from application import app, db
+from .models import Mnemonic_db
 from flask import Flask, jsonify, render_template, url_for, request, session, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 import requests
 import json
 from seed_creator.mnemonic import Mnemonic
 from bip32 import BIP32 # https://github.com/darosior/python-bip32
+import datetime
 
 
 # add an api
 # add blueprints
+
+
 
 @app.route("/")
 def index():
@@ -89,18 +94,28 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
                                "m/44'/0'/0'/0/1": addr1}
                }
 
-    print(results)
     results = json.dumps(results, indent=2)
-    print(type(results))
+
+    funded, summary = mn.summarize_addr(addr0)
+
+    now = datetime.datetime.now()
+    now = now.strftime("%Y-%m-%d %H:%M:%S")
+    # add results to db
+    db_entry = Mnemonic_db(mnemonic=mn_single, addr0=addr0, datetime=now, funded=funded, summary=summary)
+    db.session.add(db_entry)
+    db.session.commit()
+
 
     return render_template("display_mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
 
 
 @app.route("/random", methods=["POST", "GET"])
-def random():
+def random(ms=12):
     if request.method == "POST":
         mn = Mnemonic()
-        ms = int(request.form.get("Select-Size"))
+        if request.form.get("Select-Size"):
+            ms = int(request.form.get("Select-Size"))
+        
         phrase = mn.generate_random(mnemonic_size=ms)
         seed = mn.to_bip39seed(phrase)
 
@@ -132,8 +147,18 @@ def random():
                    }
 
         results = json.dumps(results, indent=2)
+
+        funded, summary = mn.summarize_addr(addr0)
+
+        now = datetime.datetime.now()
+        now = now.strftime("%Y-%m-%d %H:%M:%S")
+        # add results to db
+        db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0,funded=funded,summary=summary,datetime=now)
+        db.session.add(db_entry)
+        db.session.commit()
+
+
         return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
-        #return "<p>Here is where the random mnemonic will be.</p>"
 
 
     else:
@@ -168,3 +193,25 @@ def verify_signature():
 @app.route("/raw-tx")
 def raw_tx():
     return render_template("transaction_structure.html")
+
+
+@app.route("/db-test")
+def db_test():
+    mn_db = Mnemonic_db(21, "Jesse")
+    db.session.add(mn_db)
+    db.session.commit()
+    return "<h1>hi</h1>"
+
+
+
+@app.route("/view-db")
+def view_db():
+    all_mn = Mnemonic_db.query.all()
+    return render_template("view_db.html", db=all_mn)
+
+
+@app.route("/delete-all")
+def delete_all():
+    Mnemonic_db.query.delete()
+    db.session.commit()
+    return redirect(url_for("view_db"))
