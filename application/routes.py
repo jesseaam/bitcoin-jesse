@@ -1,17 +1,13 @@
 from flask import Flask, jsonify, render_template, url_for, request, session, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from application import app, db
-from .models import Mnemonic_db
-from .wallets import repeat_wallet, random_wallet
-from api.api import basic_api
-from seed_creator.mnemonic import Mnemonic
-from bip32 import BIP32 # https://github.com/darosior/python-bip32
 import requests, json, datetime
+from application import app, db
+from seed_creator.mnemonic import Mnemonic
+from .models import Mnemonic_db
+from .wallets import Wallet
+from api.api import basic_api
 
-#from timeit import repeat
 
-# add an api
-# add blueprints
 app.register_blueprint(basic_api, url_prefix="/api")
 
 
@@ -49,7 +45,6 @@ def logout():
     return redirect(url_for('index'))
 
 
-#@app.route("/repeat/<repeat_word>", methods=["POST", "GET"])
 @app.route("/repeat/", methods=["POST", "GET"])
 def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     if request.method == "GET":
@@ -60,7 +55,7 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
         mnemonic_size = int(request.form.get("Select-Size"))
 
     # Get the mnemonic phrase and multiple characteristics of it.
-    mn_all, phrase, tot, funded, summary, addr0, results = repeat_wallet(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
+    mn_all, phrase, tot, funded, summary, addr0, results = Wallet.repeat_wallet(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
 
     # Time at which the mnemonic was created. Populate this in db.
     now = datetime.datetime.now()
@@ -78,7 +73,7 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
 def random(ms=12):
     if request.form.get("Select-Size"):
         ms = int(request.form.get("Select-Size"))
-        phrase, funded, summary, addr0, results = random_wallet(mnemonic_size=ms)
+        phrase, funded, summary, addr0, results = Wallet.random_wallet(mnemonic_size=ms)
 
         now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0, funded=funded, summary=summary, datetime=now)
@@ -87,6 +82,15 @@ def random(ms=12):
         return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
     else:
         return render_template("random.html")
+
+@app.route("/brain-wallet", methods=["GET", "POST"])
+def brain_wallet():
+    """https://en.bitcoin.it/wiki/Brainwallet"""
+    if request.method == "POST":
+        return "Hi"
+    else:
+        return "Hello"
+
 
 
 @app.route("/resources")
