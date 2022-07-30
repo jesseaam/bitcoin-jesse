@@ -2,12 +2,12 @@ from flask import Flask, jsonify, render_template, url_for, request, session, fl
 from flask_sqlalchemy import SQLAlchemy
 from application import app, db
 from .models import Mnemonic_db
+from .wallets import repeat_wallet
 from api.api import basic_api
-import requests
-import json
 from seed_creator.mnemonic import Mnemonic
 from bip32 import BIP32 # https://github.com/darosior/python-bip32
-import datetime
+import requests, json, datetime
+
 #from timeit import repeat
 
 # add an api
@@ -54,55 +54,23 @@ def logout():
 def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     if request.method == "GET":
         return redirect(url_for("repeat_seed"))
-    #if repeat_word == None:
 
     if request.method == "POST":
         repeat_word = str(request.form.get("Select-Repeat"))
         mnemonic_size = int(request.form.get("Select-Size"))
 
-    mn = Mnemonic()
-    mn_all = mn.repeat_mnemonic(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
-    tot = len(mn_all)
-    mn_single = mn_all[0]
-    mn_all = [x.split()[-1] for x in mn_all] # just pull last word
-    mn_all = mn_all[1:] # all other possible mns (remove the 1 we're showcasing)
-    mn_all = " ".join(mn_all)
-    seed = mn.to_bip39seed(mn_single)
-    master_prvkey = mn.master_prv(seed)
-    master_cc = mn.master_chain(seed)
-    bip32 = BIP32.from_seed(seed)
-    root_xprv = bip32.get_xpriv_from_path("m")
-    root_xpub = bip32.get_xpub_from_path("m")
-    pub, pubc = mn.to_public(master_prvkey)
+    # Get the mnemonic phrase and multiple characteristics of it.
+    mn_all, mn_single, tot, funded, summary, addr0, results = repeat_wallet(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
 
-    # BIP 44: m / purpose' / coin_type' / account' / change / address_index
-    bip44_prv = bip32.get_xpriv_from_path("m/44'/0'/0'/0")
-    bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
-    pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
-    pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
-
-    results = {"BIP39 Seed": seed.hex(),
-               "BIP32 Root Key:": root_xprv,
-               "Master Private Key": master_prvkey.hex(),
-               "Master Chain Code": master_cc.hex(),
-               "Master Public Key": pub.hex(),
-               "Master Public Key Compressed": pubc.hex(),
-               "Public Keys": {"m/44'/0'/0'/0/0": pubkey0.hex() ,
-                               "m/44'/0'/0'/0/1": pubkey1.hex()},
-               "Addresses":   {"m/44'/0'/0'/0/0": addr0,
-                               "m/44'/0'/0'/0/1": addr1}
-               }
-
-    results = json.dumps(results, indent=2)
-
-    funded, summary = mn.summarize_addr(addr0)
-
+    # Time at which the mnemonic was created. Populate this in db.
     now = datetime.datetime.now()
     now = now.strftime("%Y-%m-%d %H:%M:%S")
+
     # add results to db
     db_entry = Mnemonic_db(mnemonic=mn_single, addr0=addr0, datetime=now, funded=funded, summary=summary)
     db.session.add(db_entry)
     db.session.commit()
+
     return render_template("display_mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
 
 
