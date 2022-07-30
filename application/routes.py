@@ -1,8 +1,8 @@
+from flask import Flask, jsonify, render_template, url_for, request, session, flash, redirect
+from flask_sqlalchemy import SQLAlchemy
 from timeit import repeat
 from application import app, db
 from .models import Mnemonic_db
-from flask import Flask, jsonify, render_template, url_for, request, session, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
 import requests
 import json
 from seed_creator.mnemonic import Mnemonic
@@ -13,6 +13,7 @@ import datetime
 # add blueprints
 
 
+# potentially separte this
 @app.cli.command("db_create")
 def create_all():
     db.create_all()
@@ -217,14 +218,6 @@ def raw_tx():
     return render_template("transaction_structure.html")
 
 
-@app.route("/db-test")
-def db_test():
-    mn_db = Mnemonic_db(21, "Jesse")
-    db.session.add(mn_db)
-    db.session.commit()
-    return "<h1>hi</h1>"
-
-
 @app.route("/view-db")
 def view_db():
     all_mn = Mnemonic_db.query.all()
@@ -245,27 +238,3 @@ def delete_all():
 #    for word in wlist:
 #        create_repeat_mnemonic(repeat_word=word, mnemonic_size=12)
 #    return redirect(url_for("view_db"))
-
-
-@app.route("/api")
-def api():
-    simple_api = "Hello"
-    return jsonify(salude=simple_api), 200
-
-
-@app.route("/api-not-found")
-def api_not_found():
-    return jsonify(message="Not found"), 404
-
-
-@app.route("/btc-or-crypto/<string:response>")
-def btc_or_crypto(response: str):
-    """btc-or-crypto"""
-    
-    if response == "crypto":
-        return jsonify(message=f"Access denied {response} bro. This is for BTC maximalists only!"), 401
-    elif response == "btc":
-        return jsonify(message="Access granted. Always happy to host a BTC maximalists!"), 200
-    else:
-        return jsonify(message=f" '{response}' is not a valid response. Please enter 'btc' or 'crypto' to enter this site."), 418 # lol
-
