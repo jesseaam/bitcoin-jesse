@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, url_for, request, session, fl
 from flask_sqlalchemy import SQLAlchemy
 from application import app, db
 from .models import Mnemonic_db
-from .wallets import repeat_wallet
+from .wallets import repeat_wallet, random_wallet
 from api.api import basic_api
 from seed_creator.mnemonic import Mnemonic
 from bip32 import BIP32 # https://github.com/darosior/python-bip32
@@ -60,64 +60,28 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
         mnemonic_size = int(request.form.get("Select-Size"))
 
     # Get the mnemonic phrase and multiple characteristics of it.
-    mn_all, mn_single, tot, funded, summary, addr0, results = repeat_wallet(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
+    mn_all, phrase, tot, funded, summary, addr0, results = repeat_wallet(repeat_word=repeat_word, mnemonic_size=mnemonic_size)
 
     # Time at which the mnemonic was created. Populate this in db.
     now = datetime.datetime.now()
     now = now.strftime("%Y-%m-%d %H:%M:%S")
 
     # add results to db
-    db_entry = Mnemonic_db(mnemonic=mn_single, addr0=addr0, datetime=now, funded=funded, summary=summary)
+    db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0, datetime=now, funded=funded, summary=summary)
     db.session.add(db_entry)
     db.session.commit()
 
-    return render_template("display_mnemonic_repeat.html", mn_single=mn_single, mn_all=mn_all, tot=tot, results=results)
+    return render_template("display_mnemonic_repeat.html", mn_single=phrase, mn_all=mn_all, tot=tot, results=results)
 
 
 @app.route("/random", methods=["POST", "GET"])
 def random(ms=12):
-    if request.method == "POST":
-        mn = Mnemonic()
-        if request.form.get("Select-Size"):
-            ms = int(request.form.get("Select-Size"))
-        
-        phrase = mn.generate_random(mnemonic_size=ms)
-        seed = mn.to_bip39seed(phrase)
+    if request.form.get("Select-Size"):
+        ms = int(request.form.get("Select-Size"))
+        phrase, funded, summary, addr0, results = random_wallet(mnemonic_size=ms)
 
-        master_prvkey = mn.master_prv(seed)
-        master_cc = mn.master_chain(seed)
-        bip32 = BIP32.from_seed(seed)
-        root_xprv = bip32.get_xpriv_from_path("m")
-        root_xpub = bip32.get_xpub_from_path("m")
-        pub, pubc = mn.to_public(master_prvkey)
-
-        # BIP 44: m / purpose' / coin_type' / account' / change / address_index
-        bip44_prv = bip32.get_xpriv_from_path("m/44'/0'/0'/0")
-        bip44_pub = bip32.get_xpub_from_path("m/44'/0'/0'/0")
-        pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
-        pubkey1 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/1"); addr1 = mn.to_address(pubkey1).decode("ascii")
-
-        results = {"Mnemonic": phrase,
-                   "BIP39 Seed": seed.hex(),
-                   "BIP32 Root Key:": root_xprv,
-                   "Master Private Key": master_prvkey.hex(),
-                   "Master Chain Code": master_cc.hex(),
-                   "Master Public Key": pub.hex(),
-                   "Master Public Key Compressed": pubc.hex(),
-                   "Public Keys": {"m/44'/0'/0'/0/0": pubkey0.hex() ,
-                                   "m/44'/0'/0'/0/1": pubkey1.hex()},
-                   "Addresses":   {"m/44'/0'/0'/0/0": addr0,
-                                   "m/44'/0'/0'/0/1": addr1}
-                   }
-
-        results = json.dumps(results, indent=2)
-
-        funded, summary = mn.summarize_addr(addr0)
-
-        now = datetime.datetime.now()
-        now = now.strftime("%Y-%m-%d %H:%M:%S")
-        # add results to db
-        db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0,funded=funded,summary=summary,datetime=now)
+        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0, funded=funded, summary=summary, datetime=now)
         db.session.add(db_entry)
         db.session.commit()
         return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
