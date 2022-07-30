@@ -13,6 +13,37 @@ import datetime
 # add blueprints
 
 
+@app.cli.command("db_create")
+def create_all():
+    db.create_all()
+    print("Database created!")
+
+
+@app.cli.command("db_drop")
+def delete_all():
+    db.drop_all()
+    print("Database destroyed!")
+
+
+@app.cli.command("db_seed")
+def db_seed():
+    mn = Mnemonic()
+    phrase = mn.generate_random(mnemonic_size=12)
+    seed = mn.to_bip39seed(phrase)
+    bip32 = BIP32.from_seed(seed)
+    pubkey0 = bip32.get_pubkey_from_path("m/44'/0'/0'/0/0"); addr0 = mn.to_address(pubkey0).decode("ascii")
+    funded, summary = mn.summarize_addr(addr0)
+
+    now = datetime.datetime.now()
+    now = now.strftime("%Y-%m-%d %H:%M:%S")
+    # add results to db
+    db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0,funded=funded,summary=summary,datetime=now)
+
+    db.session.add(db_entry)
+    db.session.commit()
+    print("Database seeded!")
+
+
 @app.route("/")
 def index():
     height = requests.get("https://blockstream.info/api/blocks/tip/height")
@@ -47,11 +78,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-#@app.route("/<repeat_word>", methods=["POST", "GET"])
-@app.route("/repeat", methods=["POST", "GET"])
+#@app.route("/repeat/<repeat_word>", methods=["POST", "GET"])
+@app.route("/repeat/", methods=["POST", "GET"])
 def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
     if request.method == "GET":
         return redirect(url_for("repeat_seed"))
+    #if repeat_word == None:
 
     if request.method == "POST":
         repeat_word = str(request.form.get("Select-Repeat"))
@@ -213,3 +245,27 @@ def delete_all():
 #    for word in wlist:
 #        create_repeat_mnemonic(repeat_word=word, mnemonic_size=12)
 #    return redirect(url_for("view_db"))
+
+
+@app.route("/api")
+def api():
+    simple_api = "Hello"
+    return jsonify(salude=simple_api), 200
+
+
+@app.route("/api-not-found")
+def api_not_found():
+    return jsonify(message="Not found"), 404
+
+
+@app.route("/btc-or-crypto/<string:response>")
+def btc_or_crypto(response: str):
+    """btc-or-crypto"""
+    
+    if response == "crypto":
+        return jsonify(message=f"Access denied {response} bro. This is for BTC maximalists only!"), 401
+    elif response == "btc":
+        return jsonify(message="Access granted. Always happy to host a BTC maximalists!"), 200
+    else:
+        return jsonify(message=f" '{response}' is not a valid response. Please enter 'btc' or 'crypto' to enter this site."), 418 # lol
+
