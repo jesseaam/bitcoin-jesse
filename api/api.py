@@ -22,4 +22,4 @@ def btc_or_crypto(response: str):
     elif response == "btc":
         return jsonify(message="Access granted. Always happy to host a BTC maximalists!")
     else:
-        return jsonify(message=f" '{response}' is not a valid response. Please enter 'btc' or 'crypto' to enter this site."), 418 # lol
+        return jsonify(message=f"<{response}> is not a valid response. Please enter <btc> or <crypto> to enter this site."), 418 # lol
