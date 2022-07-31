@@ -1,5 +1,7 @@
+from base64 import decode
 from seed_creator.mnemonic import Mnemonic
 from bip32 import BIP32 # https://github.com/darosior/python-bip32
+import hashlib
 import json
 
 class Wallet():
@@ -106,3 +108,19 @@ class Wallet():
 
         funded, summary = mn.summarize_addr(addr0)
         return (phrase, funded, summary, addr0, results)
+
+    
+    @staticmethod
+    def brain_wallet(phrase:str) -> str:
+        """
+        Create address from a string phrase.
+        https://en.bitcoin.it/wiki/Brainwallet
+        """
+
+        phrase = phrase.encode("utf-8")
+        prv = hashlib.sha256(phrase).digest()
+        pub, _ = Mnemonic.to_public(Mnemonic, privkey=prv)
+        addr = Mnemonic.to_address(Mnemonic, pubkey=pub)
+        addr = addr.decode("utf-8")
+        funded, summary = Mnemonic.summarize_addr(Mnemonic, addr)
+        return (addr, funded, summary)

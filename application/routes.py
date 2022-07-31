@@ -83,14 +83,13 @@ def random(ms=12):
     else:
         return render_template("random.html")
 
-@app.route("/brain-wallet", methods=["GET", "POST"])
-def brain_wallet():
-    """https://en.bitcoin.it/wiki/Brainwallet"""
-    if request.method == "POST":
-        return "Hi"
-    else:
-        return "Hello"
 
+#@app.route("/brain-wallet/<phrase>", methods=["GET", "POST"])
+@app.route("/brain-wallet/", methods=["GET", "POST"])
+def brain_wallet():
+    phrase = "hello"
+    addr, funded, summary = Wallet.brain_wallet(phrase)
+    return jsonify(bw_phrase=phrase, address=addr, funded=funded, summary=summary)
 
 
 @app.route("/resources")
