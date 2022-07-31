@@ -1,4 +1,4 @@
-The `mnemonic.py` module contains methods to generate a mnemonic seed phrase from the 2,048 standard BIP-0039 English words. 
+The `mnemonic.py` module contains the class Mnemonic with methods to generate a mnemonic seed phrase from the 2,048 standard BIP-0039 English words. 
 These methods include the ability to generate mnemonic seed phrases based off of a pseudorandom number generator, or the option to generate a repeat mnemonic. A repeat mnemonic is a mnemonic seed phrase of length N whose first N-1 words are the same. The Nth word in the mnemonic seed phrase is determined based off of the a few bits of entropy and a checksum.
 
 For example, if we input the word "zoo" for a 12-word mnemonic seed phrase, one possible repeat mnemonic (out of 128 options) could be
