@@ -87,9 +87,11 @@ def random(ms=12):
 #@app.route("/brain-wallet/<phrase>", methods=["GET", "POST"])
 @app.route("/brain-wallet/", methods=["GET", "POST"])
 def brain_wallet():
-    phrase = "hello"
-    addr, funded, summary = Wallet.brain_wallet(phrase)
-    return jsonify(bw_phrase=phrase, address=addr, funded=funded, summary=summary)
+    if request.method == "POST":
+        phrase = request.form.get("phrase")
+        addr, funded, summary = Wallet.brain_wallet(phrase)
+        return render_template("display_brainwallet.html", phrase=phrase, addr=addr, funded=funded, summary=summary)
+    return render_template("display_brainwallet.html")
 
 
 @app.route("/resources")

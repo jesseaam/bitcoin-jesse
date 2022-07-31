@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}brain wallet {% endblock %}
+
+{% block morehead %} 
+    <style>
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            width: 1000px;
+        }
+
+        section {
+            margin: 20px 40px;
+            width: 1000px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <header>Brain Wallet
+            What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address just with your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).
+        </header>
+    </section>
+
+    <br>
+
+    <section>
+        <form action="{{ url_for('brain_wallet') }}" method="POST">
+            <p>Enter phrase</p>
+            <input type="text" name="phrase" placeholder="I love Bitcoin!">
+            <input style="background-color: orange;" type="submit" value="Create Address" >
+        </form>
+
+        <br><br>
+
+        {% if phrase is defined %}
+            <table>
+                <tr>
+                    <th>Phrase</th>
+                    <th>Address</th>
+                    <th>Funded</th>
+                    <th>Summary</th>
+                </tr>
+                <tr>
+                    <td>{{phrase}}</td>
+                    <td>{{addr}}</td>
+                    <td>{{funded}}</td>
+                    <td>{{summary}}</td>
+                </tr>
+            </table>
+        {% endif %}
+    </section>
+
+
+{% endblock %}
+
+{% block footer %}
+    <footer style="position: absolute">
+        <span style="color:red">WARNING</span><br>
+        This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet. Read <a href="https://rya.nc/files/cracking_cryptocurrency_brainwallets.pdf">Cracking Cryptocurrency Brainwallets</a> for more information about why meat is predictable.
+
+    </footer>
+{% endblock %}
