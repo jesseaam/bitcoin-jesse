@@ -1,1 +1,18 @@
+p {
+    font-family:  Geneva;
+    font-size: 1.2em;
+}
+
+input {
+    width:200px;
+    height: 40px;
+    margin:20px;
+    color: green;
+    border-radius: 8px;
+    font-size: 1.3em;
+}
+
+input:focus {
+    border: solid 1px green 
+}
 

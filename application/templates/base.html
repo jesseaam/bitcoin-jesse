@@ -2,8 +2,6 @@
 <html lang="en">
 
 <head>
-
-
     <style>
         footer {
           bottom:0; 
@@ -16,6 +14,7 @@
     </style>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='highlight/styles/agate.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 
@@ -25,63 +24,63 @@
 </head>
 
 <!--<body style="background-color: rgb(240, 240, 255);">-->
-  <body>
+<body>
 
-    <nav class="navbar navbar-expand-lg light" style="background-color: gainsboro;">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href=" {{ url_for('whitepaper') }}">White Paper</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href=" {{ url_for('resources') }}">Resources</a>
-              </li>
-              </li>
+  <nav class="navbar navbar-expand-lg light" style="background-color: gainsboro;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href=" {{ url_for('whitepaper') }}">White Paper</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href=" {{ url_for('resources') }}">Resources</a>
+            </li>
+            </li>
 
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Playground
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href=" {{ url_for('brain_wallet') }} ">Create Brainwallet</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('random') }} ">Create Random Mnemonic</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('repeat_seed') }}">Create Repeat Mnemonic</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('view_db') }} ">Mnemonics Database</a></li>
-                </ul>
-              </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Playground
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href=" {{ url_for('brain_wallet') }} ">Create Brainwallet</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('random') }} ">Create Random Mnemonic</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('repeat_seed') }}">Create Repeat Mnemonic</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('view_db') }} ">Mnemonics Database</a></li>
+              </ul>
+            </li>
 
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Learning Library
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href=" {{ url_for('serialize_multisig') }} ">Serialize Multisig</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('verify_signature') }} ">Verify Signature</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('verify_transaction') }} ">Verify Transaction</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('raw_tx') }} ">Raw Transactions</a></li>
-                </ul>
-              </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Learning Library
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="dropdown-item" href=" {{ url_for('serialize_multisig') }} ">Serialize Multisig</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('verify_signature') }} ">Verify Signature</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('verify_transaction') }} ">Verify Transaction</a></li>
+                <li><a class="dropdown-item" href=" {{ url_for('raw_tx') }} ">Raw Transactions</a></li>
+              </ul>
+            </li>
 
-            </ul>
-          </div>
+          </ul>
         </div>
-      </nav>
+      </div>
+    </nav>
 
 
-    {% block content %}{% endblock %}
+  {% block content %}{% endblock %}
 
-    {% block footer %} {% endblock %}
- 
-    <script src="{{ url_for('static', filename='/highlight/highlight.min.js') }}"></script>
-    <script>hljs.highlightAll();</script>
+  {% block footer %} {% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"> </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='/highlight/highlight.min.js') }}"></script>
+  <script>hljs.highlightAll();</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"> </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
 
 
 </body>

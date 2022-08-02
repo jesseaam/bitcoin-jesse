@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
-<head>
-    {% block title %}home{% endblock %}
+{% block title %}home{% endblock %}
 
+{% block morehead %}
     <style>
-        h1 {text-align: center;}
+        h1 {text-align: center; margin: 20px;}
         h2 {text-align: center;}
         p {text-align: center;}
+        section {text-align: center;}
     </style>
-</head>
+{% endblock %}
 
 {% block content %}
     <section>
@@ -17,16 +18,18 @@
         {% if user is defined %}
             <h1>Welcome to {{user}}'s home page!</h1>
 
+            <!--
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <ul class="flashes">
                         {% for message in messages %}
-                            <li>{{ message }}</li>
+                            <p>{{ message }}</p>
                         {% endfor %}
                 {% endif %}
             {% endwith %}
+            -->
         {% else %}
-            <h1 align="center">Hello ₿ World!</h1>
+            <h1>Hello ₿ World!</h1>
         {% endif %}
             <br>
             <div style="background-color: orange;" align="center">
