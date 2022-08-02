@@ -125,6 +125,11 @@ def raw_tx():
     return render_template("transaction_structure.html")
 
 
+@app.route("/serialize-multisig")
+def serialize_multisig():
+    return render_template("serialize_multisig.html")
+
+
 @app.route("/view-db")
 def view_db():
     all_mn = Mnemonic_db.query.all()
