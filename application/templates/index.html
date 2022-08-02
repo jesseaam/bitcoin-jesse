@@ -10,8 +10,8 @@
     </style>
 </head>
 
-<body>
-    {% block content %}
+{% block content %}
+    <section>
         <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 
         {% if user is defined %}
@@ -35,7 +35,5 @@
                 <p>Moscow time: {{ sats }} </p>
                 <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
             </div>
-
-    {% endblock %}
-
-</body>
+    </section>
+{% endblock %}
