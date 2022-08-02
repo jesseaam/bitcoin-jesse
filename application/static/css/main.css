@@ -1,3 +1,32 @@
+section {
+    text-align: center;
+    margin: 20px 240px;
+}
+
+.bitcoin-logo {
+    text-align: center;
+    margin: 20px 550px;
+
+}
+
+header {
+    text-align: center;
+    margin: 35px 150px;
+}
+
+footer {
+    bottom:0; 
+    width:100%; 
+    height:100px; 
+    text-align: center; 
+    background-color: lightgrey;
+    font-family: Menlo, monospace;
+}
+
+h1 {
+    font-family:  Geneva;
+}
+
 p {
     font-family:  Geneva;
     font-size: 1.2em;
@@ -7,12 +36,43 @@ input {
     width:200px;
     height: 40px;
     margin:20px;
-    color: green;
-    border-radius: 8px;
-    font-size: 1.3em;
+    color: black;
+    border-radius: 12px;
+    border: solid 2px;
+    text-align: center;
 }
 
 input:focus {
-    border: solid 1px green 
+    border: solid 2px green 
+    border: solid 2px;
 }
 
+input:hover {
+    border: solid 2px;
+}
+
+
+#btc-button {
+    background-color: rgb(6, 230, 103);
+}
+
+#btc-button:hover {
+    border: solid 2px;
+    background-color: orange;
+}
+
+
+select {
+    border: solid 2px;
+    border-radius: 12px;
+    background-color: rgb(6, 230, 103);
+    height: 30px;
+}
+
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }

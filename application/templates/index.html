@@ -2,41 +2,52 @@
 
 {% block title %}home{% endblock %}
 
-{% block morehead %}
+{% block morehead %} 
     <style>
-        h1 {text-align: center; margin: 20px;}
-        h2 {text-align: center;}
-        p {text-align: center;}
-        section {text-align: center;}
+        section {
+            background-color: orange;
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-    <section>
-        <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 
-        {% if user is defined %}
+<br><br>
+
+    {% if user is defined %}
+        <header >
             <h1>Welcome to {{user}}'s home page!</h1>
+        </header>
 
-            <!--
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <ul class="flashes">
-                        {% for message in messages %}
-                            <p>{{ message }}</p>
-                        {% endfor %}
-                {% endif %}
-            {% endwith %}
-            -->
-        {% else %}
-            <h1>Hello ₿ World!</h1>
-        {% endif %}
+        <!-- {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+            {% endif %}
+        {% endwith %} -->
+
+    {% else %}
+        <header>
+            <h1 style="font-size:80px">Hello ₿ World!</h1>
+        </header>
+    {% endif %}
+
+        <section style="border-style:solid">
             <br>
-            <div style="background-color: orange;" align="center">
-                <p>Current block height: {{ height }}</p>
-                <p>Bitcoin price: ${{ price }}</p>
-                <p>Moscow time: {{ sats }} </p>
-                <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
-            </div>
-    </section>
+            <p>Current block height: {{ height }}</p>
+            <p>Bitcoin price: ${{ price }}</p>
+            <p>Moscow time: {{ sats }} </p>
+            <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
+        </section>
+
+        <br><br><br><br><br><br><br><br><br><br>
+
+        <div class="bitcoin-logo">
+            <img src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </div>
+
+
+<script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 {% endblock %}
