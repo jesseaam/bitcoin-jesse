@@ -24,9 +24,10 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 
-<body>
+<!--<body style="background-color: rgb(240, 240, 255);">-->
+  <body>
 
-    <nav class="navbar navbar-expand-lg light">
+    <nav class="navbar navbar-expand-lg light" style="background-color: gainsboro;">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{ url_for('index') }}">Home</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,19 +42,31 @@
                 <a class="nav-link active" aria-current="page" href=" {{ url_for('resources') }}">Resources</a>
               </li>
               </li>
+
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Playground
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href=" {{ url_for('random') }} ">Psuedo-Random Mnemonic</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('repeat_seed') }}">Repeat Mnemonic</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('raw_tx') }} ">Raw Transactions</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('verify_transaction') }} ">Verify Transaction</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('verify_signature') }} ">Verify Signature</a></li>
-                  <li><a class="dropdown-item" href=" {{ url_for('view_db') }} ">All Mnemonics</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('brain_wallet') }} ">Create Brainwallet</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('random') }} ">Create Random Mnemonic</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('repeat_seed') }}">Create Repeat Mnemonic</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('view_db') }} ">Mnemonics Database</a></li>
                 </ul>
               </li>
+
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Learning Library
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <li><a class="dropdown-item" href=" {{ url_for('serialize_multisig') }} ">Serialize Multisig</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('verify_signature') }} ">Verify Signature</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('verify_transaction') }} ">Verify Transaction</a></li>
+                  <li><a class="dropdown-item" href=" {{ url_for('raw_tx') }} ">Raw Transactions</a></li>
+                </ul>
+              </li>
+
             </ul>
           </div>
         </div>
@@ -61,7 +74,6 @@
 
 
     {% block content %}{% endblock %}
-
 
     {% block footer %} {% endblock %}
  
