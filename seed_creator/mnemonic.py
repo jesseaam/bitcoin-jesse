@@ -127,6 +127,7 @@ class Mnemonic():
         summary = int(funded) - int(spent)
         return (funded, summary)
 
+
     #def to_xprv(self, prv: bytes, cc: bytes) -> bytes:
     #    xprv = b"\x04\x88\xad\xe4"  # Version for private mainnet (4bytes)
     #    xprv += b"\x00" * 9  # Depth (1byte), parent fingerprint (4bytes), and child number(4bytes)
