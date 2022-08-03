@@ -9,47 +9,25 @@
             background-color: rgba(150, 212, 212, 0.4);
         }
 
-{% block morehead %} 
-    <style>
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            width: 1400px;
-        }
-
-        section {
-            margin: 20px 40px;
-            width: 1000px;
-        }
-
-    </style>
-{% endblock %}
-
 {% block content %}
 
-    <section>
-        <header>
-            <h1>All generated Mnemonics</h1>
-        </header>
+    <header>
+        <h1>All generated Mnemonics</h1>
 
         <p>This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.</p><br>
+    </header>
 
-        <form action="{{ url_for('delete_all')}}">
-            <button style="color:red" type="submit">Clear Table</button>
+
+        <br><br>
+
+    <section class="mn-table">
+
+        <form action="{{ url_for('delete_all')}}" style="text-align: left; ">
+            <input style="color:red" type="submit" value="Clear Table" >
         </form>
 
-    </section>
+        <br>
 
-    <section>    
         <table>
             <tr>
                 <th>Mnemonic</th>
@@ -74,6 +52,5 @@
             {% endfor %}
         </table>
     </section>
-
 
 {% endblock %}

@@ -4,48 +4,20 @@
 
 {% block morehead %} 
 
-
-    <style>
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            width: 1000px;
-        }
-
-        section {
-            margin: 20px 40px;
-            width: 1000px;
-        }
-        header {
-            margin: 20px 40px;
-            width: 1000px;
-        }
-
-    </style>
 {% endblock %}
 
 {% block content %}
 
     <header>
         <h1>Brain Wallet</h1>
+
+        <p>What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).</p>
     </header>
 
-    <section>
-        <p>What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address just with your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).</p>
-    </section>
 
-    <br>
+    <br><br><br>
 
-    <section>
+    <section class="mn-table">
         <form action="{{ url_for('brain_wallet') }}" method="POST">
             <p>Enter phrase</p>
             <input type="text" name="phrase" placeholder="I love Bitcoin!">
@@ -56,7 +28,7 @@
         <br><br>
 
         {% if phrase is defined %}
-            <table>
+            <table class="mn-table">
                 <tr>
                     <th>Phrase</th>
                     <th>Address</th>
