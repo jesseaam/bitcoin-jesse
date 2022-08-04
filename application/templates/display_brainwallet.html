@@ -10,10 +10,13 @@
     <div id="content-wrap">
         <header>
             <h1 style="margin-bottom:20px">Brain Wallet</h1>
-
-            <p>What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).</p>
-            <br><br>
         </header> 
+
+        <div class="margins">
+            <p>
+                What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).
+            </p>
+        </div>
 
         <div class="div-bw">
             <form action="{{ url_for('brain_wallet') }}" method="POST">
@@ -25,7 +28,7 @@
 
         <div class="div-bw">
             {% if phrase is defined %}
-                <table >
+                <table style="margin-bottom: 100px">
                     <tr>
                         <th>Phrase</th>
                         <th>Address</th>

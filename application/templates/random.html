@@ -7,10 +7,14 @@
     <div id="content-wrap">
         <header>
             <h1 >Hello ₿ World!</h1>
-            <br>
-            <p >This tool creates a pseudo-randomly generated mnemonic phrase (heed the footer). Choose how many bits of entropy to include in the mnemonic. Then a mnemonic phrase will be created.</p>
-            <br> <br>
         </header>
+
+        <div class="margins">
+            <p>
+                This tool creates a pseudo-randomly generated mnemonic phrase (heed the footer). Choose how many bits of entropy to include in the mnemonic. Then a mnemonic phrase will be created.
+            </p>
+            <br><br>
+        </div>
 
         <div>
             <form method="POST" action=" {{ url_for('random') }} ">

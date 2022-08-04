@@ -21,11 +21,10 @@
 
 #page-container {
     position: relative;
-    min-height: 100vh;
-    /*background-color: forestgreen;*/
     text-align: center;
     border: solid;
     border-color: saddlebrown;
+    min-height: 100vh;
 }
 
 #content-wrap {
@@ -38,7 +37,7 @@ padding-bottom: 8.5rem;    /* Footer height */
 
 /* apply these margins to all text */
 .margins {
-    margin: 0 8%;
+    margin: 0 10%;
     text-align: left;
 }
 
@@ -48,21 +47,18 @@ padding-bottom: 8.5rem;    /* Footer height */
 }
 
 #btc {
+    position: absolute;
+    bottom: 4px;
     display: block;
     height: 5.5rem;            /* Footer height */
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+    width:100%
 }
 
-/*
-#div-center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+#h2-mn {
+    background-color: lightgreen;
+    text-align: center;
+    margin: 2% 10%;
 }
-*/
 
 header {
     bottom: 0;
