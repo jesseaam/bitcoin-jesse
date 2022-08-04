@@ -4,28 +4,26 @@
 
 {% block content %}
 
-    <div align="center">
-        <h1 style="color:green">Psuedorandom Mnemonic phrase:</h1>
-        <h2 style="background-color: lightgreen"> {{phrase}} </h2>
+    <div id="page-container" >
+        <div id="content-wrap">
+            <header>
+                <h1 style="color:green">Psuedorandom Mnemonic phrase:</h1>
+                <h2 style="background-color: lightgreen"> {{phrase}} </h2>
+            </header>
+            <div style="margin: 5% 5%;">
+                <pre>
+                    <code>
+            {{results}}
+                    </code>
+                </pre>
+            </div>
+        </div>
+
+        <footer class="footer-warn">
+            <p style="margin: 0 8%;">
+                <span style="color:red">WARNING</span><br>
+                This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
+            </p>
+        </footer>
     </div>
-
-    <br>
-
-    <pre>
-        <code>
-{{results}}
-        </code>
-    </pre>
-
-    <br>
-
-{% endblock %}
-
-<br> <br>
-
-{% block footer %}
-    <footer>
-        <span style="color:red">WARNING</span><br>
-        This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
-    </footer>
 {% endblock %}

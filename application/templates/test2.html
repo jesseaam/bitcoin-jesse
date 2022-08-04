@@ -1,0 +1,60 @@
+{% extends "test.html" %}
+
+{% block title %}test homepage{% endblock %}
+
+{% block content %}
+
+<br>
+    <div id="page-container" >
+        <div id="content-wrap" >
+            <header>
+                <h1 style="font-size:50px">Hello ₿ World!</h1>
+            
+                <h2>Hello ₿ World!</h2>
+                <h3>Hello ₿ World!</h3>
+            </header>
+            <div style=" background-color:blue">
+                    <p>hi</p>
+                    <p>hi</p>
+                    <p>hi</p>
+                    <p>hi</p>
+
+            </div>
+
+        </div>
+
+        <div style="padding-bottom: 120px;"> </div>
+
+    <footer  solid; background-color: green;">
+        <div >
+            <img style="height:5rem" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </div>
+    </footer>
+
+
+    <!--
+
+            <section style=" border: solid; margin: 10% 10%px; background-color: forestgreen;"> 
+                <div style="border:solid; margin: 10% 10%; background-color: blue;">
+                    <p>hi</p>
+                    <p>hi</p>
+                    <p>hi</p>
+                </div>
+            </section>
+        <div style="border: solid; margin: 0% 40%">
+            <img  src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </div>
+style=" position:fixed; bottom:0%; left:0px; right: 0px;"
+
+        <div  style="border: solid; margin:10% 30% 0% 30%;  position:relative; ">
+
+        <div  style="border: solid; bottom:0%; left:10%; position:absolute; width:30% ">
+            <img  src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </div>
+
+    <div style="border:solid; position:absolute; bottom:0%; width:100%;">
+    </div>
+    -->
+    </div>
+
+{% endblock %}

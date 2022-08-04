@@ -1,39 +1,61 @@
-section {
-    text-align: center;
-    margin: 20px 240px;
+
+#page-container {
+    /*border-color: forestgreen;*/
+    position: relative;
+    min-height: 100vh;
 }
 
-.mn-table {
-    text-align: center;
-    margin: 20px 150px;
+#content-wrap {
+padding-bottom: 8.5rem;    /* Footer height */
 }
 
-.bitcoin-logo {
+/*
+footer {
+    position:absolute;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    height: 5.5rem;            /* Footer height 
     text-align: center;
-    margin: 20px 550px;
+} 
 
-    bottom: 0;
-    height:100px; 
+.footer-warn {
+    background-color: rgb(135, 131, 131);
+    height: 7.5rem;            /* Footer height 
+}
+*/
+
+
+#btc {
+    display: block;
+    height: 5.5rem;            /* Footer height */
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+#div-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+      
+
+body {
     text-align: center;
+    background-color: rgba(13, 130, 50, 0.675);
 }
 
 header {
     bottom: 0;
-    height:100px; 
-    text-align: center;
-    margin: 35px 150px;
+    margin: 1% 8%;
 }
 
-footer {
-    bottom:0; 
-    width:100%; 
-    text-align: center; 
-    background-color: lightgrey;
-    font-family: Menlo, monospace;
-}
 
 h1 {
     font-family:  Geneva;
+    text-align: center;
 }
 
 p {

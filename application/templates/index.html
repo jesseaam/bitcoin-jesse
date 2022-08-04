@@ -12,42 +12,45 @@
 
 {% block content %}
 
-<br><br>
+    <div id="page-container" >
+        <div id="content-wrap">
+            {% if user is defined %}
+                <header>
+                    <h1>Welcome to {{user}}'s home page!</h1>
+                </header>
 
-    {% if user is defined %}
-        <header >
-            <h1>Welcome to {{user}}'s home page!</h1>
-        </header>
+                <!-- {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="flashes">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                    {% endif %}
+                {% endwith %} -->
 
-        <!-- {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
+            {% else %}
+                <header >
+                    <h1 style="font-size:80px">Hello ₿ World!</h1>
+                </header>
             {% endif %}
-        {% endwith %} -->
 
-    {% else %}
-        <header>
-            <h1 style="font-size:80px">Hello ₿ World!</h1>
-        </header>
-    {% endif %}
-
-        <section style="border-style:solid">
             <br>
-            <p>Current block height: {{ height }}</p>
-            <p>Bitcoin price: ${{ price }}</p>
-            <p>Moscow time: {{ sats }} </p>
-            <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
-        </section>
 
-        <br><br><br><br><br><br><br><br><br><br>
-
-        <div class="bitcoin-logo">
-            <img  src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+            <section style="border-style:solid; text-align: center; padding-top: 10px;">
+                <p>Current block height: {{ height }}</p>
+                <p>Bitcoin price: ${{ price }}</p>
+                <p>Moscow time: {{ sats }} </p>
+                <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
+            </section>
         </div>
 
 
-<script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+        <footer >
+            <img id="btc" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </footer>
+        <p></p>
+
+    </div>
+
+    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 {% endblock %}

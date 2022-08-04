@@ -2,55 +2,62 @@
 
 {% block title %}test{% endblock %}
 
-{% block content %}
-
-    <header>
-        <h1 align="center">Hello ₿ World!</h1>
-
-        <p>This tool creates a repeat mnemonic. 
-        First select one of the <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt">BIP 39 mnemonic code words</a> and a mnemonic phrase length N. This tool will create a mnemonic phrase with the selected mnemonic code word listed in the first N-1 positions. The last word will be selected based on a combination of entropy and a checksum. Note that there are multiple options for the last word based on the bits of entropy in the last word. </p>
-    </header>
-
-    <br><br><br>
-
-    <section>
-        <p>Choose a mnemonic code word from the following selection.</p>
-
-        <form method="POST" action=" {{ url_for('create_repeat_mnemonic') }} ">
-            <select name="Select-Repeat" size="1" id="mn">
-                <option value="">- Please select a mnemonic codeword -</option>
-                {% for word in codewords %}
-                    <option value"{{word}}">{{word}}</option>
-                {% endfor %}
-            </select>
-
-            <br> <br>
-
-            <p>Next choose how many bits of entropy to include in the mnemonic.</p>
-            <select name="Select-Size" size="1" id="size">
-                <option value="">- Please select a size -</option>
-                <option value="12"> 12 words (128 bits of entropy) </option>
-                <option value="15"> 15 words (160 bits of entropy) </option>
-                <option value="18"> 18 words (192 bits of entropy) </option>
-                <option value="21"> 21 words (224 bits of entropy) </option>
-                <option value="24"> 24 words (256 bits of entropy) </option>
-            </select>
-
-            <br> <br> <br>
-
-            <input type="submit" value="Create repeat mnemonic" id="btc-button">
-
-        </form>
-    </section>
-
-
-
+{% block morehead %} 
+    <style>
+        h1 {
+            color: blue
+        }
+        footer{
+            text-align: center;
+            background-color: rgb(155, 152, 152);
+            margin-top: auto;
+            border: solid;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
 {% endblock %}
 
-{% block footer %}
+{% block content %}
 
-    <footer style="position: absolute">
-        <span style="color:red">WARNING</span><br>
-        This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
-    </footer>
+    <div id="page-container" >
+        <div id="content-wrap">
+            <header>
+                <h1 align="center">Hello ₿ World!</h1>
+
+                <p>This tool creates a repeat mnemonic. 
+                First select one of the <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt">BIP 39 mnemonic code words</a> and a mnemonic phrase length N. This tool will create a mnemonic phrase with the selected mnemonic code word listed in the first N-1 positions. The last word will be selected based on a combination of entropy and a checksum. Note that there are multiple options for the last word based on the bits of entropy in the last word. </p>
+            </header>
+
+            <div>
+                <p>Choose a mnemonic code word from the following selection.</p>
+
+                <form method="POST" action=" {{ url_for('create_repeat_mnemonic') }} ">
+                    <select name="Select-Repeat" size="1" id="mn">
+                        <option value="">- Please select a mnemonic codeword -</option>
+                        {% for word in codewords %}
+                            <option value"{{word}}">{{word}}</option>
+                        {% endfor %}
+                    </select>
+                    <br><br>
+                    <p>Next choose how many bits of entropy to include in the mnemonic.</p>
+                    <select name="Select-Size" size="1" id="size">
+                        <option value="">- Please select a size -</option>
+                        <option value="12"> 12 words (128 bits of entropy) </option>
+                        <option value="15"> 15 words (160 bits of entropy) </option>
+                        <option value="18"> 18 words (192 bits of entropy) </option>
+                        <option value="21"> 21 words (224 bits of entropy) </option>
+                        <option value="24"> 24 words (256 bits of entropy) </option>
+                    </select>
+                    <input type="submit" value="Create repeat mnemonic" id="btc-button">
+                </form>
+            </div>
+        </div>
+        <footer >
+            <p style="margin: 0 8%;">
+                <span style="color:red">WARNING</span><br>
+                This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
+            </p>
+        </footer>
+    </div>
 {% endblock %}

@@ -150,3 +150,13 @@ def delete_all():
 #    for word in wlist:
 #        create_repeat_mnemonic(repeat_word=word, mnemonic_size=12)
 #    return redirect(url_for("view_db"))
+
+
+@app.route("/test")
+def test():
+    return render_template("test.html")
+
+
+@app.route("/test2")
+def test2():
+    return render_template("test2.html")
