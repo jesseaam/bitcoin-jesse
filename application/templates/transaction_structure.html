@@ -1,139 +1,143 @@
 {% extends "base.html" %}
 
 {% block title %}transactions{% endblock %}
-{% block morehead %}
-    <style>
-        code {
-            color: green;
-        }
-
-        h1, h2, h3, section {
-            margin: 20px 40px;
-            width: 1000px;
-        }
-
-        header {
-            margin: 20px 40px
-        }
-
-    </style>
-
-{% endblock %}
 
 {% block content %}
+    <div id="content-wrap">
+        <header>
+            <h1>Raw Transactions</h1>
+        </header>
+        <div class="margins">
+            <p>
+                A raw transaction (tx) is also known as a serialized tx. These are what allow you to send bitcoin and transact on the network. Once you learn the basic components of a raw tx, you will be able to send bitcoin even without a signing device. For example, you could construct a raw tx by hand and send it in an email or telegram and anybody that eventually receives it could transmit the tx for you. Raw Txs are really cool, and that's what we are going to breakdown today.</p>
 
-    <h1>Raw Transactions</h1>
+            <p>
+                Let's take a look at a real Bitcoin tx that was included in Block 376400: <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</a>. Expand the collapsed section below to view the python code to retrieve the tx information from an API. We display the tx in JSON format also to make viewing the individual components of the tx easier to see.
+            </p>
+        </div>
 
-    <section>
+        <div class="margins">
+            <details >
+                <summary>Python code: retrieve tx</summary>
+                    <div>
+                        <pre>
+                            <code>
+# Python
+import requests
+import json
 
-        <p>A raw transaction (tx) is also known as a serialized tx. These are what allow you to send bitcoin and transact on the network. Once you learn the basic components of a raw tx, you will be able to send bitcoin even without a signing device. For example, you could construct a raw tx by hand and send it in an email or telegram and anybody that eventually receives it could transmit the tx for you. Raw Txs are really cool, and that's what we are going to breakdown today.
-            
-        <p> Let's take a look at a real Bitcoin tx that was included in Block 376400: <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</a>. Expand the collapsed section below to view the python code to retrieve the tx information from an API. We display the tx in JSON format also to make viewing the individual components of the tx easier to see.</p><br>
-
-
-        <details>
-            <summary>Python code: retrieve tx</summary>
-            <pre>
-
-            <code>
-        # Python
-        import requests
-        import json
-
-        tx = requests.get("https://blockstream.info/api/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3")
-        tx = json.loads(tx.text)
-        print(json.dumps(tx, index=2))
-            </code>
-        </pre>
-
-
-        <pre>
-            <code>
-        {
-            "txid": "c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3",
-            "version": 1,
-            "locktime": 0,
-            "vin": [
-            {
-                "txid": "fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779",
-                "vout": 1,
-                "prevout": {
-                "scriptpubkey": "76a914824d8a679134215d6d21d25bde3cc63f89ec92eb88ac",
-                "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 824d8a679134215d6d21d25bde3cc63f89ec92eb OP_EQUALVERIFY OP_CHECKSIG",
-                "scriptpubkey_type": "p2pkh",
-                "scriptpubkey_address": "1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC",
-                "value": 2257563
-                },
-                "scriptsig": "47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
-                "scriptsig_asm": "OP_PUSHBYTES_71 304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a901 OP_PUSHBYTES_33 039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
-                "is_coinbase": false,
-                "sequence": 4294967295
-            }
-            ],
-            "vout": [
-            {
-                "scriptpubkey": "76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac",
-                "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 db4d1141d0048b1ed15839d0b7a4c488cd368b0e OP_EQUALVERIFY OP_CHECKSIG",
-                "scriptpubkey_type": "p2pkh",
-                "scriptpubkey_address": "1LzZJkQfz9ahY2SfetBHLcwyWmQRE9CwfU",
-                "value": 2207563
-            }
-            ],
-            "size": 191,
-            "weight": 764,
-            "fee": 50000,
-            "status": {
-            "confirmed": true,
-            "block_height": 376400,
-            "block_hash": "00000000000000000e96f7af493af0cb164e2989f5907b9e9f2c15f79e330afd",
-            "block_time": 1443369999
-            }
-        }
-            </code>
-        </pre>
-        </details>
-    <hr>
-    </section>  <br>
-
-    <h2>Tx breakdown</h2>
-
-    <section style="width: 1000px">
-    <p>The tx <code>c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</code> uses as input the output from tx <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779</a>. Specifically, the 2nd output (zero-based indexing). This output was sent to address <a href="https://blockstream.info/address/1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC">1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC</a>. If you navigate to the URL provided for this address, notice how you can track the chain of events associated with this address (every tx it was involved in).</p>
-
-
-    <p>There are many ways to convey the information in a tx. Above we show the tx in JSON format, which is fairly easy for humans to decipher. Good block explorers will make digesting the information even easier. Computers need a different form of presentation though. txs are broadcast to the Bitcoin network in a serialized format. The serialized format of the tx above is:</p>
-
-        <code>01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000</code>
-    </div>
-
-    <br><br>
-
-    <div style="width: 1000px">
-        <p>Don't let this long string of characters scare you—it's literally a string guys. No teeth. Remember that a raw tx is also know as a serialized tx. This makes me think of cereal and little bits of sugary letters floating around in a bowl of milk. The letters are all scrambled but when you look closely you start to see words forming. This is like the tx. At first it looks like a random string that is too long. We are going to break it down piece by piece into its constituent components. Once that's done you will see just how simple it really is. And as an added incentive, remember that one of these strings can contain a billion dollars or more!</p>
-
-        <p><i>Note at the time of this writing in 2022, dollars are were still a thing. Dollars were a wierd currency that people all over the world used to transact with each other. They were in paper form as well as digital. The silly part was that governments could "print" as much of it as they wanted at anytime. Inflation of the supply of dollars hastened the fall of its value until eventually it was basically worthless. Dollars lost so much value that folks started making art out of it. They would create bouquets of dollars to send to friends instead of flowers because they couldn't afford the flowers but they had lots of dollars. This is what ultimately led us to where we are today with Bitcoin: a truly hard and perfect money. I digress.</i></p>
-
-        <p>Firstly, the main thing you need to remember is that a tx is just a list of input(s) and output(s). The inputs are just a package of bitcoin that you want to send (and that you own), along with the unlocking script to prove you own them. The outputs are just the package of bitcoin going somewhere else with a lock placed on them. Note, often there will be two outputs in a transaction. This is because if you are performing a simple tx sending bitcoin to a person, there will be change involved. Like if you go to a grocery store and buy a widget for $0.99, you hand the clerk a $1 bill and pers give you back a penny. The penny was your change. It's like that in bicoin too. You will often have a chunk of bitcoin that can't be split apart until you transact with it. With that in mind lets, split that long string apart.</p>
-        </section><br>
+tx = requests.get("https://blockstream.info/api/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3")
+tx = json.loads(tx.text)
+print(json.dumps(tx, index=2))
+                            </code>
+                        </pre>
+                    </div>
+                    <div>
+                        <pre >
+                            <code>
+{
+    "txid": "c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3",
+    "version": 1,
+    "locktime": 0,
+    "vin": [
+    {
+        "txid": "fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779",
+        "vout": 1,
+        "prevout": {
+        "scriptpubkey": "76a914824d8a679134215d6d21d25bde3cc63f89ec92eb88ac",
+        "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 824d8a679134215d6d21d25bde3cc63f89ec92eb OP_EQUALVERIFY OP_CHECKSIG",
+        "scriptpubkey_type": "p2pkh",
+        "scriptpubkey_address": "1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC",
+        "value": 2257563
+        },
+        "scriptsig": "47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
+        "scriptsig_asm": "OP_PUSHBYTES_71 304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a901 OP_PUSHBYTES_33 039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825",
+        "is_coinbase": false,
+        "sequence": 4294967295
+    }
+    ],
+    "vout": [
+    {
+        "scriptpubkey": "76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac",
+        "scriptpubkey_asm": "OP_DUP OP_HASH160 OP_PUSHBYTES_20 db4d1141d0048b1ed15839d0b7a4c488cd368b0e OP_EQUALVERIFY OP_CHECKSIG",
+        "scriptpubkey_type": "p2pkh",
+        "scriptpubkey_address": "1LzZJkQfz9ahY2SfetBHLcwyWmQRE9CwfU",
+        "value": 2207563
+    }
+    ],
+    "size": 191,
+    "weight": 764,
+    "fee": 50000,
+    "status": {
+    "confirmed": true,
+    "block_height": 376400,
+    "block_hash": "00000000000000000e96f7af493af0cb164e2989f5907b9e9f2c15f79e330afd",
+    "block_time": 1443369999
+    }
+}
+                            </code>
+                        </pre>
+                    </div>
+            </details>
+        </div> <!--end code margins-->
+        <hr>
 
 
-        <section>
-            <code>
-                <p><a style="color: blue;">01000000</a><a style="color:green">01</a><a style="color:purple">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a><a style="color:grey">01000000</a><a style="color:brown">6a</a><a style="color:darkkhaki">47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</a><a style="color:red">ffffffff</a><a style="color:lightblue">01</a><a style="color:lightseagreen">4baf210000000000</a><a style="color:magenta">19</a><a style="color:olivedrab">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a><a style="color: black">00000000</a></p>
-            </code> <br>
+        <div>
+            <h2>Tx breakdown</h2>
+            <div class="margins">
+                <p>
+                    The tx 
+                    <code class="color-code">
+                        c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
+                    </code> 
 
+                    uses as input the output from tx <a href="https://blockstream.info/tx/c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3">fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779</a>. Specifically, the 2nd output (zero-based indexing). This output was sent to address <a href="https://blockstream.info/address/1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC">1CsyjZGHctdQ1fnvKMzmga7LYoHNycZXeC</a>. If you navigate to the URL provided for this address, notice how you can track the chain of events associated with this address (every tx it was involved in).
+                </p>
+
+                <p>
+                    There are many ways to convey the information in a tx. Above we show the tx in JSON format, which is fairly easy for humans to decipher. Good block explorers will make digesting the information even easier. Computers need a different form of presentation though. txs are broadcast to the Bitcoin network in a serialized format. The serialized format of the tx above is:
+                </p>
+
+                <p>
+                    <code class="color-code">
+                        01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000
+                    </code>
+                </p>
+
+                <p>
+                    Don't let this long string of characters scare you—it's literally a string guys. No teeth. Remember that a raw tx is also know as a serialized tx. This makes me think of cereal and little bits of sugary letters floating around in a bowl of milk. The letters are all scrambled but when you look closely you start to see words forming. This is like the tx. At first it looks like a random string that is too long. We are going to break it down piece by piece into its constituent components. Once that's done you will see just how simple it really is. And as an added incentive, remember that one of these strings can contain a billion dollars or more!
+                </p>
+                <p>
+                    <i>
+                        Note at the time of this writing in 2022, dollars are were still a thing. Dollars were a wierd currency that people all over the world used to transact with each other. They were in paper form as well as digital. The silly part was that governments could "print" as much of it as they wanted at anytime. Inflation of the supply of dollars hastened the fall of its value until eventually it was basically worthless. Dollars lost so much value that folks started making art out of it. They would create bouquets of dollars to send to friends instead of flowers because they couldn't afford the flowers but they had lots of dollars. This is what ultimately led us to where we are today with Bitcoin: a truly hard and perfect money. I digress.
+                    </i>
+                </p>
+
+                <p>
+                    Firstly, the main thing you need to remember is that a tx is just a list of input(s) and output(s). The inputs are just a package of bitcoin that you want to send (and that you own), along with the unlocking script to prove you own them. The outputs are just the package of bitcoin going somewhere else with a lock placed on them. Note, often there will be two outputs in a transaction. This is because if you are performing a simple tx sending bitcoin to a person, there will be change involved. Like if you go to a grocery store and buy a widget for $0.99, you hand the clerk a $1 bill and pers give you back a penny. The penny was your change. It's like that in bicoin too. You will often have a chunk of bitcoin that can't be split apart until you transact with it. With that in mind lets, split that long string apart.
+                </p>
+            </div>
+
+        <div class="margins">
+            <p>
+                <code>
+                    <a class="tx-version">01000000</a><a class="tx-nin">01</a><a class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a><a class="tx-index">01000000</a><a class="tx-len">6a</a><a class="tx-unlock">47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</a><a class="tx-seq">ffffffff</a><a class="tx-nout">01</a><a class="tx-sats">4baf210000000000</a><a class="tx-locksize">19</a><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a><a class="tx-time">00000000</a>
+                </code>
+                <br><br>
+            </p>
             <ol>
-                <li><a style="color: blue;">010000000</a>: Which version of tx data structure we are using. Version 1, shown in 4 bytes, Little Endian.</li>
-                <li><a style="color:green">01</a>: The number of inputs.</li>
-                <li><a href="https://blockstream.info/tx/fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779" style="color: purple">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a>: txid of input (in reverse byte order. so txid=fc9e4f...) </li>
-                <li><a style="color: grey">01000000</a>: The index of the output you are referencing.</li>
-                <li><a style="color: brown">6a</a>: The length of script to follow (0x6a= 106 bytes).</li>
-                <li><a style="color:darkkhaki"><code>47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</code></a>: Unlocking script.</li>
-                <li><a style="color:red">ffffffff</a>: Sequence. Can be used for <a href="https://bitcoincore.org/en/faq/optin_rbf/">Opt-in RBF.</a></li>
-                <li><a style="color:lightblue">01</a>: Number of outputs.</li>
-                <li><a style="color:lightseagreen">4baf210000000000</a>: Value of output in Sats (lil-end).</li>
-                <li><a style="color: magenta">19</a>: Size of the locking script that directly follows. (0x19=25bytes)</li>
-                <li><a style="color: olivedrab">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a>: Locking script (aka ScriptPubKey) </li>
+                <li><a class="tx-version">010000000</a>: Which version of tx data structure we are using. Version 1, shown in 4 bytes, Little Endian.</li>
+                <li><a class="tx-nin">01</a>: The number of inputs.</li>
+                <li><a href="https://blockstream.info/tx/fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779"  class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a>: txid of input (in reverse byte order. so txid=fc9e4f...) </li>
+                <li><a class="tx-index">01000000</a>: The index of the output you are referencing.</li>
+                <li><a class="tx-len">6a</a>: The length of script to follow (0x6a= 106 bytes).</li>
+                <li><a class="tx-unlock"><code>47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</code></a>: Unlocking script.</li>
+                <li><a class="tx-seq">ffffffff</a>: Sequence. Can be used for <a href="https://bitcoincore.org/en/faq/optin_rbf/">Opt-in RBF.</a></li>
+                <li><a class="tx-nout">01</a>: Number of outputs.</li>
+                <li><a class="tx-sats">4baf210000000000</a>: Value of output in Sats (lil-end).</li>
+                <li><a class="tx-locksize">19</a>: Size of the locking script that directly follows. (0x19=25bytes)</li>
+                <li><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a>: Locking script (aka ScriptPubKey) </li>
                     <details>
                         <summary><a style="color:olivedrab">This one is really cool!</a></summary>
 
@@ -166,69 +170,65 @@
                         <br><br>
                     </details>
 
-                <li><a style="color:black">00000000</a>: time lock (block height or time at which you can spend the BTC. If 0 then no timelock)</li>
-            </ol> <br>
+                <li><a class="tx-time">00000000</a>: time lock (block height or time at which you can spend the BTC. If 0 then no timelock)</li>
+                <br>
+            </ol>
 
             <p>
                 And now you are an expert on breaking down a raw tx. Or at least, you can tell your friends that you are. They will be impressed.
             </p>
+        </div>
         <hr>
 
-    </section>
 
 
-    <h2>Create tx ID</h2>
+        <h2>Create tx ID</h2>
+        <div class="margins">
+            <p>
+                The last thing we will do is hash our raw tx to create a tx ID. This is how the tx will be identified now and forever and how you can search for it on a block explorer. Let's use Python to hash the raw tx.
+            </p>
 
-    <section>
-        <p>The last thing we will do is hash our raw tx to create a tx ID. This is how the tx will be identified now and forever and how you can search for it on a block explorer. Let's use Python to hash the raw tx.</p>
-    </section>
-
-    <section>
-        <pre>
-            <code>
-        import hashlib
-
-        serial = "01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000"
-
-        serial = bytes.fromhex(serial)
-        hash1 = hashlib.sha256(serial).digest()
-        hash2 = hashlib.sha256(hash1).hexdigest()
-        print(hash2) # e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1
-            </code>
-        </pre>
-
-        <br>
-        <p>Wait, but e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1 doesn't equal the tx ID we start with: c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3. When in doubt, try Little-Endian!</p>
-
-        <br>
-
-        <details>
-            <summary>big-end to lil-end</summary>
             <pre>
                 <code>
-        big_end = "e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1"
-        lil_end = "".join(reversed([big_end[i:i+2] for i in range(0, len(big_end), 2)]))
-        print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
+import hashlib
+
+serial = "01000000017967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc010000006a47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825ffffffff014baf2100000000001976a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac00000000"
+
+serial = bytes.fromhex(serial)
+hash1 = hashlib.sha256(serial).digest()
+hash2 = hashlib.sha256(hash1).hexdigest()
+print(hash2) # e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1
                 </code>
             </pre>
-        </details>
+
+            <p>
+                Wait, but <code class="color-code">e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1</code> doesn't equal the tx ID we start with: <code class="color-code">c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3</code>. When in doubt, try Little-Endian!
+            </p>
+
+            <details>
+                <summary>big-end to lil-end</summary>
+                <pre>
+                    <code>
+            big_end = "e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1"
+            lil_end = "".join(reversed([big_end[i:i+2] for i in range(0, len(big_end), 2)]))
+            print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
+                    </code>
+                </pre>
+            </details>
+        </div>
+
         <hr>
-    </section>
 
 
-    <br><br>
-    <h3>Resources</h3>
-    <section>
-        <ul>
-            <li><a href="http://royalforkblog.github.io/2014/11/20/txn-demo/">http://royalforkblog.github.io/2014/11/20/txn-demo/</a></li>
-            <li><a href="https://learnmeabitcoin.com/technical/txid">https://learnmeabitcoin.com/technical/txid</a></li>
-            <li><a href="https://learnmeabitcoin.com/technical/transaction-data">https://learnmeabitcoin.com/technical/transaction-data</a></li>
-            <li><a href="https://en.bitcoin.it/wiki/Script">https://en.bitcoin.it/wiki/Script</a></li>
-            <li><a href="https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc">https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc</a></li>
-        </ul>
-    </section>
-
-    <br> <br>
-
+        <div class="margins">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="http://royalforkblog.github.io/2014/11/20/txn-demo/">http://royalforkblog.github.io/2014/11/20/txn-demo/</a></li>
+                <li><a href="https://learnmeabitcoin.com/technical/txid">https://learnmeabitcoin.com/technical/txid</a></li>
+                <li><a href="https://learnmeabitcoin.com/technical/transaction-data">https://learnmeabitcoin.com/technical/transaction-data</a></li>
+                <li><a href="https://en.bitcoin.it/wiki/Script">https://en.bitcoin.it/wiki/Script</a></li>
+                <li><a href="https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc">https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc</a></li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}
-

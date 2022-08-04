@@ -2,73 +2,71 @@
 
 {% block title %}verify-sig{% endblock %}
 
-{% block morehead %} 
-    <style>
-        h1, section {
-            margin: 20px 40px;
-            width: 1000px;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
 
-    <header><h1>Verify a Signature</h1></header>
+    <div id="content-wrap">
+        <header>
+            <h1>Verify a Signature</h1> <br>
+        </header>
 
-    <section>
-        <p>We have some Python code below verifies a signature (R,S) given a corresponding message and public key. In Bitcoin, signatures are DER encoded. This is just a standard way of serializing the data that makes communicating the information easier. Think of how we encode home addresses when sending a letter. We address the letter in a specific format so that the mailman can easily identify where the letter needs to be delivered. </p>
-        <p>
-            One thing we wanted to point out here today is that R and S are different sizes, as you can see from the code below.
-            So why is R 33 bytes and S is 32? Initial bytes 0x00 are generally not allowed in R and S. They will both have 32 bytes except if the leading byte > 0x7F. If this is the case, then 0x00 is prepended on that number. The reason is that DER encoding is a subset of Basic Encoding Rules (BER http://luca.ntop.org/Teaching/Appunti/asn1.html) and BER says that if the first byte > 0x7F then it is a negative number. openSSL knows that signatures are not negative (think finite field here) so instead of just ignoring this rule and viewing it as a positive number, and thus breaking the encoding rules, we just prepend 0x00 so that all is well. This explanation was inspired by Peter Wuille (on this post https://bitcoin.stackexchange.com/questions/12554/why-the-signature-is-always-65-13232-bytes-long).
+        <div class="margins">
+            <p>We have some Python code below verifies a signature (R,S) given a corresponding message and public key. In Bitcoin, signatures are DER encoded. This is just a standard way of serializing the data that makes communicating the information easier. Think of how we encode home addresses when sending a letter. We address the letter in a specific format so that the mailman can easily identify where the letter needs to be delivered. </p>
 
-            #Where initial 0x00 bytes for R and S are not allowed, except when their first byte would otherwise be above 0x7F (in which case a single 0x00 in front is required). Also note that inside transaction signatures, an extra hashtype byte follows the actual signature data.
-            # also note that in a transaction the signature will have the sighash appended. Here it is not.
+            <p> 
+                One thing we wanted to point out here today is that R and S are different sizes, as you can see from the code below. So why is R 33 bytes and S is 32? Initial bytes 0x00 are generally not allowed in R and S. They will both have 32 bytes except if the leading byte > 0x7F. If this is the case, then 0x00 is prepended on that number. The reason is that DER encoding is a subset of Basic Encoding Rules (BER http://luca.ntop.org/Teaching/Appunti/asn1.html) and BER says that if the first byte > 0x7F then it is a negative number. openSSL knows that signatures are not negative (think finite field here) so instead of just ignoring this rule and viewing it as a positive number, and thus breaking the encoding rules, we just prepend 0x00 so that all is well. This explanation was inspired by Peter Wuille (on this post https://bitcoin.stackexchange.com/questions/12554/why-the-signature-is-always-65-13232-bytes-long).
+            </p>            
 
-            # When you are performing the validation, you must make both R and S a combined 64 bytes. So that means, if either is preceded with 0x00, you must remove this extra byte. Else you will get a nasty error message from ECDSA module like:
-            #ecdsa.keys.BadSignatureError: ('Malformed formatting of signature', MalformedSignature('Invalid length of signature, expected 64 bytes long, provided string is 65 bytes long'))
+            <p>
+                Where initial 0x00 bytes for R and S are not allowed, except when their first byte would otherwise be above 0x7F (in which case a single 0x00 in front is required). Also note that inside transaction signatures, an extra hashtype byte follows the actual signature data. Also note that in a transaction the signature will have the sighash appended. Here it is not.
+            </p>            
+            
+            <p>
+                When you are performing the validation, you must make both R and S a combined 64 bytes. So that means, if either is preceded with 0x00, you must remove this extra byte. Else you will get a nasty error message from ECDSA module like:
+                #ecdsa.keys.BadSignatureError: ('Malformed formatting of signature', MalformedSignature('Invalid length of signature, expected 64 bytes long, provided string is 65 bytes long'))
 
-            # python-ecdsa requires 64 byte input for creating the verifying key, I removed the first byte myself.
-        </p>
-    </section>
+                python-ecdsa requires 64 byte input for creating the verifying key, I removed the first byte myself.
+            </p>
+        </div>
 
-    <section>
-        <pre>
-            <code>
-                # Python
-                import hashlib
-                from ecdsa import VerifyingKey, SECP256k1
+        <!--Note that I have to put actual code all the way left because it will be rendered exactly as typed-->
+        <div id="json">
+            <pre>
+                <code>
+# Python
+import hashlib
+from ecdsa import VerifyingKey, SECP256k1
 
-                # we're going to double hash this message
-                mess = bytes.fromhex("01000000018dd4f5fbd5e980fc02f35c6ce145935b11e284605bf599a13c6d415db55d07a1000000001976a91446af3fb481837fadbb421727f9959c2d32a3682988acffffffff0200719a81860000001976a914df1bd49a6c9e34dfa8631f2c54cf39986027501b88ac009f0a5362000000434104cd5e9726e6afeae357b1806be25a4c3d3811775835d235417ea746b7db9eeab33cf01674b944c64561ce3388fa1abd0fa88b06c44ce81e2234aa70fe578d455dac0000000001000000")
-                hash1 = hashlib.sha256(mess).digest() # 083867478cb0d1d8bb864175bbc49728cffcc114bc2e762c6df64f2c965a9a66
-                pubkey = "2e930f39ba62c6534ee98ed20ca98959d34aa9e057cda01cfd422c6bab3667b76426529382c23f42b9b08d7832d4fee1d6b437a8526e59667ce9c4e9dcebcabb"
+# we're going to double hash this message
+mess = bytes.fromhex("01000000018dd4f5fbd5e980fc02f35c6ce145935b11e284605bf599a13c6d415db55d07a1000000001976a91446af3fb481837fadbb421727f9959c2d32a3682988acffffffff0200719a81860000001976a914df1bd49a6c9e34dfa8631f2c54cf39986027501b88ac009f0a5362000000434104cd5e9726e6afeae357b1806be25a4c3d3811775835d235417ea746b7db9eeab33cf01674b944c64561ce3388fa1abd0fa88b06c44ce81e2234aa70fe578d455dac0000000001000000")
+hash1 = hashlib.sha256(mess).digest() # 083867478cb0d1d8bb864175bbc49728cffcc114bc2e762c6df64f2c965a9a66
+pubkey = "2e930f39ba62c6534ee98ed20ca98959d34aa9e057cda01cfd422c6bab3667b76426529382c23f42b9b08d7832d4fee1d6b437a8526e59667ce9c4e9dcebcabb"
 
-                # DER encoded signature. ( we will decode to get R and S )
-                #"30450221009908144ca6539e09512b9295c8a27050d478fbb96f8addbc3d075544dc41328702201aa528be2b907d316d2da068dd9eb1e23243d97e444d59290d2fddf25269ee0e"
-                # in a transaction you will see an extra byte appended to the signature to indicate the sighash
+# DER encoded signature. ( we will decode to get R and S )
+#"30450221009908144ca6539e09512b9295c8a27050d478fbb96f8addbc3d075544dc41328702201aa528be2b907d316d2da068dd9eb1e23243d97e444d59290d2fddf25269ee0e"
+# in a transaction you will see an extra byte appended to the signature to indicate the sighash
 
-                r = '9908144ca6539e09512b9295c8a27050d478fbb96f8addbc3d075544dc413287' 
-                s = '1aa528be2b907d316d2da068dd9eb1e23243d97e444d59290d2fddf25269ee0e'
-                sig = r + s
+r = '9908144ca6539e09512b9295c8a27050d478fbb96f8addbc3d075544dc413287' 
+s = '1aa528be2b907d316d2da068dd9eb1e23243d97e444d59290d2fddf25269ee0e'
+sig = r + s
 
-                # sig and pubkey should both be 64 bytes long. The verify method will hash the message a second time for us. Be sure to specify sh256.
-                vk = VerifyingKey.from_string(bytes.fromhex(pubkey), curve=SECP256k1)
-                print(vk.verify(bytes.fromhex(sig), hash1, hashlib.sha256)) # True
+# sig and pubkey should both be 64 bytes long. The verify method will hash the message a second time for us. Be sure to specify sh256.
+vk = VerifyingKey.from_string(bytes.fromhex(pubkey), curve=SECP256k1)
+print(vk.verify(bytes.fromhex(sig), hash1, hashlib.sha256)) # True
 
 
 
-                ## some notes about DER encoding
-                # 0x30 byte is a header byte indicating a compound structure (starting DER sequence)
-                # 0x45 -- 69 length of the whole sequence in bytes (minus the header byte)
-                # 0x02 indicates an integer follows (BER standard)
-                # 0x21 length of integer to follow
-                # R
-                # 0x02 indicates an integer follows (BER standard)
-                # 0x20 length of integer to follow
-                # S
-                # in a transaction, a sighash is appended
-            </code>
-        </pre>
-    </section>
-
+## some notes about DER encoding
+# 0x30 byte is a header byte indicating a compound structure (starting DER sequence)
+# 0x45 -- 69 length of the whole sequence in bytes (minus the header byte)
+# 0x02 indicates an integer follows (BER standard)
+# 0x21 length of integer to follow
+# R
+# 0x02 indicates an integer follows (BER standard)
+# 0x20 length of integer to follow
+# S
+# in a transaction, a sighash is appended
+                </code>
+            </pre>
+        </div>
+    </div>
 {% endblock %}
