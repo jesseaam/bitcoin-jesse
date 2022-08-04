@@ -160,8 +160,11 @@ code {
     color: darkorchid;
 }
 
+
 .tx-version {
     color: blue;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-version:hover {
     background-color: aqua;
@@ -169,6 +172,8 @@ code {
 
 .tx-nin {
     color: green;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-nin:hover {
     background-color: lightgreen; 
@@ -176,6 +181,8 @@ code {
 
 .tx-inid {
     color: purple;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-inid:hover {
     background-color: linen; 
@@ -183,6 +190,8 @@ code {
 
 .tx-index {
     color: grey;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-index:hover {
     background-color: yellow; 
@@ -190,6 +199,8 @@ code {
 
 .tx-len {
     color: brown;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-len:hover {
     background-color: aqua; 
@@ -197,6 +208,8 @@ code {
 
 .tx-unlock {
     color: darkkhaki;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-unlock:hover {
     background-color: lightgreen; 
@@ -204,6 +217,8 @@ code {
 
 .tx-seq {
     color: red;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-seq:hover {
     background-color: hotpink; 
@@ -211,6 +226,8 @@ code {
 
 .tx-nout {
     color: lightblue;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-nout:hover {
     background-color: indigo; 
@@ -218,6 +235,8 @@ code {
 
 .tx-sats {
     color: lightseagreen;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-sats:hover {
     background-color: wheat; 
@@ -225,6 +244,8 @@ code {
 
 .tx-locksize {
     color: magenta;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-locksize:hover {
     background-color: peru; 
@@ -232,6 +253,8 @@ code {
 
 .tx-lock {
     color: olivedrab;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
 }
 .tx-lock:hover {
     background-color: pink; 
@@ -239,7 +262,11 @@ code {
 
 .tx-time {
     color: black;
+    transition: ease-in-out all .4s;
+    font-weight: bold;
+
 }
+
 .tx-time:hover {
-    background-color: white; 
+    background-color: red;
 }

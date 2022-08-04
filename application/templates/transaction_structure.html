@@ -121,56 +121,60 @@ print(json.dumps(tx, index=2))
 
         <div class="margins">
             <p>
-                <code>
-                    <a class="tx-version">01000000</a><a class="tx-nin">01</a><a class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a><a class="tx-index">01000000</a><a class="tx-len">6a</a><a class="tx-unlock">47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</a><a class="tx-seq">ffffffff</a><a class="tx-nout">01</a><a class="tx-sats">4baf210000000000</a><a class="tx-locksize">19</a><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a><a class="tx-time">00000000</a>
+                <code style="font-size: x-large;">
+                    <a class="tx-version">010000000</a><a class="tx-nin">01</a><a class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a><a class="tx-index">01000000</a><a class="tx-len">6a</a><a class="tx-unlock">47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</a><a class="tx-seq">ffffffff</a><a class="tx-nout">01</a><a class="tx-sats">4baf210000000000</a><a class="tx-locksize">19</a><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a><a class="tx-time">00000000</a>
                 </code>
                 <br><br>
             </p>
-            <ol>
-                <li><a class="tx-version">010000000</a>: Which version of tx data structure we are using. Version 1, shown in 4 bytes, Little Endian.</li>
-                <li><a class="tx-nin">01</a>: The number of inputs.</li>
-                <li><a href="https://blockstream.info/tx/fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779"  class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a>: txid of input (in reverse byte order. so txid=fc9e4f...) </li>
-                <li><a class="tx-index">01000000</a>: The index of the output you are referencing.</li>
-                <li><a class="tx-len">6a</a>: The length of script to follow (0x6a= 106 bytes).</li>
-                <li><a class="tx-unlock"><code>47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</code></a>: Unlocking script.</li>
-                <li><a class="tx-seq">ffffffff</a>: Sequence. Can be used for <a href="https://bitcoincore.org/en/faq/optin_rbf/">Opt-in RBF.</a></li>
-                <li><a class="tx-nout">01</a>: Number of outputs.</li>
-                <li><a class="tx-sats">4baf210000000000</a>: Value of output in Sats (lil-end).</li>
-                <li><a class="tx-locksize">19</a>: Size of the locking script that directly follows. (0x19=25bytes)</li>
-                <li><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a>: Locking script (aka ScriptPubKey) </li>
+
+            <ol style="font-size: 20px">
+                <li><code><a class="tx-version">010000000</a></code>: Which version of tx data structure we are using. Version 1, shown in 4 bytes, Little Endian.</li>
+                <li><code><a class="tx-nin">01</a></code>: The number of inputs.</li>
+                <li><code><a href="https://blockstream.info/tx/fc9e4f9c334d55c1dc535bd691a1c159b0f7314c54745522257a905e18a56779"  class="tx-inid">7967a5185e907a25225574544c31f7b059c1a191d65b53dcc1554d339c4f9efc</a></code>: txid of input (in reverse byte order. so txid=fc9e4f...) </li>
+                <li><code><a class="tx-index">01000000</a></code>: The index of the output you are referencing.</li>
+                <li><code><a class="tx-len">6a</a></code>: The length of script to follow (0x6a= 106 bytes).</li>
+                <li><code><a class="tx-unlock"><code>47304402206a2eb16b7b92051d0fa38c133e67684ed064effada1d7f925c842da401d4f22702201f196b10e6e4b4a9fff948e5c5d71ec5da53e90529c8dbd122bff2b1d21dc8a90121039b7bcd0824b9a9164f7ba098408e63e5b7e3cf90835cceb19868f54f8961a825</code></a></code>: Unlocking script.</li>
+                <li><code><a class="tx-seq">ffffffff</a></code>: Sequence. Can be used for <a href="https://bitcoincore.org/en/faq/optin_rbf/">Opt-in RBF.</a></li>
+                <li><code><a class="tx-nout">01</a></code>: Number of outputs.</li>
+                <li><code><a class="tx-sats">4baf210000000000</a></code>: Value of output in Sats (lil-end).</li>
+                <li><code><a class="tx-locksize">19</a></code>: Size of the locking script that directly follows. (0x19=25bytes)</li>
+                <li><code><a class="tx-lock">76a914db4d1141d0048b1ed15839d0b7a4c488cd368b0e88ac</a></code>: Locking script (aka ScriptPubKey) </li>
                     <details>
                         <summary><a style="color:olivedrab">This one is really cool!</a></summary>
 
-                        <p>Each opcode is asigned a hex value. These values are listed in a table on the <a href="https://en.bitcoin.it/wiki/Script">Bitcoin Script wiki.</a> 
-                        Lookup the hex encodings for each opcode of interest. For example,</p> 
-                        <ul>
-                        <li>76=OP_DUP</li>
-                        <li>a9=OP_HASH160</li>
-                        <li>14=bytes to push</li>
-                        <li>db4d1141d0048b1ed15839d0b7a4c488cd368b0e= data to push</li>
-                        <li>88=OP_EQUALVERIFY</li>
-                        <li>ac = OP_CHECKSIG</li>
+                            <p>
+                                Each opcode is asigned a hex value. These values are listed in a table on the <a href="https://en.bitcoin.it/wiki/Script">Bitcoin Script wiki.</a> 
+                                Lookup the hex encodings for each opcode of interest. For example,
+                            </p> 
+                            <ul>
+                            <li>76=OP_DUP</li>
+                            <li>a9=OP_HASH160</li>
+                            <li>14=bytes to push</li>
+                            <li>db4d1141d0048b1ed15839d0b7a4c488cd368b0e= data to push</li>
+                            <li>88=OP_EQUALVERIFY</li>
+                            <li>ac = OP_CHECKSIG</li>
 
-                        </ul><br>
+                            </ul><br>
 
-                        <p>
-                        Example of a P2PKH provided in the Bitcoin wiki under the section Script Examples:</p><br>
+                            <p>
+                                Example of a P2PKH provided in the Bitcoin wiki under the section Script Examples:
+                            </p><br>
 
-                        <pre>
-                            <code>
-                        76       A9             14
-                        OP_DUP OP_HASH160    Bytes to push
-                        
-                        89 AB CD EF AB BA AB BA AB BA AB BA AB BA AB BA AB BA AB BA   88         AC
-                                            Data to push                     OP_EQUALVERIFY OP_CHECKSIG
+                            <pre>
+                                <code>
+76       A9             14
+OP_DUP OP_HASH160    Bytes to push
 
-                            </code>
-                        </pre>
+89 AB CD EF AB BA AB BA AB BA AB BA AB BA AB BA AB BA AB BA   88         AC
+                    Data to push                     OP_EQUALVERIFY OP_CHECKSIG
+
+                                </code>
+                            </pre>
 
                         <br><br>
                     </details>
 
-                <li><a class="tx-time">00000000</a>: time lock (block height or time at which you can spend the BTC. If 0 then no timelock)</li>
+                <li><code><a class="tx-time">00000000</a></code>: time lock (block height or time at which you can spend the BTC. If 0 then no timelock)</li>
                 <br>
             </ol>
 
@@ -209,9 +213,9 @@ print(hash2) # e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1
                 <summary>big-end to lil-end</summary>
                 <pre>
                     <code>
-            big_end = "e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1"
-            lil_end = "".join(reversed([big_end[i:i+2] for i in range(0, len(big_end), 2)]))
-            print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
+big_end = "e32158dccb5b1573e133ff86be1b05fccf0590febf2ae01fa310820995e6b4c1"
+lil_end = "".join(reversed([big_end[i:i+2] for i in range(0, len(big_end), 2)]))
+print(lil_end) # c1b4e695098210a31fe02abffe9005cffc051bbe86ff33e173155bcbdc5821e3
                     </code>
                 </pre>
             </details>
