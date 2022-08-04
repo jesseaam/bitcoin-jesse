@@ -4,22 +4,15 @@
 
 {% block content %}
 
-    <div id="page-container" >
-        <div id="content-wrap">
+    <div id="content-wrap">
         <header>
             <h1 >Hello ₿ World!</h1>
             <br>
             <p >This tool creates a pseudo-randomly generated mnemonic phrase (heed the footer). Choose how many bits of entropy to include in the mnemonic. Then a mnemonic phrase will be created.</p>
+            <br> <br>
         </header>
 
-        <br>
-
-        <section>
-        </section>
-
-        <br> <br>
-
-        <section style="text-align: center">
+        <div>
             <form method="POST" action=" {{ url_for('random') }} ">
                 <select name="Select-Size" size="1" id="size">
                     <option value="">- Please select a size -</option>
@@ -33,13 +26,8 @@
 
                 <input type="submit" value="Create mnemonic" id="btc-button">
             </form>
-        </section>
         </div>
+    </div> <!--end content-wrap-->
 
-        <footer style="background-color:rgb(155, 152, 152)">
-            <p style="margin: 0 8%"><span style="color:red">WARNING</span><br>
-                This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
-            </p>        
-        </footer>
-    </div>
+    {% include "includes/footer_warn.html" %}
 {% endblock %}

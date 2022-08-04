@@ -2,55 +2,40 @@
 
 {% block title %}home{% endblock %}
 
-{% block morehead %} 
-    <style>
-        section {
-            background-color: orange;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
+    <div id="content-wrap">
+        {% if user is defined %}
+            <header>
+                <h1>Welcome to {{user}}'s home page!</h1>
+            </header>
+            <!-- {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                {% endif %}
+            {% endwith %} -->
 
-    <div id="page-container" >
-        <div id="content-wrap">
-            {% if user is defined %}
-                <header>
-                    <h1>Welcome to {{user}}'s home page!</h1>
-                </header>
+        {% else %}
+            <header >
+                <h1 style="font-size:80px">Hello ₿ World!</h1>
+            </header>
+        {% endif %}
 
-                <!-- {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                        <ul class="flashes">
-                            {% for message in messages %}
-                                <p>{{ message }}</p>
-                            {% endfor %}
-                    {% endif %}
-                {% endwith %} -->
+        <br>
 
-            {% else %}
-                <header >
-                    <h1 style="font-size:80px">Hello ₿ World!</h1>
-                </header>
-            {% endif %}
-
-            <br>
-
-            <section style="border-style:solid; text-align: center; padding-top: 10px;">
-                <p>Current block height: {{ height }}</p>
-                <p>Bitcoin price: ${{ price }}</p>
-                <p>Moscow time: {{ sats }} </p>
-                <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
-            </section>
+        <div id="div-index">
+            <p>Current block height: {{ height }}</p>
+            <p>Bitcoin price: ${{ price }}</p>
+            <p>Moscow time: {{ sats }} </p>
+            <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
         </div>
-
-
-        <footer >
-            <img id="btc" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
-        </footer>
-        <p></p>
-
     </div>
+
+    <footer >
+        <img id="btc" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+    </footer>
 
     <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
 {% endblock %}

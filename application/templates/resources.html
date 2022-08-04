@@ -5,16 +5,16 @@
 
 
 {% block content %}
-    <header>
-        <h1 align="center">Hello ₿ World!</h1>
-        <p>For all of your Bitcoin information needs, checkout the <a href="https://en.bitcoin.it/wiki/Main_Page">Bitcoin Wiki.</a><br>Also visit <a href="https://bitcoin.org/en/">bitcoin.org</a>. Then try some of the resources below!
-    </header>
+    <div id="class-wrap">
+        <header id="header-resources">
+            <h1>Hello ₿ World!</h1>
+            <p>For all of your Bitcoin information needs, checkout the <a href="https://en.bitcoin.it/wiki/Main_Page">Bitcoin Wiki.</a><br>Also visit <a href="https://bitcoin.org/en/">bitcoin.org</a>. Then try some of the resources below!
+        </header>
 
-    <hr><br>
 
 
-    <div style="position:absolute; left:20px">
-        <table>
+    <div id="div-resource">
+        <table class="table-pad">
             <tr>
                 <th>Books</th>
             </tr>
@@ -31,10 +31,8 @@
                 <td><a href="https://vijayboyapati.medium.com/the-bullish-case-for-bitcoin-6ecc8bdecc1">The Bullish Case for Bitcoin</a></td>
             </tr>
         </table>
-        <br>
 
-
-        <table>
+        <table class="table-pad">
             <tr>
                 <th>Education</th>
             </tr>
@@ -51,10 +49,8 @@
                 <td> <a href="https://learnmeabitcoin.com">learnmeabitcoin</a> </td>
             </tr>
         </table>
-        <br>
 
-
-        <table>
+        <table class="table-pad">
 
             <tr>
                 <th>Media</th>
@@ -72,10 +68,8 @@
                 <td><a href="https://dergigi.com/2020/04/27/dear-family-dear-friends/">Dear Family, Dear Friends</a></td>
             </tr>
         </table>
-        <br>
 
-
-        <table>
+        <table class="table-pad">
             <th>Additional</th>
             <tr>
                 <td><a href="https://www.hope.com">hope.com</a></td>
@@ -93,6 +87,7 @@
                 <td><a href="https://bitcoin-resources.com">bitcoin-resources.com</a></td>
             </tr>
         </table>
+    </div>
     </div>
 {% endblock %}
 

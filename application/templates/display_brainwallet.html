@@ -3,66 +3,45 @@
 {% block title %}brain wallet {% endblock %}
 
 {% block morehead %} 
-    <style>
-        h1 {
-            color: blue
-        }
-        footer{
-            text-align: center;
-            background-color: rgb(155, 152, 152);
-            margin-top: auto;
-            border: solid;
-            position: fixed;
-            bottom: 0;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
 
-    <div id="page-container" >
-        <div id="content-wrap">
-            <header>
-                <h1>Brain Wallet</h1>
+    <div id="content-wrap">
+        <header>
+            <h1 style="margin-bottom:20px">Brain Wallet</h1>
 
-                <p>What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).</p>
-            </header> <br><br>
+            <p>What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).</p>
+            <br><br>
+        </header> 
 
-            <div style="margin: 1% 8%">
-                <form action="{{ url_for('brain_wallet') }}" method="POST">
-                    <p>Enter phrase</p>
-                    <input type="text" name="phrase" placeholder="I love Bitcoin!">
-                    <input type="submit" id="btc-button" value="Create Address" >
-                    <!--<input style="background-color: orange;" type="submit" value="Create Address" > -->
-                </form>
-            </div>
-
-            <div style="margin-top: 2%;">
-                {% if phrase is defined %}
-                    <table id="div-center" class="mn-table">
-                        <tr>
-                            <th>Phrase</th>
-                            <th>Address</th>
-                            <th>Funded</th>
-                            <th>Summary</th>
-                        </tr>
-                            <tr>
-                                <td>{{phrase}}</td>
-                                <td>{{addr}}</td>
-                                <td>{{funded}}</td>
-                                <td>{{summary}}</td>
-                            </tr>
-                    </table>
-                {% endif %}
-            </div>
+        <div class="div-bw">
+            <form action="{{ url_for('brain_wallet') }}" method="POST">
+                <p>Enter phrase</p>
+                <input type="text" name="phrase" placeholder="I love Bitcoin!">
+                <input type="submit" id="btc-button" value="Create Address" >
+            </form>
         </div>
 
-        <footer style="">
-            <div>
-                <span style="color:red">WARNING</span><br>
-                This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet. Read <a href="https://rya.nc/files/cracking_cryptocurrency_brainwallets.pdf">Cracking Cryptocurrency Brainwallets</a> for more information about why meat is predictable.
-            </div>
+        <div class="div-bw">
+            {% if phrase is defined %}
+                <table >
+                    <tr>
+                        <th>Phrase</th>
+                        <th>Address</th>
+                        <th>Funded</th>
+                        <th>Summary</th>
+                    </tr>
+                        <tr>
+                            <td>{{phrase}}</td>
+                            <td>{{addr}}</td>
+                            <td>{{funded}}</td>
+                            <td>{{summary}}</td>
+                        </tr>
+                </table>
+            {% endif %}
+        </div>
+    </div> <!--end content-wrap-->
 
-        </footer>
-    </div>
+    {% include "includes/footer_warn.html" %}
 {% endblock %}

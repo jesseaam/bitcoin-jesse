@@ -5,46 +5,38 @@
 
 {% block content %}
 
-    <div id="page-container" >
-        <div id="content-wrap">
+    <div id="content-wrap">
 
-            {% set list1 = mn_single.split(" ") %}
-                <header>
-                    <h1 style="color:green">Mnemonic phrase that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1><br>
-                    <h2 style="background-color: lightgreen"> {{mn_single}} </h2>
-                </header>
+        {% set list1 = mn_single.split(" ") %}
+            <header>
+                <h1 style="color:green">Mnemonic phrase that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1><br>
+                <h2 style="background-color: lightgreen"> {{mn_single}} </h2>
+            </header>
 
-            <br>
 
+        <div id="json">
             <pre>
                 <code>
         {{results}}
                 </code>
             </pre>
-
-
-            <div>
-                <details>
-                    <summary>{{tot -1}} other mnemonic words that work.</summary>
-
-                        <div style="background-color: orange;">
-                            <p style="margin: 1% 8%;">Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
-                        </div>
-
-                        <div>
-                            <marquee behavior="scroll" direction="left"
-                            onmouseover="this.setAttribute('scrollamount', 3, 0);"
-                            onmouseout="this.setAttribute('scrollamount', 15, 0);"><p>{{mn_all}}</p></marquee>
-                        </div>
-                </details>
-            </div>
-
         </div>
-        <footer style="padding-top: 100px;">
-            <p>
-                <span style="color:red">WARNING</span><br>
-                This tool is for educational purposes only. Use a cryptographically secure pseudorandom number generator to produce the initial entropy. A reputable hardware signing device is the preferred method for mnemonic codeword generation. Never let that initial entropy touch the internet.
-            </p>
-        </footer>
+
+        <div style="text-align: left; padding-left: 20px; padding-bottom: 8rem;">
+            <details>
+                <summary>{{tot -1}} other mnemonic words that work.</summary>
+                    <div style="background-color: orange; text-align: center;">
+                        <p style="margin: 1% 8%;">Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
+                    </div>
+                    <div>
+                        <marquee behavior="scroll" direction="left"
+                        onmouseover="this.setAttribute('scrollamount', 3, 0);"
+                        onmouseout="this.setAttribute('scrollamount', 15, 0);">
+                            <p>{{mn_all}}<br></p>
+                        </marquee>
+                    </div>
+            </details>
+        </div>
     </div>
+    {% include "includes/footer_warn.html" %}
 {% endblock %}

@@ -10,47 +10,44 @@
         }
 
 {% block content %}
+    <div id="content-wrap">
 
-    <header>
-        <h1>All generated Mnemonics</h1>
-
-        <p>This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.</p><br>
-    </header>
-
+        <header>
+            <h1>All generated Mnemonics</h1>
+                <p>This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.</p><br>
+        </header>
 
         <br><br>
 
-    <section class="mn-table">
-
-        <form action="{{ url_for('delete_all')}}" style="text-align: left; ">
-            <input style="color:red" type="submit" value="Clear Table" >
-        </form>
-
-        <br>
-
-        <table>
-            <tr>
-                <th>Mnemonic</th>
-                <th>Address: m/44'/0'/0'/0/0</th>
-                <th>Funded</th>
-                <th>Summary</th>
-                <th>Datetime</th>
-            </tr>
-
-            {% for i in db %}
+        <div class="div-bw">
+            <!--<section class="mn-table">-->
+            <form action="{{ url_for('delete_all')}}" style="text-align: left; ">
+                <input style="color:red" type="submit" value="Clear Table" >
+            </form>
+            <br>
+            <table>
                 <tr>
-                    <td>{{i.mnemonic}}</td> 
-                    <td>{{i.addr0}}</td> 
-                    {% if i.funded > 0 %}
-                        <td style="background-color:lightgreen">{{i.funded}}</td> 
-                    {% else %}
-                        <td >{{i.funded}}</td> 
-                    {% endif %}
-                    <td>{{i.summary}}</td> 
-                    <td>{{i.datetime}}</td> 
+                    <th>Mnemonic</th>
+                    <th>Address: m/44'/0'/0'/0/0</th>
+                    <th>Funded</th>
+                    <th>Summary</th>
+                    <th>Datetime</th>
                 </tr>
-            {% endfor %}
-        </table>
-    </section>
 
+                {% for i in db %}
+                    <tr>
+                        <td>{{i.mnemonic}}</td> 
+                        <td>{{i.addr0}}</td> 
+                        {% if i.funded > 0 %}
+                            <td style="background-color:lightgreen">{{i.funded}}</td> 
+                        {% else %}
+                            <td >{{i.funded}}</td> 
+                        {% endif %}
+                        <td>{{i.summary}}</td> 
+                        <td>{{i.datetime}}</td> 
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 {% endblock %}
