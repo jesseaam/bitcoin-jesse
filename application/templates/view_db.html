@@ -2,13 +2,6 @@
 
 {% block title %}view db{% endblock %}
 
-        tr {
-            border-bottom: 1px solid #ddd;
-        }
-        tr:nth-child(even) {
-            background-color: rgba(150, 212, 212, 0.4);
-        }
-
 {% block content %}
     <div id="content-wrap">
 
@@ -16,20 +9,15 @@
             <h1>All generated Mnemonics</h1>
         </header>
 
-        <div class="margins">
-                <p>
-                    This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.
-                </p>
-        </div>
+        <section class="margins">
+            <p>
+                This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.
+            </p><br>
 
-        <br><br>
-
-        <div class="div-bw">
-            <!--<section class="mn-table">-->
             <form action="{{ url_for('delete_all')}}" style="text-align: left; ">
                 <input style="color:red" type="submit" value="Clear Table" >
-            </form>
-            <br>
+            </form><br>
+
             <table>
                 <tr>
                     <th>Mnemonic</th>
@@ -53,6 +41,10 @@
                     </tr>
                 {% endfor %}
             </table>
-        </div>
+        </section>
     </div>
+
+    <footer >
+        <img id="btc-logo" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+    </footer>
 {% endblock %}

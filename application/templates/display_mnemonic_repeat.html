@@ -4,39 +4,40 @@
 
 
 {% block content %}
-
     <div id="content-wrap">
+        <header>
+            {% set list1 = mn_single.split(" ") %}
+            <h1 style="color:green">Mnemonic phrase that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1>
+        </header>
 
-        {% set list1 = mn_single.split(" ") %}
-            <header>
-                <h1 style="color:green">Mnemonic phrase that repeats <span style="color: #0000a0">"{{list1[0]}}"</span>  and has an appropriate checksum:</h1>
-                <h2 id="h2-mn"> {{mn_single}} </h2>
-            </header>
+        <section class="margins">
+            <h2 id="h2-mn"> {{mn_single}} </h2>
 
-
-        <div id="json">
-            <pre>
-                <code>
+            <div id="json">
+                <pre>
+                    <code>
 {{results}}
-                </code>
-            </pre>
-        </div>
+                    </code>
+                </pre>
+            </div>
 
-        <div style="text-align: left; padding-left: 20px; padding-bottom: 8rem;">
-            <details>
-                <summary>{{tot -1}} other mnemonic words that work.</summary>
-                    <div style="background-color: orange; text-align: center;">
-                        <p style="margin: 1% 8%;">Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
-                    </div>
-                    <div>
-                        <marquee behavior="scroll" direction="left"
-                        onmouseover="this.setAttribute('scrollamount', 3, 0);"
-                        onmouseout="this.setAttribute('scrollamount', 15, 0);">
-                            <p>{{mn_all}}<br></p>
-                        </marquee>
-                    </div>
-            </details>
-        </div>
+            <div >
+                <details>
+                    <summary>{{tot -1}} other mnemonic words that work.</summary>
+
+                        <div style="background-color: orange; text-align: center;">
+                            <p style="margin: 1% 8%;">Note, these each encode for a different seed because the last word contains a portion of the entropy (in addition to the checksum). </p>
+                        </div>
+                        <div>
+                            <marquee behavior="scroll" direction="left"
+                            onmouseover="this.setAttribute('scrollamount', 3, 0);"
+                            onmouseout="this.setAttribute('scrollamount', 15, 0);">
+                                <p>{{mn_all}}<br></p>
+                            </marquee>
+                        </div>
+                </details>
+            </div>
+        </section>
     </div>
     {% include "includes/footer_warn.html" %}
 {% endblock %}

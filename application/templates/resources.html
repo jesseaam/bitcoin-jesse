@@ -2,11 +2,9 @@
 
 {% block title %}Resources{% endblock %}
 
-
-
 {% block content %}
-    <div id="class-wrap">
-        <header id="header-resources">
+    <div id="content-wrap">
+        <header>
             <h1>Hello ₿ World!</h1>
             <p>
                 For all of your Bitcoin information needs, checkout the <a href="https://en.bitcoin.it/wiki/Main_Page">Bitcoin Wiki.</a><br>
@@ -14,7 +12,7 @@
             </p>
         </header>
 
-        <div id="div-resource">
+        <section id="resource">
             <table class="table-resources">
                 <tr>
                     <th>Books</th>
@@ -88,7 +86,11 @@
                     <td><a href="https://bitcoin-resources.com">bitcoin-resources.com</a></td>
                 </tr>
             </table>
-        </div>
-    </div>
-{% endblock %}
+        </section>
 
+    </div>
+
+    <footer >
+        <img id="btc-logo" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+    </footer>
+{% endblock %}

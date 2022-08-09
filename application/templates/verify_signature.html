@@ -9,7 +9,7 @@
             <h1>Verify a Signature</h1> <br>
         </header>
 
-        <div class="margins">
+        <section class="margins">
             <p>We have some Python code below verifies a signature (R,S) given a corresponding message and public key. In Bitcoin, signatures are DER encoded. This is just a standard way of serializing the data that makes communicating the information easier. Think of how we encode home addresses when sending a letter. We address the letter in a specific format so that the mailman can easily identify where the letter needs to be delivered. </p>
 
             <p> 
@@ -26,10 +26,7 @@
 
                 python-ecdsa requires 64 byte input for creating the verifying key, I removed the first byte myself.
             </p>
-        </div>
 
-        <!--Note that I have to put actual code all the way left because it will be rendered exactly as typed-->
-        <div id="json">
             <pre>
                 <code>
 # Python
@@ -67,6 +64,9 @@ print(vk.verify(bytes.fromhex(sig), hash1, hashlib.sha256)) # True
 # in a transaction, a sighash is appended
                 </code>
             </pre>
-        </div>
+        </section>
     </div>
+
+    {% include "includes/footer_logo.html" %}
+
 {% endblock %}

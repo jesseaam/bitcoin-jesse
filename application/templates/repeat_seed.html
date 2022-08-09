@@ -6,43 +6,43 @@
 
     <div id="content-wrap">
         <header>
-            <h1 align="center">Hello ₿ World!</h1>
-
+            <h1>Hello ₿ World!</h1>
         </header>
 
-        <div class="margins">
+        <section class="margins" >
             <p>
                 This tool creates a repeat mnemonic. First select one of the <a href="https://github.com/bitcoin/bips/blob/master/bip-0039/english.txt">BIP 39 mnemonic code words</a> and a mnemonic phrase length N. This tool will create a mnemonic phrase with the selected mnemonic code word listed in the first N-1 positions. The last word will be selected based on a combination of entropy and a checksum. Note that there are multiple options for the last word based on the bits of entropy in the last word. 
-            </p>
-            <br>
-        </div>
+            </p><br>
 
-        <div class="margins">
-            <p>Choose a mnemonic code word from the following selection.</p>
+            <p>
+                Choose a mnemonic code word from the following selection.
+            </p>
+
             <form method="POST" action=" {{ url_for('create_repeat_mnemonic') }} ">
                 <select name="Select-Repeat" size="1" id="mn">
                     <option value="">- Please select a mnemonic codeword -</option>
                     {% for word in codewords %}
                         <option value"{{word}}">{{word}}</option>
                     {% endfor %}
-                </select>
-        </div>
-                <br><br>
+                </select><br><br><br>
 
-        <div class="margins">
-            <p>Next choose how many bits of entropy to include in the mnemonic.</p>
-            <select name="Select-Size" size="1" id="size">
-                <option value="">- Please select a size -</option>
-                <option value="12"> 12 words (128 bits of entropy) </option>
-                <option value="15"> 15 words (160 bits of entropy) </option>
-                <option value="18"> 18 words (192 bits of entropy) </option>
-                <option value="21"> 21 words (224 bits of entropy) </option>
-                <option value="24"> 24 words (256 bits of entropy) </option>
-            </select>
-            <input type="submit" value="Create repeat mnemonic" id="btc-button">
+                <p>
+                    Next choose how many bits of entropy to include in the mnemonic.
+                </p>
+
+                <select name="Select-Size" size="1" id="size">
+                    <option value="">- Please select a size -</option>
+                    <option value="12"> 12 words (128 bits of entropy) </option>
+                    <option value="15"> 15 words (160 bits of entropy) </option>
+                    <option value="18"> 18 words (192 bits of entropy) </option>
+                    <option value="21"> 21 words (224 bits of entropy) </option>
+                    <option value="24"> 24 words (256 bits of entropy) </option>
+                </select>
+
+                <input type="submit" value="Create repeat mnemonic" id="btc-button">
             </form>
-            <br><br><br>
-        </div>
+        </section>
     </div> <!--end content wrap-->
+
     {% include "includes/footer_warn.html" %}
 {% endblock %}

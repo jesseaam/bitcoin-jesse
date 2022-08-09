@@ -4,32 +4,28 @@
 
 {% block content %}
 
-<br>
-    <div id="page-container" >
-        <div id="content-wrap" >
-            <header>
-                <h1 style="font-size:50px">Hello ₿ World!</h1>
-            
-                <h2>Hello ₿ World!</h2>
-                <h3>Hello ₿ World!</h3>
-            </header>
-            <div style=" background-color:blue">
-                    <p>hi</p>
-                    <p>hi</p>
-                    <p>hi</p>
-                    <p>hi</p>
-
-            </div>
+    <div id="content-wrap2" >
+        <header>
+            <h1 style="font-size:50px">Hello ₿ World!</h1>
+        
+            <h2>Hello ₿ World!</h2>
+            <h3>Hello ₿ World!</h3>
+        </header>
+        <div style=" background-color:blue">
+                <p>hi</p>
+                <p>hi</p>
 
         </div>
 
-        <div style="padding-bottom: 120px;"> </div>
+</div>
 
-    <footer  solid; background-color: green;">
-        <div >
-            <img style="height:5rem" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
-        </div>
-    </footer>
+{% endblock %}
+
+{% block footer %}
+        <footer id="footer2">
+            <img id="btc-logo" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+        </footer>
+{% endblock %}
 
 
     <!--
@@ -55,6 +51,4 @@ style=" position:fixed; bottom:0%; left:0px; right: 0px;"
     <div style="border:solid; position:absolute; bottom:0%; width:100%;">
     </div>
     -->
-    </div>
 
-{% endblock %}

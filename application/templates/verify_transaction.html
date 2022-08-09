@@ -8,7 +8,7 @@
             <h1>Verify a Transaction</h1><br>
         </header>
 
-        <div class="margins">
+        <section class="margins">
             <p>
                 Lets look at the table from Mastering Bitcoin ch06 section<a href="https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch06.asciidoc#transactionsbehind-the-scenes">Transactions—Behind the Scenes</a>. We see the input to be spent is output index 0 from transaction: <a href="https://blockstream.info/tx/7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18">7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18</a>. So then we locate that transaction and see what the locking script (ScriptPubKey) is. Then we see that locking script that needs to be satisfied in order to spend those satoshis is: <br>
 
@@ -26,37 +26,21 @@
             <p>
                 So now we combine the redeem script (left) with the locking script (right). We push the two entries onto the stack from the redeem script. Then we come to the <a href="https://en.bitcoin.it/wiki/Script">OP_DUP</a> which means we duplicate the top item and push it back on the stack. Then we see <a href="https://en.bitcoin.it/wiki/Script">OP_HASH160</a>. This function pops the top element, hashes it first with SHA256 and then hashes that digest with the RIPEMD160 algorithm. It then pushes the result back onto the stack. Next we come to the hexidecimal encoded number 7f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a8. Push it onto the stack. Next is <a href="https://en.bitcoin.it/wiki/Script">OP_EQUALVERIFY</a>. It pops the last two items on the stack, then checks to see if they are equal. The answer is either true or false. This is pushed to the stack. Then that answer is popped back off the stack and OP_VERIFY is run (OP_EQUALVERIFY is basically two functions baked into one). If true, nothing is return. If false, the transaction is invalid. 
             </p>
+
             <p>
                 So, assuming we have a valid transaction up to this point, we have on the bottom of the stack the signature. On top of the signature is the public address. And we still have the opcode <a href="https://en.bitcoin.it/wiki/OP_CHECKSIG">OP_CHECKSIG</a>. This opcode pops the signature and public key from the stack (leaving it empty for now). Then, in the simplest case, it hashes the entire transaction's inputs, outputs, and script. Then it combines the signature, publickey, and transaction hash (aka message) and pushes a 1 (if valid) or a 0 (if invalid) to the stack. If the transaction is valid then the stack will contain only a 1 and the input is allowed to be spent. (Check out this explanation of <a href="https://www.instructables.com/Understanding-how-ECDSA-protects-your-data/">ECDSA mathematics</a>).
             </p>
-        </div>
 
-        <div id="json">
+
             <pre>
                 <code >
-# Python
-import hashlib
-import base58
-import hmac
-
-# from transaction 7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18
-pubkey = bytes.fromhex("0484ecc0d46f1918b30928fa0e4ed99f16a0fb4fde0735e7ade8416ab9fe423cc5412336376789d172787ec3457eee41c04f4938de5cc17b4a10fa336a8d752adf")
-sha = hashlib.sha256()
-rip = hashlib.new('ripemd160')
-sha.update(pubkey)
-rip.update( sha.digest() )
-
-# HASH160 result
-print(rip.hexdigest()) # 7f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a8
-
-# Create an address using base58 encoding (with checksum)
-addr = b'\x00' +  rip.digest()
-cs = hashlib.sha256(hashlib.sha256(addr).digest()).digest()[:4]
+# Python import hashlib import base58 import hmac # from transaction 7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18 pubkey = bytes.fromhex("0484ecc0d46f1918b30928fa0e4ed99f16a0fb4fde0735e7ade8416ab9fe423cc5412336376789d172787ec3457eee41c04f4938de5cc17b4a10fa336a8d752adf") sha = hashlib.sha256() rip = hashlib.new('ripemd160') sha.update(pubkey) rip.update( sha.digest() ) # HASH160 result print(rip.hexdigest()) # 7f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a8 # Create an address using base58 encoding (with checksum) addr = b'\x00' +  rip.digest() cs = hashlib.sha256(hashlib.sha256(addr).digest()).digest()[:4]
 addr += cs
 addr = base58.b58encode(addr)
 print(addr.decode("utf-8")) # 1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK
                 </code>
             </pre>
-        </div>
+        </section>
     </div>
+    {% include "includes/footer_logo.html" %}
 {% endblock %}

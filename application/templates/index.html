@@ -29,13 +29,15 @@
             <p>Current block height: {{ height }}</p>
             <p>Bitcoin price: ${{ price }}</p>
             <p>Moscow time: {{ sats }} </p>
-            <!--<p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>-->
         </div>
-    </div>
+    </div> <!--end content wrap-->
 
-    <div class="btc">
-        <img id="btc" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
-    </div>
-
-    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+    <footer >
+        <img id="btc-logo" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+    </footer>
 {% endblock %}
+
+
+<!-- 
+    <p>Moscow Time: {{ sats }} <i class="fak fa-satoshisymbol-solidtilt"></i></p>
+    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script> -->

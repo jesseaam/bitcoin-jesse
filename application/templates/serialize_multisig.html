@@ -8,17 +8,16 @@
             <h1>Serialize a Multisig Transaction</h1>
         </header>
 
-        <div class="margins">
+        <section class="margins">
             <p>Code for how to serialize a multisig redeem script. In this example, we
                 have 5 public keys and the quorum is 2. Each component of the redeem script
                 is converted to hex and amalgamated. Each opcode has a special hex number
                 that can be found in the <a href="https://en.bitcoin.it/wiki/Script#Opcodes">Bitcoin wiki here</a>.
             </p>
-        </div>
 
-        <div id="json">
-            <pre>
-                <code>
+            <div id="json">
+                <pre>
+                    <code>
 import hashlib
 # push the number2 (OP_2=52),
 # push 65bytes (41), push pubkey1, 41, p2, 41, p3, 41, p
@@ -38,9 +37,11 @@ hash1 = hashlib.sha256(redeem).digest()
 rip = hashlib.new('ripemd160')
 rip.update(hash1)
 print(rip.hexdigest()) # 54c557e07dde5bb6cb791c7a540e0a4796f5e97e (matches that given in https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch07.asciidoc)
-                </code>
-            </pre>
-        </div>
+                    </code>
+                </pre>
+            </div>
+        </section>
     </div>
 
+    {% include "includes/footer_logo.html" %}
 {% endblock %}

@@ -1,75 +1,17 @@
-#div-index {
-    background-color: orange;
-    border-style:solid;
-    text-align: center; 
-    padding-top: 10px;
-}
-
-#header-resources {
-    background-color: orange;
-    margin: 0% 0%;
-    border-top: solid;
-    border-bottom: solid;
-    margin-bottom: 30px;
-    padding-top: 10px;
-}
-
-#div-resource {
-    padding-left: 10px; 
-    padding-bottom: 50px; 
-    text-align: left; 
-}
-
-#page-container {
-    position: relative;
-    text-align: center;
-    border: solid;
-    border-color: saddlebrown;
-    min-height: 100vh;
-}
-
-#content-wrap {
-padding-bottom: 8.5rem;    /* Footer height */
-}
-
-#red {
-    color: red
-}
-
-/* apply these margins to all text */
-.margins {
-    margin: 0 10%;
-    text-align: left;
-}
-
-#json {
-    margin: 5% 8%;
-    text-align: left;
-}
-
-#btc {
-    position: absolute;
-    bottom: 4px;
-    display: block;
-    height: 5.5rem;            /* Footer height */
-    width:100%
-}
-
-#h2-mn {
-    background-color: lightgreen;
-    text-align: center;
-    margin: 2% 10%;
+body {
+    background-color: darkgreen;
 }
 
 header {
-    bottom: 0;
-    padding-top: 1%;
-    margin-bottom: 2%;
+    text-align: center;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 h1 {
     font-family:  Geneva;
-    text-align: center;
 }
 
 p {
@@ -77,10 +19,19 @@ p {
     font-size: 1.2em;
 }
 
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
 input {
-    width:200px;
+    width:250px;
     height: 40px;
-    margin:20px;
     color: black;
     border-radius: 12px;
     border: solid 2px;
@@ -96,6 +47,83 @@ input:hover {
     border: solid 2px;
 }
 
+code {
+    font-weight: bold;
+    color: forestgreen
+}
+
+select {
+    border: solid 2px;
+    border-radius: 12px;
+    background-color: rgb(146, 178, 209);
+    height: 30px;
+    text-align: center;
+}
+
+#page-container {
+    background-color: white;
+    border: solid;
+    border-color: saddlebrown;
+    position: relative;
+    min-height: 96vh;
+    margin: 1% 2%;
+}
+
+#content-wrap {
+padding-bottom: 8.5rem;  /* Leave room for footer */
+}
+
+#content-wrap2 {
+padding-bottom: 13.5rem;  /* Leave room for footer */
+}
+
+#div-index {
+    background-color: orange;
+    border-top:solid;
+    border-bottom:solid;
+    text-align: center; 
+    padding-top: 10px;
+}
+
+#btc-logo {
+    position: absolute;
+    bottom: 4px;
+    display: block;
+    height: 5.5rem;
+    width:100%;
+}
+
+#resource {
+    padding-left: 10px; 
+    padding-bottom: 50px; 
+}
+
+#red {
+    color: red
+}
+
+/* apply these margins to all text */
+.margins {
+    margin: 0 10%;
+    text-align: left;
+    margin-bottom: 11.5rem;
+}
+
+#json {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+#json-mn {
+    text-align: left;
+    margin-bottom: 12rem;
+}
+
+
+#h2-mn {
+    background-color: lightgreen;
+    margin-bottom: 4rem;
+}
 
 #btc-button {
     background-color: rgb(6, 230, 103);
@@ -106,16 +134,6 @@ input:hover {
     background-color: orange;
 }
 
-
-select {
-    border: solid 2px;
-    border-radius: 12px;
-    background-color: rgb(146, 178, 209);
-    height: 30px;
-    text-align: center;
-}
-
-
 .centered {
     position: fixed;
     top: 50%;
@@ -123,42 +141,10 @@ select {
     transform: translate(-50%, -50%);
   }
 
-
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-
-table {
-    font-family: arial, sans-serif;
-    width:100%;
-    margin-left: auto;
-    margin-right: auto;
-    /*border-collapse: collapse;*/
-}
-
 .table-resources {
     margin-bottom:20px;
     margin-left: 10px;
     width:60%;
-}
-
-.div-bw {
-    margin: 3% 8%;
-    padding-bottom: 20px;
-}
-
-
-code {
-    font-weight: bold;
-}
-
-.color-code {
-    color: darkorchid;
 }
 
 
@@ -265,7 +251,6 @@ code {
     color: black;
     transition: ease-in-out all .4s;
     font-weight: bold;
-
 }
 
 .tx-time:hover {
