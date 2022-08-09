@@ -1,6 +1,9 @@
 from flask import Blueprint, jsonify
+from application.models import Mnemonic_db, MnSchema
+
 
 basic_api = Blueprint("basic_api", __name__)
+mn_schema = MnSchema(many=True)
 
 @basic_api.route("/")
 def api():
@@ -23,3 +26,9 @@ def btc_or_crypto(response: str):
         return jsonify(message="Access granted. Always happy to host a BTC maximalists!")
     else:
         return jsonify(message=f"<{response}> is not a valid response. Please enter <btc> or <crypto> to enter this site."), 418 # lol
+
+@basic_api.route("/all-mnemonics")
+def all_mnemonics():
+    all_mn = Mnemonic_db.query.all()
+    hi = mn_schema.dump(all_mn)
+    return jsonify(hi)

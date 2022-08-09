@@ -1,4 +1,4 @@
-from application import app, db
+from application import app, db, ma
 from sqlalchemy import Column, String, Integer
 
 class Mnemonic_db(db.Model):
@@ -16,3 +16,9 @@ class Mnemonic_db(db.Model):
         self.funded = funded
         self.summary = summary
         self.datetime = datetime
+
+
+# Marshmallow - serialize object so we can return JSON
+class MnSchema(ma.Schema):
+    class Meta():
+        fields = ("mnemonic", "addr0", "funded", "summary")
