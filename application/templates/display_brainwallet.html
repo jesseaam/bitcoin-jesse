@@ -7,6 +7,8 @@
 
 {% block content %}
     <div id="content-wrap2" >
+
+
         <header>
             <h1>Brain Wallet</h1>
         </header> 
@@ -15,35 +17,32 @@
         <section class="margins">
             <p>
                 What is a <a href="https://en.bitcoin.it/wiki/Brainwallet">brainwallet</a>? This is a deprecated and highly unsafe method for creating a bitcoin address using only your brain. Essentially, you are creating a private key from a phrase you have memorized. This could be a song lyric, poem, or really any string of letters you can think of. The phrase is hashed with sha256. The resulting digest is your private key. You can then construct the public key and corresponding bitcoin address. Try out the address generator below! It will tell you how many sats have previously been funded to the address (Funded) and how many sats remain in the address (Summary).
-            </p>
-
-            <br>
+            </p> <br>
 
             <form action="{{ url_for('brain_wallet') }}" method="POST">
                 <p><b>Enter phrase</b></p>
                 <input type="text" name="phrase" placeholder="I love Bitcoin!">
                 <input type="submit" id="btc-button" value="Create Address" >
-            </form>
-            
-            <br>
+            </form> <br>
 
-            {% if phrase is defined %}
-                <table style="margin-bottom: 100px">
+            <table style="margin-bottom: 100px">
+                <tr>
+                    <th>Phrase</th>
+                    <th>Address</th>
+                    <th>Funded</th>
+                    <th>Summary</th>
+                </tr>
+                {% if phrase is defined %}
                     <tr>
-                        <th>Phrase</th>
-                        <th>Address</th>
-                        <th>Funded</th>
-                        <th>Summary</th>
+                        <td>"{{phrase}}"</td>
+                        <td>{{addr}}</td>
+                        <td>{{funded}}</td>
+                        <td>{{summary}}</td>
                     </tr>
-                        <tr>
-                            <td>"{{phrase}}"</td>
-                            <td>{{addr}}</td>
-                            <td>{{funded}}</td>
-                            <td>{{summary}}</td>
-                        </tr>
-                </table>
-            {% endif %}
+                {% endif %}
+            </table>
         </section>
+
     </div> <!--end content-wrap-->
 
     {% include "includes/footer_warn.html" %}
