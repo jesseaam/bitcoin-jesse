@@ -13,14 +13,17 @@ app.register_blueprint(basic_api, url_prefix="/api")
 
 @app.route("/")
 def index():
-    height = requests.get("https://blockstream.info/api/blocks/tip/height")
-    height = height.text
+    #height = requests.get("https://blockstream.info/api/blocks/tip/height")
+    #height = height.text
+    height = "1,000,000"
 
-    current_price = requests.get("https://www.bitstamp.net/api/v2/ticker/btcusd/")
-    current_price = json.loads(current_price.text)["last"]
+    #current_price = requests.get("https://www.bitstamp.net/api/v2/ticker/btcusd/")
+    #current_price = json.loads(current_price.text)["last"]
+    current_price = 1_000_000
 
     # how many sats can you buy with a dollar?
     sats = round(100_000_000 / float(current_price))
+    current_price = "{:,}".format(current_price) # add commas
 
     if "user" in session:
         user = session["user"]
