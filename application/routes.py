@@ -13,6 +13,7 @@ app.register_blueprint(basic_api, url_prefix="/api")
 
 @app.route("/")
 def index():
+    """Home page that displays btc height & price."""
     #height = requests.get("https://blockstream.info/api/blocks/tip/height")
     #height = height.text
     height = "1,000,000"
@@ -48,8 +49,16 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route("/repeat-seed")
+def repeat_seed():
+    codewords = Mnemonic().wordlist
+    return render_template("repeat_seed.html", codewords=codewords)
+
+
 @app.route("/repeat/", methods=["POST", "GET"])
-def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
+def create_repeat_mnemonic():
+    """Create a repeat mnemonic given the repeat word and size."""
+
     if request.method == "GET":
         return redirect(url_for("repeat_seed"))
 
@@ -74,6 +83,8 @@ def create_repeat_mnemonic(repeat_word="abandon", mnemonic_size=12):
 
 @app.route("/random", methods=["POST", "GET"])
 def random(ms=12):
+    """Create a random mnemonic phrase."""
+
     if request.form.get("Select-Size"):
         ms = int(request.form.get("Select-Size"))
         phrase, funded, summary, addr0, results = Wallet.random_wallet(mnemonic_size=ms)
@@ -87,9 +98,10 @@ def random(ms=12):
         return render_template("random.html")
 
 
-#@app.route("/brain-wallet/<phrase>", methods=["GET", "POST"])
 @app.route("/brain-wallet/", methods=["GET", "POST"])
 def brain_wallet():
+    """Create an address from an input string."""
+
     if request.method == "POST":
         phrase = request.form.get("phrase")
         addr, funded, summary = Wallet.brain_wallet(phrase)
@@ -99,48 +111,50 @@ def brain_wallet():
 
 @app.route("/resources")
 def resources():
+    """Useful bitcoin resources."""
     return render_template("resources.html")
 
 
 @app.route("/whitepaper")
 def whitepaper():
+    """Link to the original whitepaper."""
     return redirect("https://bitcoin.org/bitcoin.pdf")
-
-
-@app.route("/repeat-seed")
-def repeat_seed():
-    codewords = Mnemonic().wordlist
-    return render_template("repeat_seed.html", codewords=codewords)
 
 
 @app.route("/verify-transaction")
 def verify_transaction():
+    """HTML that describes how transactions are verified."""
     return render_template("verify_transaction.html")
 
 
 @app.route("/verify-signature")
 def verify_signature():
+    """HTML that describes how signatures are verified."""
     return render_template("verify_signature.html")
 
 
 @app.route("/raw-tx")
 def raw_tx():
+    """HTML that describes the structure of raw transaction."""
     return render_template("transaction_structure.html")
 
 
 @app.route("/serialize-multisig")
 def serialize_multisig():
+    """HTML that describes how to serialize a multisig redeem script."""
     return render_template("serialize_multisig.html")
 
 
 @app.route("/view-db")
 def view_db():
+    """View the contents of the database that holds mnemonics we have generated."""
     all_mn = Mnemonic_db.query.all()
     return render_template("view_db.html", db=all_mn)
 
 
 @app.route("/delete-all")
 def delete_all():
+    """Delete the contents of the database that holds mnemonics we have generated."""
     Mnemonic_db.query.delete()
     db.session.commit()
     return redirect(url_for("view_db"))
@@ -148,18 +162,9 @@ def delete_all():
 
 #@app.route("/check-all")
 #def check_all():
+#    """Generate repeat mnemonics for each of the bip39 code-words."""
 #    mn = Mnemonic()
 #    wlist = mn.wordlist[:100]
 #    for word in wlist:
 #        create_repeat_mnemonic(repeat_word=word, mnemonic_size=12)
 #    return redirect(url_for("view_db"))
-
-
-@app.route("/test")
-def test():
-    return render_template("test.html")
-
-
-@app.route("/test2")
-def test2():
-    return render_template("test2.html")
