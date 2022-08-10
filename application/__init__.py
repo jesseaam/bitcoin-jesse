@@ -9,7 +9,7 @@ app.secret_key = b"0MjasdL5%39997C-111@#" # https://flask.palletsprojects.com/en
 
 # set up database config
 # default postgresql://YOURUSERNAME@localhost/YOURUSERNAME
-current = os.getcwd()
+current = os.path.abspath(os.path.dirname(__file__))
 #app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://jmarks@localhost/jmarks"
 app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{current}/database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False # adds significant overhead
