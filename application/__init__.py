@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from datetime import timedelta
 import os, sqlite3
 
 app = Flask(__name__)
 app.secret_key = b"0MjasdL5%39997C-111@#" # https://flask.palletsprojects.com/en/1.0.x/quickstart/#sessions
+#app.permanent_session_lifetime = timedelta(minutes=5)
 
 
 # set up database config

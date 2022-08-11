@@ -105,8 +105,8 @@ def brain_wallet():
     if request.method == "POST":
         phrase = request.form.get("phrase")
         addr, funded, summary = Wallet.brain_wallet(phrase)
-        return render_template("display_brainwallet.html", phrase=phrase, addr=addr, funded=funded, summary=summary)
-    return render_template("display_brainwallet.html")
+        session[phrase] = [addr, funded, summary]
+    return render_template("display_brainwallet.html",sess=session)
 
 
 @app.route("/resources")

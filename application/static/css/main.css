@@ -1,5 +1,10 @@
 body {
+    background-color: #387416;
+    /*
     background-color: darkgreen;
+    https://www.webfx.com/web-design/color-picker/ 
+    */
+
 }
 
 header {
@@ -39,7 +44,6 @@ input {
 }
 
 input:focus {
-    border: solid 2px green 
     border: solid 2px;
 }
 
@@ -61,9 +65,9 @@ select {
 }
 
 #page-container {
-    background-color: white;
+    background-color: whitesmoke;
     border: solid;
-    border-color: saddlebrown;
+    border-color: #521674;
     position: relative;
     min-height: 96vh;
     margin: 1% 2%;

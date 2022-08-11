@@ -32,14 +32,14 @@
                     <th>Funded</th>
                     <th>Summary</th>
                 </tr>
-                {% if phrase is defined %}
+                {% for key in sess %}
                     <tr>
-                        <td>"{{phrase}}"</td>
-                        <td>{{addr}}</td>
-                        <td>{{funded}}</td>
-                        <td>{{summary}}</td>
+                        <td>"{{key}}"</td>
+                        <td>{{sess[key][0]}}</td>
+                        <td>{{sess[key][1]}}</td>
+                        <td>{{sess[key][2]}}</td>
                     </tr>
-                {% endif %}
+                {% endfor %}
             </table>
         </section>
 
