@@ -30,5 +30,5 @@ def btc_or_crypto(response: str):
 @basic_api.route("/all-mnemonics")
 def all_mnemonics():
     all_mn = Mnemonic_db.query.all()
-    hi = mn_schema.dump(all_mn)
-    return jsonify(hi)
+    all_mn = mn_schema.dump(all_mn)
+    return jsonify(all_mn)
