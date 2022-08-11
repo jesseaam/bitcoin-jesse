@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Resources{% endblock %}
+
+{% block content %}
+    <div id="content-wrap">
+        <header>
+            <h1>Hello ₿ World!</h1>
+            <p>
+                For all of your Bitcoin information needs, checkout the <a href="https://en.bitcoin.it/wiki/Main_Page">Bitcoin Wiki.</a><br>
+                Also visit <a href="https://bitcoin.org/en/">bitcoin.org</a>. Then try some of the resources below!
+            </p>
+        </header>
+
+        <section id="resource">
+            <table class="table-resources">
+                <tr>
+                    <th>Books</th>
+                </tr>
+                <tr>
+                <td><a href="https://github.com/bitcoinbook/bitcoinbook">Mastering Bitcoin</a> </td> 
+                </tr>
+                <tr>
+                <td><a href="https://github.com/jimmysong/programmingbitcoin">Programming Bitcoin</a></td> 
+                </tr>
+                <tr>
+                    <td><a href="https://saifedean.com/thebitcoinstandard/">The Bitcoin Standard: The Decentralized Alternative to Central Banking</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://vijayboyapati.medium.com/the-bullish-case-for-bitcoin-6ecc8bdecc1">The Bullish Case for Bitcoin</a></td>
+                </tr>
+            </table>
+
+            <table class="table-resources">
+                <tr>
+                    <th>Education</th>
+                </tr>
+                <tr>
+                    <td><a href="https://learn.saylor.org/course/view.php?id=468">Bitcoin for Everybody</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://learn.saylor.org/course/view.php?id=500">Bitcoin for Developers</a></td>
+                </tr>
+                <tr>
+                    <td> <a href="https://www.youtube.com/watch?v=bBC-nXj3Ng4">But how does bitcoin actually work?</a> </td>
+                </tr>
+                <tr>
+                    <td> <a href="https://learnmeabitcoin.com">learnmeabitcoin</a> </td>
+                </tr>
+            </table>
+
+            <table class="table-resources">
+
+                <tr>
+                    <th>Media</th>
+                </tr>
+                <tr>
+                    <td><a href="https://unchained.com/gradually-then-suddenly">Gradually, then suddenly</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://www.youtube.com/playlist?list=PL2jAZ0x9H0bQFY6wIbQfnrnIlqMcSHd6X">The Saylor series: What is Money Podcast</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://bitcoinmagazine.com">Bitcoin Magazine</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://dergigi.com/2020/04/27/dear-family-dear-friends/">Dear Family, Dear Friends</a></td>
+                </tr>
+            </table>
+
+            <table class="table-resources">
+                <th>Additional</th>
+                <tr>
+                    <td><a href="https://www.hope.com">hope.com</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://bitcoin.stackexchange.com">Bitcoin Stack Exchange</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://allprivatekeys.com/mnemonic-code-converter#english">allprivatekeys.com</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://bitcoindev.network/bitcoin-cli-sandbox/">Bitcoin CLI Sandbox</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://bitcoin-resources.com">bitcoin-resources.com</a></td>
+                </tr>
+            </table>
+        </section>
+
+    </div>
+
+    <footer >
+        <img id="btc-logo" src="{{ url_for('static', filename='images/bitcoin-btc-logo-full.svg') }}" alt="Bitcoin logo">
+    </footer>
+{% endblock %}

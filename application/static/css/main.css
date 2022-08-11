@@ -113,6 +113,12 @@ padding-bottom: 13.5rem;  /* Leave room for footer */
     margin-bottom: 11.5rem;
 }
 
+.margins-resources {
+    margin: 5% 15%;
+    text-align: center;
+    margin-bottom: 11.5rem;
+}
+
 #json {
     text-align: left;
     margin-bottom: 2rem;
@@ -127,6 +133,21 @@ padding-bottom: 13.5rem;  /* Leave room for footer */
 #h2-mn {
     background-color: lightgreen;
     margin-bottom: 4rem;
+}
+
+.h2-resources {
+    border: solid; 
+    border-color: #521674;
+    background-color: #387416;
+}
+
+.p-resources {
+    margin-bottom: 50px;
+}
+
+.a-resources {
+    /*color: #742316;*/
+    color: #166774;
 }
 
 #btc-button {
