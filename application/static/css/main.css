@@ -70,7 +70,7 @@ select {
     border-color: #521674;
     position: relative;
     min-height: 96vh;
-    margin: 1% 2%;
+    margin: 0px 0px;
 }
 
 #content-wrap {
