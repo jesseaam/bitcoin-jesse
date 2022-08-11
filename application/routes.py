@@ -14,13 +14,13 @@ app.register_blueprint(basic_api, url_prefix="/api")
 @app.route("/")
 def index():
     """Home page that displays btc height & price."""
-    #height = requests.get("https://blockstream.info/api/blocks/tip/height")
-    #height = height.text
-    height = "1,000,000"
+    height = requests.get("https://blockstream.info/api/blocks/tip/height")
+    height = height.text
 
     #current_price = requests.get("https://www.bitstamp.net/api/v2/ticker/btcusd/")
     #current_price = json.loads(current_price.text)["last"]
-    current_price = 1_000_000
+    current_price = requests.get("https://api.blockchain.com/v3/exchange/tickers/BTC-USD")
+    current_price = json.loads(current_price.text)["last_trade_price"]
 
     # how many sats can you buy with a dollar?
     sats = round(100_000_000 / float(current_price))
