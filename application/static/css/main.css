@@ -69,7 +69,7 @@ select {
     border: solid;
     border-color: #521674;
     position: relative;
-    min-height: 96vh;
+    min-height: 100vh;
     margin: 0px 0px;
 }
 
