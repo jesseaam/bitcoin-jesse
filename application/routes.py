@@ -52,7 +52,7 @@ def logout():
 @app.route("/repeat-seed")
 def repeat_seed():
     codewords = Mnemonic().wordlist
-    return render_template("repeat_seed.html", codewords=codewords)
+    return render_template("playground/repeat_seed.html", codewords=codewords)
 
 
 @app.route("/repeat/", methods=["POST", "GET"])
@@ -78,7 +78,7 @@ def create_repeat_mnemonic():
     db.session.add(db_entry)
     db.session.commit()
 
-    return render_template("display_mnemonic_repeat.html", mn_single=phrase, mn_all=mn_all, tot=tot, results=results)
+    return render_template("playground/display_mnemonic_repeat.html", mn_single=phrase, mn_all=mn_all, tot=tot, results=results)
 
 
 @app.route("/random", methods=["POST", "GET"])
@@ -93,9 +93,9 @@ def random(ms=12):
         db_entry = Mnemonic_db(mnemonic=phrase, addr0=addr0, funded=funded, summary=summary, datetime=now)
         db.session.add(db_entry)
         db.session.commit()
-        return render_template("display_mnemonic_random.html", results=results, phrase=phrase)
+        return render_template("playground/display_mnemonic_random.html", results=results, phrase=phrase)
     else:
-        return render_template("random.html")
+        return render_template("playground/random.html")
 
 
 @app.route("/brain-wallet/", methods=["GET", "POST"])
@@ -106,7 +106,7 @@ def brain_wallet():
         phrase = request.form.get("phrase")
         addr, funded, summary = Wallet.brain_wallet(phrase)
         session[phrase] = [addr, funded, summary]
-    return render_template("display_brainwallet.html",sess=session)
+    return render_template("playground/display_brainwallet.html")
 
 
 @app.route("/resources")
@@ -124,38 +124,38 @@ def whitepaper():
 @app.route("/verify-transaction")
 def verify_transaction():
     """HTML that describes how transactions are verified."""
-    return render_template("verify_transaction.html")
+    return render_template("learning_lib/verify_transaction.html")
 
 
 @app.route("/verify-signature")
 def verify_signature():
     """HTML that describes how signatures are verified."""
-    return render_template("verify_signature.html")
+    return render_template("learning_lib/verify_signature.html")
 
 
 @app.route("/raw-tx")
 def raw_tx():
     """HTML that describes the structure of raw transaction."""
-    return render_template("transaction_structure.html")
+    return render_template("learning_lib/transaction_structure.html")
 
 
 @app.route("/serialize-multisig")
 def serialize_multisig():
     """HTML that describes how to serialize a multisig redeem script."""
-    return render_template("serialize_multisig.html")
+    return render_template("learning_lib/serialize_multisig.html")
 
 
 @app.route("/p2sh")
 def p2sh():
     """HTML that describes a P2SH tx."""
-    return render_template("p2sh.html")
+    return render_template("learning_lib/p2sh.html")
 
 
 @app.route("/view-db")
 def view_db():
     """View the contents of the database that holds mnemonics we have generated."""
     all_mn = Mnemonic_db.query.all()
-    return render_template("view_db.html", db=all_mn)
+    return render_template("playground/view_db.html", db=all_mn)
 
 
 @app.route("/delete-all")
@@ -164,6 +164,12 @@ def delete_all():
     Mnemonic_db.query.delete()
     db.session.commit()
     return redirect(url_for("view_db"))
+
+@app.route("/clear-session", methods=["POST"])
+def clear_session():
+    """Delete the contents of the session."""
+    session.clear()
+    return redirect(url_for("brain_wallet"))
 
 
 #@app.route("/check-all")
