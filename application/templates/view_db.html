@@ -14,7 +14,7 @@
                 This table shows all the mnemonics that were generated and saved to our PostgreSQL database. Column2 is one of the addresses created from the associated mnemonic, Column3 is the amount of sats that has ever funded the address, Column4 is how many stats still reside at that address, and Column5 is the time and date at which the mnemonic was added to our database.
             </p><br>
 
-            <form action="{{ url_for('delete_all')}}" style="text-align: left; ">
+            <form action="{{ url_for('delete_all')}}">
                 <input style="color:red" type="submit" value="Clear Table" >
             </form><br>
 
