@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}serialize multisig{% endblock %}
+
+{% block content %}
+    <div id="content-wrap">
+        <header>
+            <h1>Pay to Script Hash (P2SH)</h1>
+        </header>
+
+        <section class="margins">
+            <h2>Overview</h2>
+            <p>
+                Pay to Script Hash (P2SH) is a method for simplifying multisig transactions, especially for the payer. Recall, the format of the ScriptPupKey (locking script) for a multisig tx is:<br>
+            </p>
+
+                <pre>
+                    <code >
+2 "Public Key1" "Public Key2" "Public Key3" "Public Key4" "Public Key5" 5 CHECKMULTISIG
+                    </code>
+                </pre>
+
+            <p>
+                Let's break this down. In general, a multisig transaction requires M of N signatures to spend the bitcoin. The format of the locking script is:
+                <ol class="p">
+                    <li>The quorum</li>
+                    <li>List of each possible public key</li>
+                    <li>The total number of public keys</li>
+                    <li>OP_CHECKMULTISIG.</li>
+                </ol>
+            </p>
+
+            <p>
+                So here we have the quorum=2. This means that the payee must provide 2 valid signatures in the ScriptSig (unlocking script) order to spend the bitcoin. Next we have public keys 1–5. The payee must provide valid signatures for 2 of these 5 public keys. The following number 5 tells us how many public keys there are in total. Lastly is the opcode CHECKMULTISIG. Note that in the ScriptSig, signatures must be in the same order as their corresponding public key. Check our the Bitcoin Wiki <a href="https://en.bitcoin.it/wiki/Script">Script Page</a> for information on the algorithm that is used. 
+            </p><br><br>
+
+            <h2>Disadvantages</h2>
+            <p>
+                Consider that the payer has to construct the multisig transaction. 
+            </p>
+
+        </section>
+    </div>
+
+    {% include "includes/footer_logo.html" %}
+{% endblock %}

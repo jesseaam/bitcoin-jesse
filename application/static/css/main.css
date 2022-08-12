@@ -24,6 +24,11 @@ p {
     font-size: 1.2em;
 }
 
+.p {
+    font-family:  Geneva;
+    font-size: 1.2em;
+}
+
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -37,7 +42,6 @@ tr:nth-child(even) {
 input {
     width:250px;
     height: 40px;
-    color: black;
     border-radius: 12px;
     border: solid 2px;
     text-align: center;
@@ -49,6 +53,7 @@ input:focus {
 
 input:hover {
     border: solid 2px;
+    background-color: orange;
 }
 
 code {

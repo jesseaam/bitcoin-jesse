@@ -145,6 +145,12 @@ def serialize_multisig():
     return render_template("serialize_multisig.html")
 
 
+@app.route("/p2sh")
+def p2sh():
+    """HTML that describes a P2SH tx."""
+    return render_template("p2sh.html")
+
+
 @app.route("/view-db")
 def view_db():
     """View the contents of the database that holds mnemonics we have generated."""
