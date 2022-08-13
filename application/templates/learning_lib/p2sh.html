@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}serialize multisig{% endblock %}
+{% block title %}p2sh{% endblock %}
 
 {% block content %}
     <div id="content-wrap">
@@ -9,9 +9,9 @@
         </header>
 
         <section class="margins">
-            <h2>Overview</h2>
+            <h2>Overview of Multisig</h2>
             <p>
-                Pay to Script Hash (P2SH) is a method for simplifying multisig transactions, especially for the payer. Recall, the format of the ScriptPupKey (locking script) for a multisig tx is:<br>
+                <a href="https://en.bitcoin.it/wiki/Pay_to_script_hash">Pay to Script Hash (P2SH)</a> is a method for simplifying multisig transactions (tx), especially for the payer. Recall, the format of the ScriptPupKey (locking script) for a multisig tx is:<br>
             </p>
 
                 <pre>
@@ -21,7 +21,7 @@
                 </pre>
 
             <p>
-                Let's break this down. In general, a multisig transaction requires M of N signatures to spend the bitcoin. The format of the locking script is:
+                Let's break this down. In general, a multisig tx requires M of N signatures to spend the bitcoin. The format of the locking script is:
                 <ol class="p">
                     <li>The quorum</li>
                     <li>List of each possible public key</li>
@@ -31,14 +31,168 @@
             </p>
 
             <p>
-                So here we have the quorum=2. This means that the payee must provide 2 valid signatures in the ScriptSig (unlocking script) order to spend the bitcoin. Next we have public keys 1–5. The payee must provide valid signatures for 2 of these 5 public keys. The following number 5 tells us how many public keys there are in total. Lastly is the opcode CHECKMULTISIG. Note that in the ScriptSig, signatures must be in the same order as their corresponding public key. Check our the Bitcoin Wiki <a href="https://en.bitcoin.it/wiki/Script">Script Page</a> for information on the algorithm that is used. 
-            </p><br><br>
-
-            <h2>Disadvantages</h2>
+                So here we have the quorum=2. This means that the payee must provide 2 valid signatures in the ScriptSig (unlocking script) in order to spend the bitcoin. Next we have public keys 1–5. The payee must provide valid signatures for 2 of these 5 public keys. The following number 5 tells us how many public keys there are in total. Lastly is the opcode CHECKMULTISIG. Note that in the ScriptSig, signatures must be in the same order as their corresponding public key. Check our the Bitcoin Wiki <a href="https://en.bitcoin.it/wiki/Script">Script Page</a> for information on the algorithm that is used. <br>
+            </p>
             <p>
-                Consider that the payer has to construct the multisig transaction. 
+                Now to unlock the bitcoin, you would provide a ScriptSig that combines the unlocking script concatenated with the locking script. It would look something like the following (I added extra space between the ScriptSig and ScriptPubKey so you can distinguish the two):
+            </p>
+            
+            <pre>
+                <code>
+0 "Signature to PK2" "Signature to PK5"       2 "Public Key1" "Public Key2" "Public Key3" "Public Key4" "Public Key5" 5 CHECKMULTISIG
+                </code>
+            </pre>
+
+            <p>
+                Being the astute Bitcoin student that you are, you probably noticed a 0 at the beginning. This my friend is a work-around to a bug that is present in the opcode CHECKMULTISIG that is impossible to remove without forking the network. So for example, if the quorum is 2 and you supply 2 valid signatures, CHECKMULTISIG will pop 3 items off the stack. It doesn't really matter what the extra item you provide is, but it is customary to provide a 0. So from now on when you see that extra 0 in front of a multisig ScriptSig, you will be reminded that sometimes bugs happen. It's a bugs life.
+            </p>
+            
+            <br><br>
+
+            <h3>Disadvantages</h3>
+            <p>Using multisig without P2SH has several disadvantages. Let's list a few of them.</p>
+            <ul class="p">
+                <li>
+                    Consider that the payer has to construct the multisig tx. This means that they are responsible for footing the bill on the higher tx cost since fees are based off of the number of bytes in a tx.  
+
+                </li>
+                <li>
+                    Think of how inconvenient it would be to have to send a person 5 different public keys just to have them send you some bitcoin. Sounds like a recipe for disaster. They would also have to have a specialized signing device that can construct this type of tx. 
+
+                </li>
+                <li>
+                    While the <a href="https://en.bitcoin.it/wiki/UTXO">UTXO</a> remains unspent it must be held in RAM by full nodes. This increases the cost of running a full node. 
+                </li>
+            </ul><br><br>
+
+            <h2>P2SH</h2>
+            <p>
+                Now lets talk about P2SH. This is a protocol to greatly simplify multisig tx. But know that it has applications beyond multisig. P2SH is aptly named, because you are creating a bitcoin address that is simply a hash of a script. Similar to how P2PKH is a bitcoin address generated by hashing a public key with hash160 (RIPEMD160 after SHA256)—P2SH addresses are the hash160 of the original locking script. Lets look at an example with some actual public keys so we can hash them and turn it into the new P2SH.
             </p>
 
+            <pre>
+                <code>
+#Python3
+import hashlib
+# push the number2 (OP_2=52),
+# push 65 bytes (41), push pubkey1, 41, pk2, 41, pk3, 41, pk4, 41, pk5
+# push the number 5 (OP_5=55)
+# OP_CHECKMULTISIG=AE
+
+p1 = "04C16B8698A9ABF84250A7C3EA7EEDEF9897D1C8C6ADF47F06CF73370D74DCCA01CDCA79DCC5C395D7EEC6984D83F1F50C900A24DD47F569FD4193AF5DE762C587"
+p2 = "04A2192968D8655D6A935BEAF2CA23E3FB87A3495E7AF308EDF08DAC3C1FCBFC2C75B4B0F4D0B1B70CD2423657738C0C2B1D5CE65C97D78D0E34224858008E8B49"
+p3 = "047E63248B75DB7379BE9CDA8CE5751D16485F431E46117B9D0C1837C9D5737812F393DA7D4420D7E1A9162F0279CFC10F1E8E8F3020DECDBC3C0DD389D9977965"
+p4 = "0421D65CBD7149B255382ED7F78E946580657EE6FDA162A187543A9D85BAAA93A4AB3A8F044DADA618D087227440645ABE8A35DA8C5B73997AD343BE5C2AFD94A5"
+p5 = "043752580AFA1ECED3C68D446BCAB69AC0BA7DF50D56231BE0AABF1FDEEC78A6A45E394BA29A1EDF518C022DD618DA774D207D137AAB59E0B000EB7ED238F4D800"
+
+redeem_hex = f"5241{p1}41{p2}41{p3}41{p4}41{p5}55AE"
+
+redeem_hex = bytes.fromhex(redeem_hex)
+redeem_sha256 = hashlib.sha256(redeem_hex).digest()
+redeem_hash160 = hashlib.new('ripemd160')
+redeem_hash160.update(redeem_sha256)
+print(redeem_hash160.hexdigest()) # 54c557e07dde5bb6cb791c7a540e0a4796f5e97e (matches that given in https://github.com/bitcoinbook/bitcoinbook/blob/develop/ch07.asciidoc)
+                </code>
+            </pre>
+
+            <p>
+                Now, you might have noticed in the code that we refer to the locking script as the redeem script. This is because we needed some new terminology. The original unlocking script is no longer what is provided in the ScriptPubKey section of a tx. So we now refer to it as the redeem script and the below code is what's the new locking script (using the redeem_hash in the example code above):
+            </p>
+
+            <pre>
+                <code>
+OP_HASH160 "54c557e07dde5bb6cb791c7a540e0a4796f5e97e" OP_EQUAL
+                </code>
+            </pre>
+
+            <p>
+                To unlock these bitcoin, you must now provide the redeem script that hashes to <code>54c557e07dde5bb6cb791c7a540e0a4796f5e97e</code> in addition to the unlocking script that satisfies the conditions specified in the redeem script. Or in this case, two valid signatures out of 5 possible. Putting it all together (and not forgetting about a bug's life) we get the unlocking script below. <i>Note</i> I don't have the signatures to any of these public keys, which is why I didn't include them. 
+            </p>
+
+            <pre>
+                <code>
+0 "Sig2" "Sig5" 2  "04C16B8698A9ABF84250A7C3EA7EEDEF9897D1C8C6ADF47F06CF73370D74DCCA01CDCA79DCC5C395D7EEC6984D83F1F50C900A24DD47F569FD4193AF5DE762C587" "04A2192968D8655D6A935BEAF2CA23E3FB87A3495E7AF308EDF08DAC3C1FCBFC2C75B4B0F4D0B1B70CD2423657738C0C2B1D5CE65C97D78D0E34224858008E8B49" "047E63248B75DB7379BE9CDA8CE5751D16485F431E46117B9D0C1837C9D5737812F393DA7D4420D7E1A9162F0279CFC10F1E8E8F3020DECDBC3C0DD389D9977965" "0421D65CBD7149B255382ED7F78E946580657EE6FDA162A187543A9D85BAAA93A4AB3A8F044DADA618D087227440645ABE8A35DA8C5B73997AD343BE5C2AFD94A5" "043752580AFA1ECED3C68D446BCAB69AC0BA7DF50D56231BE0AABF1FDEEC78A6A45E394BA29A1EDF518C022DD618DA774D207D137AAB59E0B000EB7ED238F4D800" 5 CHECKMULTISIG HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e EQUAL
+                </code>
+            </pre>
+            <p>
+            </p>
+
+            <h3>Advantages</h3>
+            <ul class="p">
+                <li>Switches the burden from the payer to the payee.</li>
+                <li>Switches the burden on full nodes from needing more RAM to keep the large tx in memory to cheaper storage once it's spent on recorded on the blockchain. </li>
+                <li>The payer doesn't have to construct a complex script. They can send to a simple address and create a locking script very similar to P2PKH.</li>
+                <li>Much more complicated txs can be constructed and obfusicated. This leads to better privacy too.</li>
+            </ul>
+
+            <p>
+                We should note that though the locking scripts are similar to P2PKH, there is a slight difference. Recall, a <a href="https://en.bitcoin.it/wiki/Transaction#Pay-to-PubkeyHash">P2PKH locking script</a> is of the form:
+            </p>
+
+            <pre>
+                <code>
+OP_DUP OP_HASH160 "1E984zyYbNmeuumzEdqT8VSL8QGJi3byAD" OP_EQUALVERIFY OP_CHECKSIG
+                </code>
+            </pre>
+
+            <p style="background-color: lightyellow; margin-top: -40px;">
+                Can you guess which <a href="{{url_for('brain_wallet')}}">brain wallet</a> phrase was used to generate the above address?
+            </p><br>
+
+            <p>
+                So how does the payer's signing device know whether to construct a P2PKH or a P2SH address? The hint is given in the address. In particular, all P2PKH addresses start with a 1 whereas all P2SH addresses start with a 3. Using the example above with the redeem hash <code>54c557e07dde5bb6cb791c7a540e0a4796f5e97e</code> let's convert it to a <a href="https://en.bitcoin.it/wiki/Base58Check_encoding#Creating_a_Base58Check_string">Base58Check</a> bitcoin address.
+            </p>
+
+            <pre>
+                <code>
+#Python3
+import hashlib
+import base58
+
+redeem_hash160 = "54c557e07dde5bb6cb791c7a540e0a4796f5e97e"
+version_byte = '05'
+ver_redeem = version_byte + redeem_hash160
+ver_redeem = bytes.fromhex(ver_redeem)
+hash1 = hashlib.sha256(ver_redeem_bytes).digest()
+hash2 = hashlib.sha256(hash1).digest()
+cs = hash2[0:4]
+combined = ver_redeem + cs
+addr = base58.b58encode(combined).decode("utf-8") # 39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw
+
+
+# practice converting to b58 manually
+combined_int = int.from_bytes(combined, "big",) #33464084413863485698580077015717480777572062481280805662196
+base58_chr = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz" # no 0,O,I, or l
+addr_man = ""
+
+while combined_int:
+    letter58 = combined_int % 58 # the remainder
+    addr_man = base58_chr[letter58] + addr_man
+    combined_int = combined_int // 58 # the quotient
+print(addr_man) # 39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw (same as above)
+                </code>
+            </pre>
+
+            <p>
+                So the payee gives out the bitcoin address <code>39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw</code> to the payer. The payer's signing device is like "Oh hey, that starts with a 3 so it must be a P2SH." Then it will construct the appropriate locking script. It needs to convert the address back into the hash of the redeem script.
+            </p>
+
+            <pre>
+                <code>
+#Python3
+import base58
+
+addr = "39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw"
+combined_hex = base58.b58decode(addr).hex()  #0554c557e07dde5bb6cb791c7a540e0a4796f5e97ef2986df4
+redeem_hash = combined_hex[2:] # remove version byte
+redeem_hash = redeem_hash[:-8] # remove 4 checksum bytes
+print(redeem_hash) # 54c557e07dde5bb6cb791c7a540e0a4796f5e97e
+                </code>
+            </pre>
+
+            <p>
+                So you see, it is trivial for the payer's signing device to convert the bitcoin address back into a redeem script so that it can construct the locking script. And now you know how P2SH works.
+            </p>
         </section>
     </div>
 
