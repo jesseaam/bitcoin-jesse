@@ -139,12 +139,6 @@ def raw_tx():
     return render_template("learning_lib/transaction_structure.html")
 
 
-@app.route("/serialize-multisig")
-def serialize_multisig():
-    """HTML that describes how to serialize a multisig redeem script."""
-    return render_template("learning_lib/serialize_multisig.html")
-
-
 @app.route("/p2sh")
 def p2sh():
     """HTML that describes a P2SH tx."""
