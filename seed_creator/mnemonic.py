@@ -113,14 +113,15 @@ class Mnemonic():
     def master_prv(self, bip39seed: bytes) -> bytes:
         """Convert bip39 seed to master private key"""
 
-        seed = hmac.new(b"Bitcoin seed", bip39seed, digestmod=hashlib.sha512).digest()
-        prv = bip39seed[0:32]
+        prv_and_chain = hmac.new(b"Bitcoin seed", bip39seed, digestmod=hashlib.sha512).digest()
+        prv = prv_and_chain[0:32]
         return prv
 
     def master_chain(self, bip39seed: bytes) -> bytes:
         """Convert bip39 seed to master chain code"""
 
-        cc = bip39seed[32:]
+        prv_and_chain = hmac.new(b"Bitcoin seed", bip39seed, digestmod=hashlib.sha512).digest()
+        cc = prv_and_chain[32:]
         return cc
 
 
