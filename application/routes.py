@@ -144,6 +144,11 @@ def p2sh():
     """HTML that describes a P2SH tx."""
     return render_template("learning_lib/p2sh.html")
 
+@app.route("/mn-conversion")
+def mn_conversion():
+    """HTML that describes how to convert a mnemonic to a bip39 seed and beyond."""
+    return render_template("learning_lib/mn_conversion.html")
+
 
 @app.route("/view-db")
 def view_db():
