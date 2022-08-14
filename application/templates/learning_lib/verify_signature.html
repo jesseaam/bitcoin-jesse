@@ -10,7 +10,9 @@
         </header>
 
         <section class="margins">
-            <p>We have some Python code below verifies a signature (R,S) given a corresponding message and public key. In Bitcoin, signatures are DER encoded. This is just a standard way of serializing the data that makes communicating the information easier. Think of how we encode home addresses when sending a letter. We address the letter in a specific format so that the mailman can easily identify where the letter needs to be delivered. </p>
+            <p>
+                We have some Python code below verifies a signature (R,S) given a corresponding message and public key. In Bitcoin, signatures are DER encoded. This is just a standard way of serializing the data that makes communicating the information easier. Think of how we encode home addresses when sending a letter. We address the letter in a specific format so that the mailman can easily identify where the letter needs to be delivered.
+            </p>
 
             <p> 
                 One thing we wanted to point out here today is that R and S are different sizes, as you can see from the code below. So why is R 33 bytes and S is 32? Initial bytes 0x00 are generally not allowed in R and S. They will both have 32 bytes except if the leading byte > 0x7F. If this is the case, then 0x00 is prepended on that number. The reason is that DER encoding is a subset of Basic Encoding Rules (BER http://luca.ntop.org/Teaching/Appunti/asn1.html) and BER says that if the first byte > 0x7F then it is a negative number. openSSL knows that signatures are not negative (think finite field here) so instead of just ignoring this rule and viewing it as a positive number, and thus breaking the encoding rules, we just prepend 0x00 so that all is well. This explanation was inspired by Peter Wuille (on this post https://bitcoin.stackexchange.com/questions/12554/why-the-signature-is-always-65-13232-bytes-long).
